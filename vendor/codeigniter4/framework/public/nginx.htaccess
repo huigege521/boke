@@ -1,0 +1,5 @@
+# nginx rewrite rule
+if ($request_filename !~ (index\.php|bd\_|assets|/status)) {
+    rewrite ^/(.*)$ /index.php last;
+}
+# end nginx rewrite rule

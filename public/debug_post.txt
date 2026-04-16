@@ -1,0 +1,20 @@
+Array
+(
+    [csrf_token] => 6c1856d94c7d1ea0e002c6aff7a29509
+    [_method] => PUT
+    [title] =>  Air 自动重启但新代码不生效
+    [slug] => air-自动重启但新代码不生效
+    [category_id] => 1
+    [tags] => Array
+        (
+            [0] => 9
+        )
+
+    [featured_image_from_media] => 
+    [content] => <p>Air 看似重启了，但要么没成功编译新代码，要么旧进程没被彻底杀死，导致新二进制没跑起来<br>一、核心原因（为什么会这样）</p><h4>1. 编译失败（最常见）</h4><ul><li>你改代码后，Air 触发了 go build，但<strong>编译报错</strong>（语法错误、类型不匹配、依赖缺失等）。</li><li>Air 会打印错误日志，但<strong>不会停止旧进程</strong>，所以你看到 “重启了”，实际跑的还是上一次成功编译的旧二进制。</li><li>手动 go run 能成功，是因为你手动编译时修复了问题（或环境不同）。</li></ul><h4>2. 旧进程没被杀死（端口 / 进程残留）</h4><ul><li>Air 重启时，默认给的 kill_delay 太短（默认 100ms），旧进程（尤其是 Gin/HTTP 服务）没来得及退出，<strong>新进程启动失败</strong>，继续跑旧进程。</li><li>表现：Air 日志显示 “restarting”，但端口一直被占，新代码不生效。</li></ul><h4>3. 配置错误（没监控到你的文件 / 编译路径错）</h4><ul><li>你的代码在子目录（如 cmd/api/main.go），但 Air 默认只监控当前目录 .go 文件，没递归监听子目录。</li><li>.air.toml 里 cmd 编译路径写错（比如 go build ./main 写成 go build .），导致编译的不是你改的代码。</li><li>配置文件命名错（air.toml 而不是 .air.toml），Air 用默认配置，不生效。</li></ul><h4>4. 缓存 / 文件系统问题</h4><ul><li>Windows/WSL 下文件事件不触发，Air 没感知到文件修改，用了 poll 但配置不对。</li><li>Go 编译缓存（GOCACHE）没清，导致旧代码被复用。</li></ul><h4>5. 依赖 / 模块问题</h4><ul><li>改了 go.mod/go.sum，Air 默认不监听这些文件，需要手动重启才会重新拉依赖。</li></ul><p> </p><p>首要更改配置：.air.toml</p><p><br># 清理 Go 编译缓存</p><p>go clean -cache</p><p># 清理 Air 临时目录 r</p><p>m -rf ./tmp</p><p># 重启 Air air</p><p> </p><h2>1. air init 生成的配置 <strong>是固定默认值</strong></h2><p>是的！<strong>不管你用多少次 air init，生成的都是官方默认配置</strong></p><h2>2. 这些关键项 <strong>必须手动改</strong>，默认完全不能用</h2><p>我给你列 <strong>必须改的 6 个核心项</strong>，记住这 6 个就行：</p><p>kill_delay = "2s" # 默认 0s → 必须改</p><p>stop_on_error = true # 默认 false → 必须改</p><p>poll = true # 默认 false → Windows 必须改</p><p>clean_on_exit = true # 默认 false → 建议改</p><p>clear_on_rebuild = false # 默认 false → 想看报错就保持 false</p><p>time = true # 可选，加时间戳</p><p><strong>默认配置不会帮你自动改！必须你自己手动改。</strong></p><p> </p><p> </p><h2><strong>以下是完整版的：</strong></h2><p><strong># .air.toml</strong></p><p>#:schema https://json.schemastore.org/any.json</p><p>env_files = []<br>root = "."<br>testdata_dir = "testdata"<br>tmp_dir = "tmp"</p><p>[build]<br>args_bin = []<br>bin = "tmp\\main.exe"<br>cmd = "go build -o ./tmp/main.exe ."<br>delay = 500<br>entrypoint = ["tmp\\main.exe"]<br>exclude_dir = ["assets", "tmp", "vendor", "testdata", ".git", "node_modules"]<br>exclude_file = []<br>exclude_regex = ["_test.go"]<br>exclude_unchanged = false<br>follow_symlink = false<br>full_bin = ""<br>ignore_dangerous_root_dir = false<br>include_dir = []<br>include_ext = ["go", "tpl", "tmpl", "html"]<br>include_file = []</p><p># ====================== 修复 1：给进程关闭时间 ======================<br>kill_delay = "2s"<br>log = "build-errors.log"</p><p># ====================== 修复 2：Windows 必须开轮询 ======================<br>poll = true</p><p>poll_interval = 0<br>post_cmd = []<br>pre_cmd = []<br>rerun = false<br>rerun_delay = 500<br>send_interrupt = false</p><p># ====================== 修复 3：编译失败就停止，不跑旧代码 ======================<br>stop_on_error = true</p><p>[color]<br>app = ""<br>build = "yellow"<br>main = "magenta"<br>runner = "green"<br>watcher = "cyan"</p><p>[log]<br>main_only = false<br>silent = false<br>time = true</p><p>[misc]<br># ====================== 修复 4：退出自动清理临时文件 ======================<br>clean_on_exit = true</p><p>[proxy]<br>app_port = 0<br>app_start_timeout = 0<br>enabled = false<br>proxy_port = 0</p><p>[screen]<br># ====终端是否清屏====<br>clear_on_rebuild = true<br>keep_scroll = true<br> </p><p> </p><p> </p><h2>以下是windows公用的</h2><p><br>root = "."<br>tmp_dir = "tmp"</p><p>[<br>build<br>]<br> cmd = "go build -o ./tmp/main.exe ."<br> bin = "tmp\\main.exe"<br> delay = 500<br> kill_delay = "2s"<br> include_ext = ["go", "tpl", "tmpl", "html"]<br> exclude_dir = ["assets", "tmp", "vendor", "testdata", ".git", "node_modules"]<br> exclude_regex = ["_test.go"]<br> poll = true<br> stop_on_error = true</p><p>[<br>log<br>]<br> time = true</p><p>[<br>screen<br>]<br> clear_on_rebuild = false</p><p>[<br>misc<br>]<br> clean_on_exit = true</p>
+    [excerpt] => Air 看似重启了，但要么没成功编译新代码，要么旧进程没被彻底杀死，导致新二进制没跑起来一、核心原因（为
+    [status] => published
+    [scheduled_at] => 
+    [visibility] => public
+    [honeypot] => 
+)

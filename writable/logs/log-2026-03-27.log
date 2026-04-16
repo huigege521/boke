@@ -1,0 +1,1026 @@
+ERROR - 2026-03-27 10:26:41 --> Error connecting to the database: mysqli_sql_exception: 由于目标计算机积极拒绝，无法连接。 in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: 由于目标计算机积极拒绝，无法连接。 in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:26:41 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: 由于目标计算机积极拒绝，无法连接。
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:26:49 --> Error connecting to the database: mysqli_sql_exception: 由于目标计算机积极拒绝，无法连接。 in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: 由于目标计算机积极拒绝，无法连接。 in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:26:49 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: 由于目标计算机积极拒绝，无法连接。
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:27:11 --> Error connecting to the database: mysqli_sql_exception: 由于目标计算机积极拒绝，无法连接。 in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: 由于目标计算机积极拒绝，无法连接。 in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:27:11 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: 由于目标计算机积极拒绝，无法连接。
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:27:27 --> Error connecting to the database: mysqli_sql_exception: 由于目标计算机积极拒绝，无法连接。 in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: 由于目标计算机积极拒绝，无法连接。 in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:27:27 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: 由于目标计算机积极拒绝，无法连接。
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:28:23 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:28:23 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:28:24 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:28:24 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:28:25 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:28:25 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:28:25 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:28:25 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:28:26 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:28:26 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:28:26 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:28:26 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:28:26 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:28:26 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:30:08 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:30:08 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:30:08 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:30:08 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:30:09 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:30:09 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:30:09 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:30:09 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:30:48 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:30:48 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:34:49 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:34:49 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-03-27 10:34:50 --> Error connecting to the database: mysqli_sql_exception: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'codeigniter_blo...', 3306, '', 0)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Unknown database 'codeigniter_blog' in D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`....', Array, false)
+#3 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+#5 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+#6 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\app\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+#7 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(951): App\Controllers\Home->index()
+#8 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\phpstudy_pro\WWW\projects_nodejs\codeigniter-blog\public\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-03-27 10:34:50 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Unknown database 'codeigniter_blog'
+[Method: GET, Route: /]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(654): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `posts`.*, `users`.`username`, `users`.`name` as `author_name`, `categories`.`name` as `category_name`, `categories`.`slug` as `category_slug`, `categories`.`icon` as `category_icon`
+FROM `posts`
+LEFT JOIN `users` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `categories` ON `categories`.`id` = `posts`.`category_id`
+WHERE `posts`.`status` = :posts.status:
+AND `posts`.`visibility` = :posts.visibility:
+ORDER BY `posts`.`published_at` DESC
+ LIMIT 10', [...], false)
+ 3 SYSTEMPATH\Model.php(254): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(675): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Models\PostModel.php(48): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Controllers\Home.php(50): App\Models\PostModel->getPublishedPosts(10, 0)
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(71): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
