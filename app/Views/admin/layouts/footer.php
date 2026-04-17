@@ -1,8 +1,51 @@
     </div>
 </div>
 
+<!-- jQuery -->
+<script src="<?= base_url('js/jquery.min.js') ?>"></script>
 <!-- Bootstrap JS -->
 <script src="<?= base_url('js/bootstrap/bootstrap.bundle.min.js') ?>"></script>
+<!-- Toastr JS -->
+<script src="<?= base_url('js/toastr/toastr.min.js') ?>"></script>
+
+<script>
+    // Toastr配置
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    // 显示Flash消息
+    <?php if (session()->getFlashdata('success')): ?>
+        toastr.success('<?= session()->getFlashdata('success') ?>');
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('error')): ?>
+        toastr.error('<?= session()->getFlashdata('error') ?>');
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('warning')): ?>
+        toastr.warning('<?= session()->getFlashdata('warning') ?>');
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('info')): ?>
+        toastr.info('<?= session()->getFlashdata('info') ?>');
+    <?php endif; ?>
+</script>
+
 <script>
     // 消息提示自动消失
     document.addEventListener('DOMContentLoaded', function () {
@@ -17,6 +60,7 @@
         });
     });
 </script>
+
 <script>
     // 处理DELETE请求
     document.querySelectorAll('[data-method="delete"]').forEach(function (button) {
