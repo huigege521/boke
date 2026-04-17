@@ -37,14 +37,14 @@ class Database extends Config
         'database'     => 'codeigniter_blog',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
-        'pConnect'     => false,
+        'pConnect'     => true, // 启用持久连接，减少连接开销
         'DBDebug'      => (ENVIRONMENT !== 'production'),
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_unicode_ci',
         'swapPre'      => '',
         'encrypt'      => false,
         'compress'     => false,
-        'strictOn'     => false,
+        'strictOn'     => true, // 启用严格模式，提高数据安全性
         'failover'     => [],
         'port'         => 3306,
         'numberNative' => false,

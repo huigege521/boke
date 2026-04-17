@@ -39,7 +39,7 @@ class Filters extends BaseConfig
         'before' => [
             'security',
             'honeypot',
-            'csrf' => ['except' => 'admin/posts/upload'],
+            'csrf' => ['except' => ['admin/posts/upload', 'admin/media/upload', 'admin/media/upload-multiple']],
             'invalidchars',
         ],
         'after' => [

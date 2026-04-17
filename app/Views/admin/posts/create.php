@@ -87,7 +87,7 @@ $scripts = '';
         创建新文章
     </div>
     <div class="card-body">
-        <form action="/admin/posts" method="post" enctype="multipart/form-data">
+        <form action="/admin/posts/store" method="post" enctype="multipart/form-data">
             <?= csrf_field() ?>
 
             <div class="form-group">

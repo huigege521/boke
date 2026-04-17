@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Models\PostModel;
 use App\Models\CategoryModel;
 use App\Models\TagModel;
+use App\Models\PostRevisionModel;
 use CodeIgniter\Controller;
 
 /**
@@ -13,6 +14,11 @@ use CodeIgniter\Controller;
  */
 class PostController extends Controller
 {
+    /**
+     * 修订历史模型
+     */
+    protected $revisionModel;
+
     /**
      * 构造函数
      * 检查登录状态和权限
@@ -30,6 +36,9 @@ class PostController extends Controller
             header('Location: /?error=权限不足');
             exit();
         }
+
+        // 初始化修订历史模型
+        $this->revisionModel = new PostRevisionModel();
     }
 
     /**
@@ -48,50 +57,111 @@ class PostController extends Controller
             $action = $this->request->getVar('action');
             $selectedIds = $this->request->getVar('selected_ids');
 
-            if (!empty($selectedIds) && !empty($action)) {
-                if (is_string($selectedIds)) {
-                    $selectedIds = [$selectedIds];
-                }
-
-                switch ($action) {
-                    case 'publish':
-                        if ($postModel->batchUpdateStatus($selectedIds, 'published')) {
-                            session()->setFlashdata('success', '批量发布成功');
-                        } else {
-                            session()->setFlashdata('error', '批量发布失败');
-                        }
-                        break;
-                    case 'draft':
-                        if ($postModel->batchUpdateStatus($selectedIds, 'draft')) {
-                            session()->setFlashdata('success', '批量设为草稿成功');
-                        } else {
-                            session()->setFlashdata('error', '批量设为草稿失败');
-                        }
-                        break;
-                    case 'pending':
-                        if ($postModel->batchUpdateStatus($selectedIds, 'pending')) {
-                            session()->setFlashdata('success', '批量设为待审核成功');
-                        } else {
-                            session()->setFlashdata('error', '批量设为待审核失败');
-                        }
-                        break;
-                    case 'scheduled':
-                        if ($postModel->batchUpdateStatus($selectedIds, 'scheduled')) {
-                            session()->setFlashdata('success', '批量设为定时发布成功');
-                        } else {
-                            session()->setFlashdata('error', '批量设为定时发布失败');
-                        }
-                        break;
-                    case 'delete':
-                        if ($postModel->batchDelete($selectedIds)) {
-                            session()->setFlashdata('success', '批量删除成功');
-                        } else {
-                            session()->setFlashdata('error', '批量删除失败');
-                        }
-                        break;
-                }
+            // 验证是否有选中的文章和操作类型
+            if (empty($selectedIds)) {
+                session()->setFlashdata('error', '请至少选择一篇文章');
                 return redirect()->to('/admin/posts' . $this->getQueryString());
             }
+
+            if (empty($action)) {
+                session()->setFlashdata('error', '请选择要执行的操作');
+                return redirect()->to('/admin/posts' . $this->getQueryString());
+            }
+
+            // 确保selectedIds是数组格式
+            if (is_string($selectedIds)) {
+                $selectedIds = [$selectedIds];
+            }
+
+            // 验证ID格式
+            $selectedIds = array_filter($selectedIds, function($id) {
+                return is_numeric($id) && $id > 0;
+            });
+
+            if (empty($selectedIds)) {
+                session()->setFlashdata('error', '无效的文章ID');
+                return redirect()->to('/admin/posts' . $this->getQueryString());
+            }
+
+            $successCount = 0;
+            $failCount = 0;
+            $affectedIds = [];
+
+            switch ($action) {
+                case 'publish':
+                    $result = $postModel->whereIn('id', $selectedIds)->update(['status' => 'published']);
+                    if ($result !== false) {
+                        $successCount = count($selectedIds);
+                        session()->setFlashdata('success', "成功发布 {$successCount} 篇文章");
+                    } else {
+                        session()->setFlashdata('error', '批量发布失败');
+                    }
+                    break;
+                case 'draft':
+                    $result = $postModel->whereIn('id', $selectedIds)->update(['status' => 'draft']);
+                    if ($result !== false) {
+                        $successCount = count($selectedIds);
+                        session()->setFlashdata('success', "成功将 {$successCount} 篇文章设为草稿");
+                    } else {
+                        session()->setFlashdata('error', '批量设为草稿失败');
+                    }
+                    break;
+                case 'pending':
+                    $result = $postModel->whereIn('id', $selectedIds)->update(['status' => 'pending']);
+                    if ($result !== false) {
+                        $successCount = count($selectedIds);
+                        session()->setFlashdata('success', "成功将 {$successCount} 篇文章设为待审核");
+                    } else {
+                        session()->setFlashdata('error', '批量设为待审核失败');
+                    }
+                    break;
+                case 'scheduled':
+                    $result = $postModel->whereIn('id', $selectedIds)->update(['status' => 'scheduled']);
+                    if ($result !== false) {
+                        $successCount = count($selectedIds);
+                        session()->setFlashdata('success', "成功将 {$successCount} 篇文章设为定时发布");
+                    } else {
+                        session()->setFlashdata('error', '批量设为定时发布失败');
+                    }
+                    break;
+                case 'delete':
+                    // 删除前获取文章信息，用于更新分类和标签计数
+                    $postsToDelete = $postModel->whereIn('id', $selectedIds)->findAll();
+                    $result = $postModel->whereIn('id', $selectedIds)->delete();
+                    
+                    if ($result !== false) {
+                        $successCount = count($selectedIds);
+                        
+                        // 更新已发布文章的分类和标签计数
+                        foreach ($postsToDelete as $post) {
+                            if ($post['status'] == 'published') {
+                                // 更新分类文章数
+                                if ($post['category_id']) {
+                                    $this->updateCategoryPostsCount($post['category_id'], -1);
+                                }
+                                
+                                // 更新标签文章数
+                                $postTags = $this->getPostTags($post['id']);
+                                foreach ($postTags as $tagId) {
+                                    $this->updateTagPostsCount($tagId, -1);
+                                }
+                            }
+                            
+                            // 删除文章标签关联
+                            $this->deletePostTags($post['id']);
+                        }
+                        
+                        session()->setFlashdata('success', "成功删除 {$successCount} 篇文章");
+                    } else {
+                        session()->setFlashdata('error', '批量删除失败');
+                    }
+                    break;
+                default:
+                    session()->setFlashdata('error', '未知的操作类型');
+                    return redirect()->to('/admin/posts' . $this->getQueryString());
+            }
+
+            return redirect()->to('/admin/posts' . $this->getQueryString());
         }
 
         // 获取筛选和排序参数
@@ -259,13 +329,14 @@ class PostController extends Controller
             'slug' => $slug, // slug
             'content' => $this->request->getVar('content'), // 内容
             'excerpt' => $this->request->getVar('excerpt') ?: $this->generateExcerpt($this->request->getVar('content')), // 摘要，为空则自动生成
-            'featured_image' => $featuredImageName, // 特色图片
-            'user_id' => session()->get('user_id'), // 作者ID
             'category_id' => $this->request->getVar('category_id'), // 分类ID
+            'user_id' => session()->get('user_id') ?: 1, // 当前登录用户ID，如果没有则默认为1
             'status' => $this->request->getVar('status'), // 状态
             'visibility' => $this->request->getVar('visibility'), // 可见性
-            'published_at' => $this->request->getVar('status') == 'published' ? date('Y-m-d H:i:s') : null, // 发布时间
-            'scheduled_at' => $this->request->getVar('status') == 'scheduled' ? $this->request->getVar('scheduled_at') : null, // 定时发布时间
+            // SEO元数据
+            'meta_title' => $this->request->getVar('meta_title') ?: null,
+            'meta_description' => $this->request->getVar('meta_description') ?: null,
+            'meta_keywords' => $this->request->getVar('meta_keywords') ?: null,
         ];
 
         // 创建文章
@@ -404,6 +475,10 @@ class PostController extends Controller
             'category_id' => $this->request->getVar('category_id'), // 分类ID
             'status' => $this->request->getVar('status'), // 状态
             'visibility' => $this->request->getVar('visibility'), // 可见性
+            // SEO元数据
+            'meta_title' => $this->request->getVar('meta_title') ?: null,
+            'meta_description' => $this->request->getVar('meta_description') ?: null,
+            'meta_keywords' => $this->request->getVar('meta_keywords') ?: null,
         ];
 
         // 只有当上传了新文件或从媒体库选择了图片时才更新featured_image
@@ -429,6 +504,44 @@ class PostController extends Controller
         if (!$postModel->update($id, $postData)) {
             session()->setFlashdata('error', '更新文章失败');
             return redirect()->back()->withInput();
+        }
+
+        // 创建修订历史记录
+        try {
+            $changeSummary = $this->request->getVar('change_summary') ?? '';
+            if (empty($changeSummary)) {
+                // 自动生成修改说明
+                $changes = [];
+                if ($existingPost['title'] != $postData['title']) {
+                    $changes[] = '修改标题';
+                }
+                if ($existingPost['content'] != $postData['content']) {
+                    $changes[] = '修改内容';
+                }
+                if ($existingPost['category_id'] != $postData['category_id']) {
+                    $changes[] = '修改分类';
+                }
+                if ($existingPost['status'] != $postData['status']) {
+                    $changes[] = "状态从 {$existingPost['status']} 改为 {$postData['status']}";
+                }
+                $changeSummary = implode('、', $changes) ?: '常规更新';
+            }
+
+            // 尝试创建修订记录（如果表不存在则跳过）
+            $revisionModel = new \App\Models\PostRevisionModel();
+            $revisionModel->createRevision(
+                $id,
+                array_merge($postData, ['featured_image' => $featuredImageName ?? $existingPost['featured_image']]),
+                $changeSummary,
+                session()->get('user_id')
+            );
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            // 如果修订表不存在，记录日志但不中断更新流程
+            log_message('warning', '文章修订历史表不存在，跳过修订记录创建: ' . $e->getMessage());
+            session()->setFlashdata('warning', '文章已更新，但修订历史功能不可用（缺少数据库表）');
+        } catch (\Exception $e) {
+            // 其他异常也记录日志
+            log_message('error', '创建修订记录失败: ' . $e->getMessage());
         }
 
         // 获取新旧状态
@@ -849,23 +962,102 @@ class PostController extends Controller
         }
 
         // 自动保存内容
-        if ($postModel->autoSave($postId, $content)) {
-            // 生成新的CSRF令牌并添加到响应头
-            $newCsrfToken = csrf_hash();
+        $postModel->update($postId, [
+            'auto_saved_content' => $content,
+            'auto_saved_at' => date('Y-m-d H:i:s')
+        ]);
 
-            return $this->response
-                ->setHeader('X-CSRF-TOKEN', $newCsrfToken)
-                ->setJSON([
-                    'success' => true,
-                    'message' => '自动保存成功',
-                    'auto_saved_at' => date('Y-m-d H:i:s')
-                ]);
-        } else {
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => '自动保存成功',
+            'saved_at' => date('Y-m-d H:i:s')
+        ]);
+    }
+
+    /**
+     * 查看文章修订历史
+     *
+     * @param int $id 文章ID
+     * @return string 视图字符串
+     */
+    public function revisions($id)
+    {
+        $postModel = new PostModel();
+
+        // 获取文章数据
+        $post = $postModel->find($id);
+        if (!$post) {
+            session()->setFlashdata('error', '文章不存在');
+            return redirect()->to('/admin/posts');
+        }
+
+        // 获取修订历史
+        $revisions = $this->revisionModel->getRevisions($id, 50);
+
+        $data = [
+            'title' => '修订历史 - ' . $post['title'],
+            'post' => $post,
+            'revisions' => $revisions
+        ];
+
+        return view('admin/posts/revisions', $data);
+    }
+
+    /**
+     * 查看指定版本的详情
+     *
+     * @param int $postId 文章ID
+     * @param int $version 版本号
+     * @return string JSON响应
+     */
+    public function revisionDetail($postId, $version)
+    {
+        $revision = $this->revisionModel->getRevisionByVersion($postId, $version);
+
+        if (!$revision) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => '自动保存失败'
+                'message' => '版本不存在'
             ]);
         }
+
+        return $this->response->setJSON([
+            'success' => true,
+            'data' => $revision
+        ]);
+    }
+
+    /**
+     * 恢复到指定版本
+     *
+     * @param int $id 文章ID
+     * @return \CodeIgniter\HTTP\RedirectResponse 重定向响应
+     */
+    public function restoreRevision($id)
+    {
+        $version = $this->request->getVar('version');
+
+        if (!$version) {
+            session()->setFlashdata('error', '请指定要恢复的版本号');
+            return redirect()->back();
+        }
+
+        $postModel = new PostModel();
+        $post = $postModel->find($id);
+
+        if (!$post) {
+            session()->setFlashdata('error', '文章不存在');
+            return redirect()->to('/admin/posts');
+        }
+
+        // 执行恢复操作
+        if ($this->revisionModel->restoreToVersion($id, $version, session()->get('user_id'))) {
+            session()->setFlashdata('success', "已成功恢复到版本 #{$version}");
+        } else {
+            session()->setFlashdata('error', '恢复失败，版本不存在');
+        }
+
+        return redirect()->to("/admin/posts/edit/{$id}");
     }
 
     /**

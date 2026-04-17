@@ -51,7 +51,7 @@ $scripts = '';
         添加新友情链接
     </div>
     <div class="card-body">
-        <form action="/admin/links/store" method="post">
+        <form action="/admin/links" method="post">
             <?= csrf_field() ?>
 
             <div class="form-group">

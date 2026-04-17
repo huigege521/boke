@@ -17,13 +17,6 @@ $pageTitle = '友情链接管理';
     </div>
 </div>
 
-<?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success alert-dismissible fade show mb-4">
-        <?= session()->getFlashdata('success') ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
-    </div>
-<?php endif; ?>
-
 <!-- 友情链接列表 -->
 <div class="card shadow">
     <div class="card-header bg-white">
@@ -61,8 +54,12 @@ $pageTitle = '友情链接管理';
                             </td>
                             <td>
                                 <a href="/admin/links/edit/<?= $link['id'] ?>" class="btn btn-sm btn-primary">编辑</a>
-                                <a href="/admin/links/delete/<?= $link['id'] ?>" class="btn btn-sm btn-danger ml-2"
-                                    onclick="return confirm('确定要删除吗？');">删除</a>
+                                <form action="/admin/links/delete/<?= $link['id'] ?>" method="post" class="d-inline">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('确定要删除这个友情链接吗？');">删除</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

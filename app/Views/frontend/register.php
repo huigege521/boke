@@ -105,16 +105,6 @@
     <!-- Bootstrap JS -->
     <script src="<?= base_url('js/bootstrap/bootstrap.bundle.min.js') ?>"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-                document.querySelectorAll('.alert').forEach(function (alert) {
-                    var bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
-                });
-            }, 3000);
-        });
-    </script>
 </body>
 
 </html>

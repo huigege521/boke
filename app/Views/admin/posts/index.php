@@ -116,6 +116,7 @@ $styles = '<style>
         <div class="col-md-4">
             <form action="/admin/posts" method="post" class="batch-actions d-flex align-items-center">
                 <?= csrf_field() ?>
+                <input type="hidden" name="_method" value="POST">
                 <div class="form-group mr-2 mb-0">
                     <select name="action" class="form-control"
                         style="height: 40px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); border-radius: 6px; min-width: 150px;">
@@ -123,6 +124,7 @@ $styles = '<style>
                         <option value="publish">批量发布</option>
                         <option value="draft">设为草稿</option>
                         <option value="pending">设为待审核</option>
+                        <option value="scheduled">设为定时发布</option>
                         <option value="delete">批量删除</option>
                     </select>
                 </div>

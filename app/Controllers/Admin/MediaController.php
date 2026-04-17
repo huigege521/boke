@@ -304,26 +304,49 @@ class MediaController extends BaseController
 
         $deleted = 0;
         $errors = [];
+        $failedIds = [];
 
         foreach ($ids as $id) {
-            $media = $this->mediaModel->getMediaById($id);
-            if (!$media) {
-                $errors[] = "ID {$id}: 文件不存在";
+            // 验证ID是否为数字
+            if (!is_numeric($id)) {
+                $errors[] = "ID {$id}: 无效的文件ID";
+                $failedIds[] = $id;
                 continue;
             }
 
-            if ($this->mediaModel->deleteMedia($id)) {
+            $media = $this->mediaModel->getMediaById((int)$id);
+            if (!$media) {
+                $errors[] = "ID {$id}: 文件不存在";
+                $failedIds[] = $id;
+                continue;
+            }
+
+            if ($this->mediaModel->deleteMedia((int)$id)) {
                 $deleted++;
             } else {
                 $errors[] = "ID {$id}: 删除失败";
+                $failedIds[] = $id;
             }
         }
 
+        // 生成消息
+        if ($deleted > 0 && count($errors) === 0) {
+            $message = "成功删除 {$deleted} 个文件";
+        } elseif ($deleted > 0 && count($errors) > 0) {
+            $message = "成功删除 {$deleted} 个文件，" . count($errors) . " 个失败";
+        } else {
+            $message = "删除失败：" . implode(', ', array_slice($errors, 0, 3));
+        }
+
         return $this->jsonResponse([
-            'success' => true,
-            'message' => "成功删除 {$deleted} 个文件",
+            'success' => $deleted > 0,
+            'message' => $message,
             'deleted_count' => $deleted,
-            'errors' => $errors
+            'failed_count' => count($errors),
+            'errors' => $errors,
+            'failed_ids' => $failedIds,
+            'csrf_token' => csrf_token(),
+            'csrf_name' => csrf_header()
         ]);
     }
 

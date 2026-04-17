@@ -24,7 +24,7 @@ class TagModel extends Model
     protected $updatedField = 'updated_at';
 
     // 获取所有标签
-    public function getAllTags($limit = 10, $offset = 0)
+    public function getAllTags($limit = 100, $offset = 0)
     {
         return $this->orderBy('posts_count', 'desc')
             ->orderBy('created_at', 'desc')

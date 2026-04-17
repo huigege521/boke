@@ -98,7 +98,7 @@ class UserController extends Controller
 
         // 验证表单数据
         $rules = [
-            'name' => 'required|min_length[2]|max_length[50]', // 姓名必填，长度2-50
+            //'name' => 'required|min_length[2]|max_length[50]', // 姓名必填，长度2-50
             'username' => 'required|min_length[3]|max_length[30]|is_unique[users.username]', // 用户名必填，长度3-30，且唯一
             'email' => 'required|valid_email|is_unique[users.email]', // 邮箱必填，格式正确，且唯一
             'password' => 'required|min_length[6]', // 密码必填，长度至少6位
@@ -107,13 +107,15 @@ class UserController extends Controller
         ];
 
         if (!$this->validate($rules)) {
-            session()->setFlashdata('error', '表单验证失败');
+            $errors = $this->validator->getErrors();
+            $errorMessage = '验证失败：' . implode('；', $errors);
+            session()->setFlashdata('error', $errorMessage);
             return redirect()->back()->withInput();
         }
 
         // 准备用户数据
         $userData = [
-            'name' => $this->request->getVar('name'), // 姓名
+            //'name' => $this->request->getVar('name'), // 姓名
             'username' => $this->request->getVar('username'), // 用户名
             'email' => $this->request->getVar('email'), // 邮箱
             'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT), // 密码哈希
@@ -179,7 +181,7 @@ class UserController extends Controller
 
         // 验证表单数据
         $rules = [
-            'name' => 'required|min_length[2]|max_length[50]', // 姓名必填，长度2-50
+            //'name' => 'required|min_length[2]|max_length[50]', // 姓名必填，长度2-50
             'username' => 'required|min_length[3]|max_length[30]|is_unique[users.username,id,' . $id . ']', // 用户名必填，长度3-30，且唯一（排除当前用户）
             'email' => 'required|valid_email|is_unique[users.email,id,' . $id . ']', // 邮箱必填，格式正确，且唯一（排除当前用户）
             'role' => 'required|in_list[admin,editor,user]', // 角色必填，只能是admin、editor或user
@@ -192,13 +194,15 @@ class UserController extends Controller
         }
 
         if (!$this->validate($rules)) {
-            session()->setFlashdata('error', '表单验证失败');
+            $errors = $this->validator->getErrors();
+            $errorMessage = '验证失败：' . implode('；', $errors);
+            session()->setFlashdata('error', $errorMessage);
             return redirect()->back()->withInput();
         }
 
         // 准备用户数据
         $userData = [
-            'name' => $this->request->getVar('name'), // 姓名
+            //'name' => $this->request->getVar('name'), // 姓名
             'username' => $this->request->getVar('username'), // 用户名
             'email' => $this->request->getVar('email'), // 邮箱
             'role' => $this->request->getVar('role'), // 角色

@@ -20,8 +20,9 @@
                             <p class="card-text text-muted">
                                 <small>
                                     <i class="fas fa-calendar mr-1"></i> 发布于: <?= $post['created_at'] ?> |
-                                    <i class="fas fa-folder mr-1"></i> 分类: <a href="/category/<?= $post['category_slug'] ?>"
-                                        class="hover-primary"><?= $post['category_name'] ?></a>
+                                    <i class="fas fa-folder mr-1"></i> 分类: <a
+                                        href="/category/<?= $post['category_slug'] ?? '' ?>"
+                                        class="hover-primary"><?= $post['category_name'] ?? '未分类' ?></a>
 
                                 </small>
                             </p>

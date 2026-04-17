@@ -28,26 +28,26 @@
                 <div class="card mb-5">
                     <?php if ($post['featured_image']): ?>
                         <?php
-                            $fileExtension = strtolower(pathinfo($post['featured_image'], PATHINFO_EXTENSION));
-                            $filePath = '/uploads/' . $post['featured_image'];
-                            if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
-                                // 显示图片
-                                echo '<img src="' . base_url('uploads/' . $post['featured_image']) . '" data-src="' . base_url('uploads/' . $post['featured_image']) . '" class="card-img-top lazyload" alt="' . $post['title'] . '" loading="lazy">';
-                            } else if ($fileExtension == 'pdf') {
-                                // 显示 PDF 链接
-                                echo '<div class="card-img-top p-4 bg-light text-center">
+                        $fileExtension = strtolower(pathinfo($post['featured_image'], PATHINFO_EXTENSION));
+                        $filePath = '/uploads/' . $post['featured_image'];
+                        if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                            // 显示图片
+                            echo '<img src="' . base_url('uploads/' . $post['featured_image']) . '" data-src="' . base_url('uploads/' . $post['featured_image']) . '" class="card-img-top lazyload" alt="' . $post['title'] . '" loading="lazy">';
+                        } else if ($fileExtension == 'pdf') {
+                            // 显示 PDF 链接
+                            echo '<div class="card-img-top p-4 bg-light text-center">
                                     <i class="fas fa-file-pdf text-danger fa-4x mb-2"></i>
                                     <p class="mb-2">PDF 文件</p>
                                     <a href="' . $filePath . '" target="_blank" class="btn btn-primary btn-sm">查看 PDF</a>
                                 </div>';
-                            } else {
-                                // 显示其他文件链接
-                                echo '<div class="card-img-top p-4 bg-light text-center">
+                        } else {
+                            // 显示其他文件链接
+                            echo '<div class="card-img-top p-4 bg-light text-center">
                                     <i class="fas fa-file-alt text-secondary fa-4x mb-2"></i>
                                     <p class="mb-2">附件文件</p>
                                     <a href="' . $filePath . '" target="_blank" class="btn btn-secondary btn-sm">下载文件</a>
                                 </div>';
-                            }
+                        }
                         ?>
                     <?php endif; ?>
                     <div class="card-body">
@@ -122,15 +122,6 @@
     });
 </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(function () {
-            document.querySelectorAll('.alert').forEach(function (alert) {
-                var bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 3000);
-    });
-</script>
+
 
 <?= $this->include('frontend/layouts/footer') ?>

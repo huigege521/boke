@@ -17,7 +17,6 @@
     <!-- Toastr -->
     <link rel="stylesheet" href="<?= base_url('css/toastr/toastr.min.css') ?>">
     <script src="<?= base_url('js/toastr/toastr.min.js') ?>"></script>
-    <!-- Font Awesome -->
     <style>
         body {
             background-color: #f8f9fa;

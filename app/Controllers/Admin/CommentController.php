@@ -258,7 +258,9 @@ class CommentController extends Controller
         ];
 
         if (!$this->validate($rules)) {
-            session()->setFlashdata('error', '表单验证失败');
+            $errors = $this->validator->getErrors();
+            $errorMessage = '验证失败：' . implode('；', $errors);
+            session()->setFlashdata('error', $errorMessage);
             return redirect()->back()->withInput();
         }
 

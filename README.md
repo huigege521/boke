@@ -612,14 +612,231 @@ chmod +x publish_scheduled.sh
 - 查询构建器减少SQL注入风险
 - JOIN查询减少数据库交互次数
 
+#### 1. ✅ Redis缓存支持
+
+**配置方法**:
+
+编辑 `.env` 文件：
+```ini
+# 切换缓存驱动
+cache.store = "redis"  # file | redis
+
+# Redis配置
+cache.redis.host = "127.0.0.1"
+cache.redis.password = "your_redis_password"
+cache.redis.port = 6379
+cache.redis.database = 0
+cache.redis.prefix = "blog_"
+```
+
+**优势**:
+- 🚀 比File Cache快10-50倍
+- 💾 支持持久化存储
+- 🔗 支持分布式部署
+- ⚙️ 自动过期清理
+
+**安装Redis**:
+```bash
+# Ubuntu/Debian
+sudo apt-get install redis-server
+
+# CentOS/RHEL
+sudo yum install redis
+
+# macOS
+brew install redis
+
+# 启动Redis
+sudo systemctl start redis
+sudo systemctl enable redis
+```
+
+#### 2. ✅ 数据库持久连接
+
+**配置位置**: `app/Config/Database.php`
+
+```php
+public $default = [
+    'pConnect' => true,  // 启用持久连接
+    'strictOn' => true,  // 启用严格模式
+    // ... 其他配置
+];
+```
+
+**优势**:
+- 🔗 减少连接建立开销（30-50%性能提升）
+- ⚡ 提高并发处理能力
+- 🛡️ 严格模式防止数据异常
+
+**注意事项**:
+- 确保MySQL配置的 `max_connections` 足够
+- 监控连接数避免资源耗尽
+- 生产环境建议配合连接池使用
+
+#### 3. ✅ 图片自动压缩
+
+**功能特性**:
+- 🖼️ 自动压缩上传的图片（JPG/PNG/GIF/WebP）
+- 📐 可配置最大宽度和高度
+- 🎯 可调节压缩质量（1-100）
+- 📌 自动生成缩略图
+- 📊 记录压缩前后大小和压缩率
+
+**配置位置**: `app/Models/MediaModel.php`
+
+```php
+protected $imageCompressConfig = [
+    'quality' => 80,           // 压缩质量 (1-100)
+    'max_width' => 1920,       // 最大宽度
+    'max_height' => 1080,      // 最大高度
+    'maintain_ratio' => true,  // 保持宽高比
+    'create_thumb' => true,    // 创建缩略图
+    'thumb_width' => 300,      // 缩略图宽度
+    'thumb_height' => 300,     // 缩略图高度
+];
+```
+
+**使用示例**:
+```php
+use App\Libraries\ImageHelper;
+
+// 手动压缩图片
+$result = ImageHelper::compress('/path/to/image.jpg', [
+    'quality' => 75,
+    'max_width' => 1280,
+    'max_height' => 720,
+]);
+
+if ($result['success']) {
+    echo "压缩成功: {$result['compression_ratio']}%";
+    echo "原始大小: " . formatBytes($result['original_size']);
+    echo "压缩后: " . formatBytes($result['size']);
+}
+
+// 创建缩略图
+$thumbResult = ImageHelper::createThumbnail(
+    '/path/to/image.jpg',
+    '/path/to/thumb.jpg',
+    ['thumb_width' => 150, 'thumb_height' => 150]
+);
+```
+
+**效果**:
+- 📉 通常可减少50-80%的文件大小
+- ⚡ 显著提升页面加载速度
+- 💰 节省存储空间和带宽
+
+#### 4. ✅ CDN加速静态资源
+
+**配置方法**:
+
+编辑 `.env` 文件：
+```ini
+# 设置CDN地址
+app.cdnUrl = "https://cdn.yourdomain.com"
+
+# 资源版本号（用于缓存清除）
+app.assetVersion = "20240101"
+```
+
+**使用辅助函数**:
+
+在视图中使用CDN函数：
+
+```php
+<!-- CSS资源 -->
+<?= cdn_css('css/app.css') ?>
+<?= cdn_css(['css/bootstrap.min.css', 'css/style.css']) ?>
+
+<!-- JS资源 -->
+<?= cdn_js('js/app.js', true) ?> <!-- defer加载 -->
+<?= cdn_js(['js/jquery.min.js', 'js/bootstrap.bundle.min.js']) ?>
+
+<!-- 图片资源 -->
+<?= cdn_image('uploads/featured.jpg', [
+    'alt' => '特色图片',
+    'class' => 'img-fluid'
+]) ?>
+
+<!-- 通用资源 -->
+<link rel="stylesheet" href="<?= cdn_asset('css/custom.css') ?>">
+<script src="<?= cdn_asset('js/custom.js') ?>"></script>
+```
+
+**支持的CDN服务**:
+- ☁️ Cloudflare
+- 🌐 AWS CloudFront
+- 🚀 阿里云CDN
+- 🔥 腾讯云CDN
+- 📦 七牛云
+- 或自建CDN服务器
+
+**优势**:
+- 🌍 全球节点分发，降低延迟
+- 📈 减轻源站压力
+- 💨 浏览器并行下载
+- 🔄 自动缓存更新（通过版本号）
+
+**开发环境**:
+- 不配置 `app.cdnUrl` 时自动使用本地资源
+- 无需修改代码即可切换环境
+
 ### 进一步优化建议
 
-1. **引入Redis缓存**: 替换File Cache提升性能
-2. **CDN加速**: 静态资源使用CDN
-3. **图片压缩**: 上传时自动压缩图片
-4. **Gzip压缩**: Nginx启用Gzip
-5. **数据库连接池**: 配置持久连接
-6. **OPcache**: 启用PHP OPcache
+#### 短期优化（1-2周）
+
+1. **启用OPcache**
+   ```ini
+   ; php.ini
+   opcache.enable=1
+   opcache.memory_consumption=256
+   opcache.max_accelerated_files=10000
+   opcache.revalidate_freq=60
+   ```
+
+2. **Gzip压缩**
+   ```nginx
+   # nginx.conf
+   gzip on;
+   gzip_types text/css application/javascript image/svg+xml;
+   gzip_min_length 1000;
+   ```
+
+3. **浏览器缓存**
+   ```nginx
+   location ~* \.(css|js|jpg|jpeg|png|gif|ico|svg)$ {
+       expires 30d;
+       add_header Cache-Control "public, immutable";
+   }
+   ```
+
+#### 中期优化（1-2月）
+
+1. **数据库读写分离**
+   - 配置主从复制
+   - 写操作走主库，读操作走从库
+
+2. **队列系统**
+   - 使用Redis队列处理耗时任务
+   - 邮件发送、图片处理异步化
+
+3. **全文搜索**
+   - 集成Elasticsearch
+   - 替代LIKE查询，提升搜索性能
+
+#### 长期规划（3-6月）
+
+1. **微服务架构**
+   - API独立部署
+   - 服务间通过消息队列通信
+
+2. **容器化部署**
+   - Docker + Kubernetes
+   - 自动扩缩容
+
+3. **监控系统**
+   - Prometheus + Grafana
+   - 实时性能监控和告警
 
 ---
 

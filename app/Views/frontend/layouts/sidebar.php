@@ -6,7 +6,7 @@
             <h5 class="card-title"><i class="fas fa-folder mr-2"></i>文章分类</h5>
         </div>
         <ul class="list-group list-group-flush">
-            <?php foreach ($categories as $category): ?>
+            <?php foreach ($categories ?? [] as $category): ?>
                 <li class="list-group-item">
                     <a href="<?= base_url('category/' . $category['slug']) ?>" class="hover-primary">
                         <i class="fas fa-folder-open mr-2"></i><?= $category['name'] ?>
@@ -23,7 +23,7 @@
             <h5 class="card-title"><i class="fas fa-tags mr-2"></i>标签云</h5>
         </div>
         <div class="card-body">
-            <?php foreach ($tags as $tag): ?>
+            <?php foreach ($tags ?? [] as $tag): ?>
                 <a href="<?= base_url('tag/' . $tag['slug']) ?>" class="badge mb-1 hover-primary">
                     <i class="fas fa-tag mr-1"></i><?= $tag['name'] ?>
                 </a>

@@ -4,11 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? '博客系统' ?></title>
+    
+    <!-- SEO Meta Tags -->
+    <?php if (isset($post)): ?>
+        <!-- 文章页面SEO -->
+        <title><?= esc($post['meta_title'] ?? $post['title']) ?> - <?= esc(env('app.siteName', '博客系统')) ?></title>
+        <meta name="description" content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
+        <meta name="keywords" content="<?= esc($post['meta_keywords'] ?? '') ?>">
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="<?= current_url() ?>">
+        <meta property="og:title" content="<?= esc($post['meta_title'] ?? $post['title']) ?>">
+        <meta property="og:description" content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
+        <?php if (!empty($post['featured_image'])): ?>
+        <meta property="og:image" content="<?= base_url('uploads/' . $post['featured_image']) ?>">
+        <?php endif; ?>
+        <meta property="article:published_time" content="<?= $post['published_at'] ?? '' ?>">
+        <meta property="article:author" content="<?= esc($post['author_name'] ?? '') ?>">
+        
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="<?= esc($post['meta_title'] ?? $post['title']) ?>">
+        <meta name="twitter:description" content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
+        <?php if (!empty($post['featured_image'])): ?>
+        <meta name="twitter:image" content="<?= base_url('uploads/' . $post['featured_image']) ?>">
+        <?php endif; ?>
+    <?php else: ?>
+        <!-- 默认SEO -->
+        <title><?= esc($title ?? env('app.siteName', '博客系统')) ?></title>
+        <meta name="description" content="<?= esc($metaDescription ?? env('app.siteDescription', '欢迎来到我们的博客')) ?>">
+        <meta name="keywords" content="<?= esc($metaKeywords ?? env('app.siteKeywords', '博客,文章,技术')) ?>">
+    <?php endif; ?>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="<?= current_url() ?>">
+    
+    <!-- Robots -->
+    <meta name="robots" content="index, follow">
+    
+    <!-- Author -->
+    <?php if (isset($post)): ?>
+    <meta name="author" content="<?= esc($post['author_name'] ?? '') ?>">
+    <?php endif; ?>
+    
     <!-- Bootstrap CSS -->
-    <link href="<?= base_url('css/bootstrap/bootstrap.min.css') ?>" rel="stylesheet">
+    <link href="<?= cdn_asset('css/bootstrap/bootstrap.min.css') ?>" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="<?= base_url('css/all.min.css') ?>">
+    <link rel="stylesheet" href="<?= cdn_asset('css/all.min.css') ?>">
     <!-- Custom CSS -->
     <style>
         :root {

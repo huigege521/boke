@@ -7,7 +7,8 @@
         <div class="col-md-8">
             <h1 class="mb-4"><i
                     class="<?= !empty($category['icon']) ? $category['icon'] : 'fas fa-folder' ?> mr-2"></i>分类:
-                <?= $category['name'] ?></h1>
+                <?= $category['name'] ?>
+            </h1>
 
             <?php if (empty($posts)): ?>
                 <div class="alert alert-info">
@@ -24,8 +25,8 @@
                                     <i class="fas fa-calendar mr-1"></i> 发布于: <?= $post['created_at'] ?> |
                                     <i
                                         class="<?= !empty($post['category_icon']) ? $post['category_icon'] : 'fas fa-folder' ?> mr-1"></i>
-                                    分类: <a href="/category/<?= $post['category_slug'] ?>"
-                                        class="hover-primary"><?= $post['category_name'] ?></a>
+                                    分类: <a href="/category/<?= $post['category_slug'] ?? '' ?>"
+                                        class="hover-primary"><?= $post['category_name'] ?? '未分类' ?></a>
 
                                 </small>
                             </p>

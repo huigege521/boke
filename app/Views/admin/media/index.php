@@ -805,47 +805,99 @@ $scripts = '';
             });
         });
 
-        // 媒体选择
+        // 全选/反选复选框
+        let selectedIds = [];
+
         $(document).on('change', '.media-select', function () {
             const id = $(this).val();
             const card = $(this).closest('.media-card');
 
             if ($(this).is(':checked')) {
-                selectedMedia.push(id);
+                if (!selectedIds.includes(id)) {
+                    selectedIds.push(id);
+                }
                 card.addClass('selected');
             } else {
-                selectedMedia = selectedMedia.filter(m => m !== id);
+                selectedIds = selectedIds.filter(item => item !== id);
                 card.removeClass('selected');
             }
-
-            $('#batchDeleteBtn').prop('disabled', selectedMedia.length === 0);
+            updateBatchDeleteButton();
         });
+
+        // 更新批量删除按钮状态
+        function updateBatchDeleteButton() {
+            if (selectedIds.length > 0) {
+                $('#batchDeleteBtn').prop('disabled', false);
+                $('#batchDeleteBtn').html(`<i class="fas fa-trash mr-2"></i> 批量删除 (${selectedIds.length})`);
+            } else {
+                $('#batchDeleteBtn').prop('disabled', true);
+                $('#batchDeleteBtn').html('<i class="fas fa-trash mr-2"></i> 批量删除');
+            }
+        }
 
         // 批量删除
         $('#batchDeleteBtn').click(function () {
-            if (selectedMedia.length === 0) return;
+            if (selectedIds.length === 0) {
+                toastr.warning('请先选择要删除的文件');
+                return;
+            }
 
-            if (!confirm('确定要删除选中的 ' + selectedMedia.length + ' 个文件吗？')) return;
+            if (!confirm(`确定要删除选中的 ${selectedIds.length} 个文件吗？此操作不可恢复！`)) {
+                return;
+            }
+
+            // 禁用按钮防止重复点击
+            $('#batchDeleteBtn').prop('disabled', true);
+
+            // 动态获取 CSRF 名称，优先从 meta 标签获取，否则使用默认字段名
+            const csrfName = $('meta[name="csrf-token"]').attr('content') ? $('meta[name="csrf-name"]').attr('content') || 'csrf_token' : 'csrf_token';
+            const csrfValue = $('input[name="csrf_token"]').val();
 
             $.ajax({
                 url: '/admin/media/batch-delete',
                 type: 'POST',
-                data: { ids: selectedMedia, csrf_token: $('input[name="csrf_token"]').val() },
+                data: { 
+                    ids: selectedIds,
+                    [csrfName]: csrfValue
+                },
                 success: function (response) {
                     // 更新 CSRF 令牌
                     if (response.csrf_token && response.csrf_name) {
                         $('input[name="' + response.csrf_name + '"]').val(response.csrf_token);
+                        // 如果页面有 meta 标签存储 csrf，也更新它
+                        $('meta[name="csrf-token"]').attr('content', response.csrf_token);
+                        $('meta[name="csrf-name"]').attr('content', response.csrf_name);
                     }
                     
                     if (response.success) {
                         toastr.success(response.message);
-                        location.reload();
+                        selectedIds = [];
+                        $('.media-select').prop('checked', false);
+                        $('.media-card').removeClass('selected');
+                        updateBatchDeleteButton();
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
                     } else {
-                        toastr.error(response.message);
+                        toastr.error(response.message || '批量删除失败');
+                        $('#batchDeleteBtn').prop('disabled', false);
                     }
                 },
-                error: function () {
-                    toastr.error('删除失败');
+                error: function (xhr) {
+                    toastr.error('批量删除失败');
+                    $('#batchDeleteBtn').prop('disabled', false);
+                    
+                    // 尝试从错误响应中更新 CSRF 令牌
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.csrf_token && response.csrf_name) {
+                            $('input[name="' + response.csrf_name + '"]').val(response.csrf_token);
+                            $('meta[name="csrf-token"]').attr('content', response.csrf_token);
+                            $('meta[name="csrf-name"]').attr('content', response.csrf_name);
+                        }
+                    } catch (e) {
+                        // 忽略解析错误
+                    }
                 }
             });
         });

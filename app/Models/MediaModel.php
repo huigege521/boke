@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Libraries\ImageHelper;
 
 /**
  * 媒体模型
@@ -70,6 +71,19 @@ class MediaModel extends Model
 
     // 允许的所有类型
     protected $allowedMimeTypes = [];
+
+    /**
+     * 图片压缩配置
+     */
+    protected $imageCompressConfig = [
+        'quality' => 80,           // 压缩质量 (1-100)
+        'max_width' => 1920,       // 最大宽度
+        'max_height' => 1080,      // 最大高度
+        'maintain_ratio' => true,  // 保持宽高比
+        'create_thumb' => true,    // 创建缩略图
+        'thumb_width' => 300,      // 缩略图宽度
+        'thumb_height' => 300,     // 缩略图高度
+    ];
 
     public function __construct()
     {
@@ -232,16 +246,50 @@ class MediaModel extends Model
         $width = null;
         $height = null;
         $isImage = $this->isImage($file['type']);
+        $thumbnails = null;
 
         if ($isImage) {
-            $imageInfo = getimagesize($filePath);
-            if ($imageInfo) {
-                $width = $imageInfo[0];
-                $height = $imageInfo[1];
+            // 压缩图片
+            $compressResult = ImageHelper::compress($filePath, $this->imageCompressConfig);
+            
+            if ($compressResult['success']) {
+                log_message('info', '图片压缩成功: ' . $compressResult['message'] . 
+                    ', 原始大小: ' . $this->formatBytes($compressResult['original_size'] ?? $file['size']) . 
+                    ', 压缩后: ' . $this->formatBytes($compressResult['size']) . 
+                    ', 压缩率: ' . ($compressResult['compression_ratio'] ?? 0) . '%');
+                
+                $width = $compressResult['width'] ?? null;
+                $height = $compressResult['height'] ?? null;
+            } else {
+                log_message('warning', '图片压缩失败: ' . $compressResult['message']);
+                // 即使压缩失败，也获取原始图片尺寸
+                $imageInfo = getimagesize($filePath);
+                if ($imageInfo) {
+                    $width = $imageInfo[0];
+                    $height = $imageInfo[1];
+                }
             }
 
             // 生成缩略图
-            $thumbnails = $this->generateThumbnails($filePath, $filename, $uploadPath);
+            if ($this->imageCompressConfig['create_thumb']) {
+                $thumbResult = ImageHelper::createThumbnail(
+                    $filePath,
+                    '', // 自动生成缩略图路径
+                    $this->imageCompressConfig
+                );
+                
+                if ($thumbResult['success']) {
+                    $thumbnails = [
+                        [
+                            'size' => 'thumbnail',
+                            'path' => $thumbResult['path'],
+                            'url' => str_replace('/uploads/', '/uploads/', $thumbResult['path']),
+                            'width' => $thumbResult['width'] ?? $this->imageCompressConfig['thumb_width'],
+                            'height' => $thumbResult['height'] ?? $this->imageCompressConfig['thumb_height'],
+                        ]
+                    ];
+                }
+            }
         }
 
         // 生成正确的 file_url
@@ -587,5 +635,23 @@ class MediaModel extends Model
             ->where('deleted_at IS NULL')
             ->groupBy('file_type')
             ->findAll();
+    }
+
+    /**
+     * 格式化字节大小
+     *
+     * @param int $bytes 字节数
+     * @param int $precision 精度
+     * @return string 格式化后的大小
+     */
+    protected function formatBytes(int $bytes, int $precision = 2): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        
+        for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
+            $bytes /= 1024;
+        }
+        
+        return round($bytes, $precision) . ' ' . $units[$i];
     }
 }

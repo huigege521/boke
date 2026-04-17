@@ -29,19 +29,56 @@ class CommentModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 
-    // 根据文章ID获取评论
+    /**
+     * 根据文章ID获取评论（优化版：避免递归查询）
+     * 使用一次性查询获取所有评论，然后在PHP中构建树形结构
+     *
+     * @param int $postId 文章ID
+     * @param string $status 评论状态
+     * @return array 树形结构的评论数组
+     */
     public function getCommentsByPostId($postId, $status = 'approved')
     {
-        $query = $this->select('comments.*, users.username, users.name as user_name, users.avatar')
+        // 一次性获取所有评论，避免N+1查询问题
+        $comments = $this->select('comments.*, users.username, users.name as user_name, users.avatar')
             ->join('users', 'users.id = comments.user_id', 'left')
-            ->where('comments.post_id', $postId);
+            ->where('comments.post_id', $postId)
+            ->where('comments.status', $status)
+            ->orderBy('comments.created_at', 'asc')
+            ->findAll();
 
-        if ($status) {
-            $query->where('comments.status', $status);
+        // 在内存中构建树形结构
+        return $this->buildCommentTree($comments);
+    }
+
+    /**
+     * 构建评论树形结构
+     *
+     * @param array $comments 扁平的评论数组
+     * @return array 树形结构的评论数组
+     */
+    private function buildCommentTree(array $comments): array
+    {
+        // 按ID索引所有评论
+        $indexed = [];
+        foreach ($comments as $comment) {
+            $comment['children'] = []; // 初始化子评论数组
+            $indexed[$comment['id']] = $comment;
         }
 
-        return $query->orderBy('comments.created_at', 'asc')
-            ->findAll();
+        // 构建树形结构
+        $tree = [];
+        foreach ($indexed as $id => $comment) {
+            if ($comment['parent_id'] && isset($indexed[$comment['parent_id']])) {
+                // 添加到父评论的children中
+                $indexed[$comment['parent_id']]['children'][] = &$indexed[$id];
+            } else {
+                // 顶级评论
+                $tree[] = &$indexed[$id];
+            }
+        }
+
+        return $tree;
     }
 
     // 获取所有评论

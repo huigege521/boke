@@ -15,6 +15,16 @@
                 </div>
             <?php endif; ?>
 
+            <!-- 验证错误消息 -->
+            <?php if (session()->getFlashdata('errors')): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                        <div><?= $error ?></div>
+                    <?php endforeach; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
+                </div>
+            <?php endif; ?>
+
             <!-- 成功消息 -->
             <?php if (session()->getFlashdata('success')): ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,15 +39,18 @@
                         <?= csrf_field() ?>
                         <div class="form-group">
                             <label for="username">用户名</label>
-                            <input type="text" class="form-control" id="username" name="username" value="<?= $user['username'] ?? '' ?>" required>
+                            <input type="text" class="form-control" id="username" name="username"
+                                value="<?= $user['username'] ?? '' ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="email">邮箱</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<?= $user['email'] ?? '' ?>" required>
+                            <input type="email" class="form-control" id="email" name="email"
+                                value="<?= $user['email'] ?? '' ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="name">真实姓名</label>
-                            <input type="text" class="form-control" id="name" name="name" value="<?= $user['name'] ?? '' ?>" required>
+                            <input type="text" class="form-control" id="name" name="name"
+                                value="<?= $user['name'] ?? '' ?>" required>
                         </div>
                         <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save mr-2"></i>保存修改</button>
                     </form>
@@ -51,17 +64,21 @@
                         <?= csrf_field() ?>
                         <div class="form-group">
                             <label for="current_password">当前密码</label>
-                            <input type="password" class="form-control" id="current_password" name="current_password" required>
+                            <input type="password" class="form-control" id="current_password" name="current_password"
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="new_password">新密码</label>
-                            <input type="password" class="form-control" id="new_password" name="new_password" required minlength="6">
+                            <input type="password" class="form-control" id="new_password" name="new_password" required
+                                minlength="6">
                         </div>
                         <div class="form-group">
-                            <label for="confirm_new_password">确认新密码</label>
-                            <input type="password" class="form-control" id="confirm_new_password" name="confirm_new_password" required minlength="6">
+                            <label for="confirm_password">确认新密码</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                                required minlength="6">
                         </div>
-                        <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-exchange-alt mr-2"></i>修改密码</button>
+                        <button type="submit" class="btn btn-primary mt-2"><i
+                                class="fas fa-exchange-alt mr-2"></i>修改密码</button>
                     </form>
                 </div>
             </div>

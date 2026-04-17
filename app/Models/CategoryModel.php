@@ -27,7 +27,7 @@ class CategoryModel extends Model
     protected $updatedField = 'updated_at';
 
     // 获取所有分类（包含父分类名称）
-    public function getAllCategories($limit = 10, $offset = 0)
+    public function getAllCategories($limit = 100, $offset = 0)
     {
         return $this->select('categories.*, COALESCE(parent.name, \'\') as parent_name')
             ->join('categories as parent', 'parent.id = categories.parent_id', 'left')

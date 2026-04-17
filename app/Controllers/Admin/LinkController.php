@@ -82,21 +82,32 @@ class LinkController extends Controller
      */
     public function store()
     {
+        // 验证表单数据
+        $rules = [
+            'name' => 'required|min_length[2]|max_length[100]',
+            'url' => 'required|valid_url',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         // 收集表单数据
         $data = [
-            'name' => $this->request->getPost('name'), // 链接名称
-            'url' => $this->request->getPost('url'), // 链接地址
-            'description' => $this->request->getPost('description'), // 链接描述
-            'logo' => $this->request->getPost('logo'), // 链接 logo
-            'sort_order' => $this->request->getPost('sort_order'), // 排序顺序
-            'status' => $this->request->getPost('status'), // 链接状态
+            'name' => $this->request->getPost('name'),
+            'url' => $this->request->getPost('url'),
+            'description' => $this->request->getPost('description') ?? '',
+            'logo' => $this->request->getPost('logo') ?? '',
+            'sort_order' => $this->request->getPost('sort_order') ?? 0,
+            'status' => $this->request->getPost('status') ?? 'active',
         ];
 
         // 插入数据到数据库
-        $this->linkModel->insert($data);
-
-        // 重定向到友情链接列表页面并显示成功消息
-        return redirect()->to('/admin/links')->with('success', '友情链接添加成功');
+        if ($this->linkModel->insert($data)) {
+            return redirect()->to('/admin/links')->with('success', '友情链接添加成功');
+        } else {
+            return redirect()->back()->withInput()->with('error', '友情链接添加失败');
+        }
     }
 
     /**
@@ -127,21 +138,38 @@ class LinkController extends Controller
      */
     public function update($id)
     {
+        // 检查友情链接是否存在
+        $link = $this->linkModel->find($id);
+        if (!$link) {
+            return redirect()->to('/admin/links')->with('error', '友情链接不存在');
+        }
+
+        // 验证表单数据
+        $rules = [
+            'name' => 'required|min_length[2]|max_length[100]',
+            'url' => 'required|valid_url',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         // 收集表单数据
         $data = [
-            'name' => $this->request->getPost('name'), // 链接名称
-            'url' => $this->request->getPost('url'), // 链接地址
-            'description' => $this->request->getPost('description'), // 链接描述
-            'logo' => $this->request->getPost('logo'), // 链接 logo
-            'sort_order' => $this->request->getPost('sort_order'), // 排序顺序
-            'status' => $this->request->getPost('status'), // 链接状态
+            'name' => $this->request->getPost('name'),
+            'url' => $this->request->getPost('url'),
+            'description' => $this->request->getPost('description') ?? '',
+            'logo' => $this->request->getPost('logo') ?? '',
+            'sort_order' => $this->request->getPost('sort_order') ?? 0,
+            'status' => $this->request->getPost('status') ?? 'active',
         ];
 
         // 更新数据库中的数据
-        $this->linkModel->update($id, $data);
-
-        // 重定向到友情链接列表页面并显示成功消息
-        return redirect()->to('/admin/links')->with('success', '友情链接更新成功');
+        if ($this->linkModel->update($id, $data)) {
+            return redirect()->to('/admin/links')->with('success', '友情链接更新成功');
+        } else {
+            return redirect()->back()->withInput()->with('error', '友情链接更新失败');
+        }
     }
 
     /**
@@ -153,10 +181,17 @@ class LinkController extends Controller
      */
     public function delete($id)
     {
-        // 从数据库中删除友情链接
-        $this->linkModel->delete($id);
+        // 检查友情链接是否存在
+        $link = $this->linkModel->find($id);
+        if (!$link) {
+            return redirect()->to('/admin/links')->with('error', '友情链接不存在');
+        }
 
-        // 重定向到友情链接列表页面并显示成功消息
-        return redirect()->to('/admin/links')->with('success', '友情链接删除成功');
+        // 从数据库中删除友情链接
+        if ($this->linkModel->delete($id)) {
+            return redirect()->to('/admin/links')->with('success', '友情链接删除成功');
+        } else {
+            return redirect()->back()->with('error', '友情链接删除失败');
+        }
     }
 }

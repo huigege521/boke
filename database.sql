@@ -88,6 +88,10 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `scheduled_at` datetime DEFAULT NULL COMMENT '定时发布时间',
   `auto_saved_at` datetime DEFAULT NULL COMMENT '自动保存时间',
   `auto_saved_content` text DEFAULT NULL COMMENT '自动保存的内容',
+  -- SEO元数据字段
+  `meta_title` varchar(200) DEFAULT NULL COMMENT 'SEO标题（页面title标签）',
+  `meta_description` varchar(500) DEFAULT NULL COMMENT 'SEO描述（meta description）',
+  `meta_keywords` varchar(500) DEFAULT NULL COMMENT 'SEO关键词（meta keywords）',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),

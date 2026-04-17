@@ -28,7 +28,7 @@ class ContactModel extends Model
      *
      * @var array
      */
-    protected $allowedFields = ['name', 'email', 'subject', 'message', 'status', 'created_at', 'updated_at'];
+    protected $allowedFields = ['name', 'email', 'subject', 'message', 'ip_address', 'status', 'created_at', 'updated_at'];
 
     /**
      * 时间戳

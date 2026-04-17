@@ -51,8 +51,9 @@ $scripts = '';
         编辑友情链接
     </div>
     <div class="card-body">
-        <form action="/admin/links/update/<?= $link['id'] ?>" method="post">
+        <form action="/admin/links/<?= $link['id'] ?>" method="post">
             <?= csrf_field() ?>
+            <input type="hidden" name="_method" value="PUT">
 
             <div class="form-group">
                 <label for="name">链接名称</label>

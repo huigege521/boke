@@ -181,12 +181,6 @@ class SecurityFilter implements FilterInterface
      */
     private function sanitizeInput(RequestInterface $request)
     {
-        // 调试：打印原始POST参数
-        $post_params = $request->getPost();
-        if (!empty($post_params)) {
-            file_put_contents('debug_post.txt', print_r($post_params, true));
-        }
-
         // GET 参数清理
         $get_params = $request->getGet();
         if (!empty($get_params)) {

@@ -31,14 +31,15 @@ class Home extends BaseController
         $perPage = 10;
         $offset = ($page - 1) * $perPage;
 
-        // 缓存键，包含页码
-        $cacheKey = 'home_page_' . date('Ymd') . '_page_' . $page;
+        // 缓存键，区分热门文章和普通文章
+        $isPopular = $page == 1; // 首页第一页通常是热门文章
+        $cacheKey = 'home_page_' . date('Ymd') . '_page_' . $page . ($isPopular ? '_popular' : '');
         $cache = \Config\Services::cache();
 
-        // 尝试从缓存获取
-        if ($cache->get($cacheKey)) {
-            $data = $cache->get($cacheKey);
-            return view('frontend/home', $data);
+        // 尝试从缓存获取数据
+        $cachedData = $cache->get($cacheKey);
+        if ($cachedData) {
+            return view('frontend/home', $cachedData);
         }
 
         // 初始化模型
@@ -71,8 +72,10 @@ class Home extends BaseController
             'currentPage' => $page,
         ];
 
-        // 缓存数据，有效期1小时
-        $cache->save($cacheKey, $data, 3600);
+        // 缓存数据，根据热度设置不同有效期
+        // 热门文章缓存时间短（30分钟），普通页面缓存时间长（2小时）
+        $cacheTTL = $isPopular ? 1800 : 7200;
+        $cache->save($cacheKey, $data, $cacheTTL);
 
         // 渲染首页视图
         return view('frontend/home', $data);
@@ -182,7 +185,9 @@ class Home extends BaseController
             }
 
             if (!$this->validate($rules)) {
-                session()->setFlashdata('error', '评论内容过短或验证码错误，请检查输入');
+                $errors = $this->validator->getErrors();
+                $errorMessage = '验证失败：' . implode('；', $errors);
+                session()->setFlashdata('error', $errorMessage);
                 return redirect()->back()->withInput();
             }
 
@@ -251,7 +256,7 @@ class Home extends BaseController
                     ]);
 
                     // 删除文章缓存
-                    $cacheKey = 'post_' . md5((string)$post['slug']);
+                    $cacheKey = 'post_' . md5((string) $post['slug']);
                     $cache = \Config\Services::cache();
                     $cache->delete($cacheKey);
                 }
@@ -499,7 +504,9 @@ class Home extends BaseController
             ];
 
             if (!$this->validate($rules)) {
-                session()->setFlashdata('error', '表单验证失败，请检查输入');
+                $errors = $this->validator->getErrors();
+                $errorMessage = '验证失败：' . implode('；', $errors);
+                session()->setFlashdata('error', $errorMessage);
                 return redirect()->back()->withInput();
             }
 
@@ -565,7 +572,9 @@ class Home extends BaseController
             ];
 
             if (!$this->validate($rules)) {
-                session()->setFlashdata('error', '表单验证失败，请检查输入');
+                $errors = $this->validator->getErrors();
+                $errorMessage = '验证失败：' . implode('；', $errors);
+                session()->setFlashdata('error', $errorMessage);
                 return redirect()->back()->withInput();
             }
 
@@ -731,7 +740,7 @@ class Home extends BaseController
 
             // 这里应该发送邮件，现在只是模拟
 
-            
+
             // 实际项目中应该使用 CodeIgniter 的 Email 类发送邮件
             session()->setFlashdata('success', '重置链接已发送到您的邮箱，请在1小时内点击链接重置密码');
             return redirect()->to('/home/forgotPassword');
@@ -860,7 +869,9 @@ class Home extends BaseController
             ];
 
             if (!$this->validate($rules)) {
-                session()->setFlashdata('error', '表单验证失败，请检查输入');
+                $errors = $this->validator->getErrors();
+                $errorMessage = '验证失败：' . implode('；', $errors);
+                session()->setFlashdata('error', $errorMessage);
                 return redirect()->back()->withInput();
             }
 
@@ -943,7 +954,7 @@ class Home extends BaseController
             }
 
             // 验证当前密码
-            if (!password_verify((string)$currentPassword, (string)$user['password'])) {
+            if (!password_verify((string) $currentPassword, (string) $user['password'])) {
                 session()->setFlashdata('error', '当前密码错误');
                 return redirect()->back()->withInput();
             }
