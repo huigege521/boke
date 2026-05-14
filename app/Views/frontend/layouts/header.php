@@ -61,10 +61,10 @@
             --accent-color: #7c8bc5;
             --text-dark: #2c3e50;
             --text-light: #6c757d;
-            --bg-light: #f8f9fa;
+            --bg-light: #f5f6f8;
             --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            --card-hover-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            --gradient-primary: linear-gradient(135deg, #5b6abf 0%, #6c757d 100%);
+            --card-hover-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #5b6abf 0%, #2c3e50 100%);
         }
 
         * {
