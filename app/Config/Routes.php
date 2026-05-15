@@ -53,6 +53,9 @@ $routes->group('api', function ($routes) {
 
     // 标签 API
     $routes->resource('tags', ['controller' => 'Api\TagController']);
+
+    // 用户 API
+    $routes->resource('users', ['controller' => 'Api\UserController']);
 });
 
 // ==================== 后台管理路由 ====================
