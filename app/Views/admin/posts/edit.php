@@ -96,7 +96,7 @@ $scripts = '';
         编辑文章
     </div>
     <div class="card-body">
-        <form action="/admin/posts/<?= $post['id'] ?>" method="post" enctype="multipart/form-data">
+        <form action="<?= base_url('admin/posts/' . $post['id']) ?>" method="post" enctype="multipart/form-data">
             <?= csrf_field() ?>
             <input type="hidden" name="_method" value="PUT">
 
@@ -226,7 +226,7 @@ $scripts = '';
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">更新</button>
-                <a href="/admin/posts" class="btn btn-secondary">取消</a>
+                <a href="<?= base_url('admin/posts') ?>" class="btn btn-secondary">取消</a>
             </div>
         </form>
     </div>
@@ -591,7 +591,7 @@ $scripts = '';
                     <div class="col-12 text-center py-4">
                         <i class="fas fa-folder-open fa-3x text-muted mb-2"></i>
                         <p class="text-muted">暂无媒体文件</p>
-                        <a href="/admin/media" class="btn btn-primary mt-2" target="_blank">
+                        <a href="<?= base_url('admin/media') ?>" class="btn btn-primary mt-2" target="_blank">
                             <i class="fas fa-upload"></i> 上传文件
                         </a>
                     </div>

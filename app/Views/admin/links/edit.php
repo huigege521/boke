@@ -51,7 +51,7 @@ $scripts = '';
         编辑友情链接
     </div>
     <div class="card-body">
-        <form action="/admin/links/<?= $link['id'] ?>" method="post">
+        <form action="<?= base_url('admin/links/' . $link['id']) ?>" method="post">
             <?= csrf_field() ?>
             <input type="hidden" name="_method" value="PUT">
 
@@ -73,7 +73,8 @@ $scripts = '';
 
             <div class="form-group">
                 <label for="description">描述</label>
-                <textarea id="description" name="description" rows="3"><?= old('description', $link['description']) ?></textarea>
+                <textarea id="description" name="description"
+                    rows="3"><?= old('description', $link['description']) ?></textarea>
                 <?php if (isset($errors['description'])): ?>
                     <div class="error-message"><?= $errors['description'] ?></div>
                 <?php endif; ?>
@@ -89,7 +90,8 @@ $scripts = '';
 
             <div class="form-group">
                 <label for="sort_order">排序</label>
-                <input type="number" id="sort_order" name="sort_order" value="<?= old('sort_order', $link['sort_order']) ?>">
+                <input type="number" id="sort_order" name="sort_order"
+                    value="<?= old('sort_order', $link['sort_order']) ?>">
                 <?php if (isset($errors['sort_order'])): ?>
                     <div class="error-message"><?= $errors['sort_order'] ?></div>
                 <?php endif; ?>
@@ -99,13 +101,14 @@ $scripts = '';
                 <label for="status">状态</label>
                 <select id="status" name="status">
                     <option value="active" <?= old('status', $link['status']) == 'active' ? 'selected' : '' ?>>活跃</option>
-                    <option value="inactive" <?= old('status', $link['status']) == 'inactive' ? 'selected' : '' ?>>禁用</option>
+                    <option value="inactive" <?= old('status', $link['status']) == 'inactive' ? 'selected' : '' ?>>禁用
+                    </option>
                 </select>
             </div>
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">保存</button>
-                <a href="/admin/links" class="btn btn-secondary">取消</a>
+                <a href="<?= base_url('admin/links') ?>" class="btn btn-secondary">取消</a>
             </div>
         </form>
     </div>

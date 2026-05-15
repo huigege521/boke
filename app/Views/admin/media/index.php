@@ -755,7 +755,7 @@ $scripts = '';
             });
 
             $.ajax({
-                url: '/admin/media/upload-multiple',
+                url: "<?= base_url('admin/media/upload-multiple') ?>",
                 type: 'POST',
                 data: formData,
                 processData: false,

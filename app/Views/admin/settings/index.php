@@ -37,7 +37,7 @@ $pageTitle = '配置管理';
                                 ?>
                             </td>
                             <td>
-                                <a href="/admin/settings/edit/<?= $setting['id'] ?>" class="btn btn-sm btn-primary">
+                                <a href="<?= base_url('admin/settings/edit/' . $setting['id']) ?>" class="btn btn-sm btn-primary">
                                     <i class="fas fa-edit"></i> 编辑
                                 </a>
                             </td>

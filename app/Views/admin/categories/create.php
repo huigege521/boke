@@ -43,7 +43,7 @@ $styles = '<style>
         创建新分类
     </div>
     <div class="card-body">
-        <form action="/admin/categories" method="post">
+        <form action="<?= base_url('admin/categories') ?>" method="post">
             <?= csrf_field() ?>
 
             <div class="form-group">
@@ -74,7 +74,7 @@ $styles = '<style>
                     <option value="">无</option>
                     <?php foreach ($parentCategories as $category): ?>
                         <option value="<?= $category['id'] ?>" <?= old('parent_id') == $category['id'] ? 'selected' : '' ?>>
-                            <?= str_repeat('-', $category['level'] ?? 0) ?>    <?= $category['name'] ?>
+                            <?= str_repeat('-', $category['level'] ?? 0) ?>     <?= $category['name'] ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -98,7 +98,7 @@ $styles = '<style>
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">保存</button>
-                <a href="/admin/categories" class="btn btn-secondary">取消</a>
+                <a href="<?= base_url('admin/categories') ?>" class="btn btn-secondary">取消</a>
             </div>
         </form>
     </div>

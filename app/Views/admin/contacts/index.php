@@ -13,9 +13,12 @@ $scripts = '';
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">联系消息列表</h5>
         <div>
-            <a href="/admin/contacts" class="btn btn-sm <?= ($filter_status ?? 'all') === 'all' ? 'btn-primary' : 'btn-outline-primary' ?>">全部</a>
-            <a href="/admin/contacts?status=pending" class="btn btn-sm <?= ($filter_status ?? '') === 'pending' ? 'btn-warning' : 'btn-outline-warning' ?>">未处理</a>
-            <a href="/admin/contacts?status=processed" class="btn btn-sm <?= ($filter_status ?? '') === 'processed' ? 'btn-success' : 'btn-outline-success' ?>">已处理</a>
+            <a href="<?= base_url('admin/contacts') ?>"
+                class="btn btn-sm <?= ($filter_status ?? 'all') === 'all' ? 'btn-primary' : 'btn-outline-primary' ?>">全部</a>
+            <a href="<?= base_url('admin/contacts?status=pending') ?>"
+                class="btn btn-sm <?= ($filter_status ?? '') === 'pending' ? 'btn-warning' : 'btn-outline-warning' ?>">未处理</a>
+            <a href="<?= base_url('admin/contacts?status=processed') ?>"
+                class="btn btn-sm <?= ($filter_status ?? '') === 'processed' ? 'btn-success' : 'btn-outline-success' ?>">已处理</a>
         </div>
     </div>
     <div class="card-body">
@@ -48,9 +51,9 @@ $scripts = '';
                             </td>
                             <td><?= $contact['created_at'] ?></td>
                             <td>
-                                <a href="/admin/contacts/show/<?= $contact['id'] ?>" class="btn btn-sm btn-info"><i
-                                        class="fas fa-eye"></i> 查看</a>
-                                <form action="/admin/contacts/delete/<?= $contact['id'] ?>" method="POST"
+                                <a href="<?= base_url('admin/contacts/show/' . $contact['id']) ?>"
+                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i> 查看</a>
+                                <form action="<?= base_url('admin/contacts/delete/' . $contact['id']) ?>" method="POST"
                                     style="display:inline;">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="_method" value="DELETE">

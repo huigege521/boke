@@ -51,7 +51,7 @@ $scripts = '';
         添加新友情链接
     </div>
     <div class="card-body">
-        <form action="/admin/links" method="post">
+        <form action="<?= base_url('admin/links') ?>" method="post">
             <?= csrf_field() ?>
 
             <div class="form-group">
@@ -104,7 +104,7 @@ $scripts = '';
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">保存</button>
-                <a href="/admin/links" class="btn btn-secondary">取消</a>
+                <a href="<?= base_url('admin/links') ?>" class="btn btn-secondary">取消</a>
             </div>
         </form>
     </div>

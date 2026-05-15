@@ -4,31 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta Tags -->
     <?php if (isset($post)): ?>
         <!-- 文章页面SEO -->
         <title><?= esc($post['meta_title'] ?? $post['title']) ?> - <?= esc(env('app.siteName', '博客系统')) ?></title>
-        <meta name="description" content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
+        <meta name="description"
+            content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
         <meta name="keywords" content="<?= esc($post['meta_keywords'] ?? '') ?>">
-        
+
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="article">
         <meta property="og:url" content="<?= current_url() ?>">
         <meta property="og:title" content="<?= esc($post['meta_title'] ?? $post['title']) ?>">
-        <meta property="og:description" content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
+        <meta property="og:description"
+            content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
         <?php if (!empty($post['featured_image'])): ?>
-        <meta property="og:image" content="<?= base_url('uploads/' . $post['featured_image']) ?>">
+            <meta property="og:image" content="<?= base_url('uploads/' . $post['featured_image']) ?>">
         <?php endif; ?>
         <meta property="article:published_time" content="<?= $post['published_at'] ?? '' ?>">
         <meta property="article:author" content="<?= esc($post['author_name'] ?? '') ?>">
-        
+
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="<?= esc($post['meta_title'] ?? $post['title']) ?>">
-        <meta name="twitter:description" content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
+        <meta name="twitter:description"
+            content="<?= esc($post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200)) ?>">
         <?php if (!empty($post['featured_image'])): ?>
-        <meta name="twitter:image" content="<?= base_url('uploads/' . $post['featured_image']) ?>">
+            <meta name="twitter:image" content="<?= base_url('uploads/' . $post['featured_image']) ?>">
         <?php endif; ?>
     <?php else: ?>
         <!-- 默认SEO -->
@@ -36,18 +39,18 @@
         <meta name="description" content="<?= esc($metaDescription ?? env('app.siteDescription', '欢迎来到我们的博客')) ?>">
         <meta name="keywords" content="<?= esc($metaKeywords ?? env('app.siteKeywords', '博客,文章,技术')) ?>">
     <?php endif; ?>
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="<?= current_url() ?>">
-    
+
     <!-- Robots -->
     <meta name="robots" content="index, follow">
-    
+
     <!-- Author -->
     <?php if (isset($post)): ?>
-    <meta name="author" content="<?= esc($post['author_name'] ?? '') ?>">
+        <meta name="author" content="<?= esc($post['author_name'] ?? '') ?>">
     <?php endif; ?>
-    
+
     <!-- Bootstrap CSS -->
     <link href="<?= cdn_asset('css/bootstrap/bootstrap.min.css') ?>" rel="stylesheet">
     <!-- Font Awesome -->
@@ -140,6 +143,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -479,6 +483,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -522,7 +527,7 @@
                         <ul class="dropdown-menu">
                             <?php foreach ($categories ?? [] as $category): ?>
                                 <li>
-                                    <a class="dropdown-item" href="/category/<?= $category['slug'] ?>">
+                                    <a class="dropdown-item" href="<?= base_url('category/' . $category['slug']) ?>">
                                         <?php if (!empty($category['icon'])): ?>
                                             <i class="<?= $category['icon'] ?>"></i>
                                         <?php else: ?>
@@ -541,7 +546,7 @@
                         <ul class="dropdown-menu">
                             <?php foreach ($tags ?? [] as $tag): ?>
                                 <li>
-                                    <a class="dropdown-item" href="/tag/<?= $tag['slug'] ?>">
+                                    <a class="dropdown-item" href="<?= base_url('tag/' . $tag['slug']) ?>">
                                         <i class="fas fa-tag"></i><?= htmlspecialchars($tag['name']) ?>
                                     </a>
                                 </li>
@@ -559,16 +564,16 @@
                         </a>
                     </li>
                 </ul>
-                
+
                 <!-- 搜索框 -->
-                <form class="search-form my-2 my-lg-0 me-4" action="/search" method="post">
+                <form class="search-form my-2 my-lg-0 me-4" action="<?= base_url('search') ?>" method="post">
                     <input type="hidden" name="csrf_token" value="<?= csrf_hash() ?>">
                     <input class="form-control" type="search" placeholder="搜索文章..." name="keyword">
                     <button class="btn" type="submit">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
-                
+
                 <!-- 用户菜单 -->
                 <ul class="navbar-nav">
                     <?php if (session()->get('logged_in')): ?>
@@ -583,7 +588,9 @@
                                     </a>
                                 </li>
                                 <?php if (session()->get('role') === 'admin'): ?>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="<?= base_url('admin/dashboard') ?>">
                                             <i class="fas fa-tachometer-alt"></i>控制面板
@@ -604,9 +611,13 @@
                                             <i class="fas fa-tags"></i>管理标签
                                         </a>
                                     </li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                 <?php else: ?>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                 <?php endif; ?>
                                 <li>
                                     <a class="dropdown-item" href="<?= base_url('/home/logout') ?>">

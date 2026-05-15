@@ -35,7 +35,7 @@
 
             <div class="card mb-5">
                 <div class="card-body">
-                    <form action="/home/updateProfile" method="post">
+                    <form action="<?= base_url('home/updateProfile') ?>" method="post">
                         <?= csrf_field() ?>
                         <div class="form-group">
                             <label for="username">用户名</label>
@@ -60,7 +60,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="mb-3"><i class="fas fa-key mr-2"></i>修改密码</h3>
-                    <form action="/home/changePassword" method="post">
+                    <form action="<?= base_url('home/changePassword') ?>" method="post">
                         <?= csrf_field() ?>
                         <div class="form-group">
                             <label for="current_password">当前密码</label>

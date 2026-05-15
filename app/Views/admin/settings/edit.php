@@ -33,10 +33,10 @@ if ($setting['type'] === 'editor') {
             });
 
             // 监听源码模式切换事件
-            editor.on('mode', function() {
+            editor.on('mode', function () {
                 if (editor.mode === 'source') {
                     // 当切换到源码模式时，使用原始的初始值
-                    setTimeout(function() {
+                    setTimeout(function () {
                         const sourceEditor = document.querySelector('.cke_source');
                         if (sourceEditor) {
                             sourceEditor.value = originalValue;
@@ -47,7 +47,7 @@ if ($setting['type'] === 'editor') {
 
             // 表单提交时确保正确的值被提交
             const form = document.querySelector('form');
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 // 确保编辑器内容被同步
                 settingValue.value = editor.getData();
             });
@@ -60,7 +60,7 @@ if ($setting['type'] === 'editor') {
         <h3 class="card-title">编辑配置</h3>
     </div>
     <div class="card-body">
-        <form action="/admin/settings/update/<?= $setting['id'] ?>" method="post">
+        <form action="<?= base_url('admin/settings/update/' . $setting['id']) ?>" method="post">
             <?= csrf_field() ?>
             <div class="form-group">
                 <label for="setting_key">键名</label>
@@ -94,7 +94,7 @@ if ($setting['type'] === 'editor') {
             </div>
             <div class="form-group mt-4">
                 <button type="submit" class="btn btn-primary">保存</button>
-                <a href="/admin/settings" class="btn btn-secondary ml-2">取消</a>
+                <a href="<?= base_url('admin/settings') ?>" class="btn btn-secondary ml-2">取消</a>
             </div>
         </form>
     </div>

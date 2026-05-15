@@ -114,7 +114,7 @@ $styles = '<style>
 <div class="mb-4">
     <div class="row align-items-center">
         <div class="col-md-4">
-            <form action="/admin/posts" method="post" class="batch-actions d-flex align-items-center">
+            <form action="<?= base_url('admin/posts') ?>" method="post" class="batch-actions d-flex align-items-center">
                 <?= csrf_field() ?>
                 <input type="hidden" name="_method" value="POST">
                 <div class="form-group mr-2 mb-0">
@@ -131,12 +131,12 @@ $styles = '<style>
                 <button type="submit" class="btn btn-outline-primary mr-4"
                     style="height: 40px; box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); border-radius: 6px; transition: all 0.3s ease;"
                     onclick="return confirm('确定要执行此操作吗？');">执行</button>
-                <a href="/admin/posts/create" class="btn btn-primary"
+                <a href="<?= base_url('admin/posts/create') ?>" class="btn btn-primary"
                     style="height: 40px; box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); border-radius: 6px; transition: all 0.3s ease;">创建文章</a>
             </form>
         </div>
         <div class="col-md-8">
-            <form action="/admin/posts" method="get" class="d-flex justify-content-end">
+            <form action="<?= base_url('admin/posts') ?>" method="get" class="d-flex justify-content-end">
                 <div class="input-group" style="width: 100%; max-width: 600px;">
                     <input type="text" name="search" class="form-control rounded-l-lg border-right-0"
                         placeholder="搜索文章标题、内容、作者..." value="<?= isset($search) ? $search : '' ?>"
@@ -159,7 +159,7 @@ $styles = '<style>
 
     <!-- 筛选表单 -->
     <div class="filter-form">
-        <form action="/admin/posts" method="get" class="d-flex align-items-end">
+        <form action="<?= base_url('admin/posts') ?>" method="get" class="d-flex align-items-end">
             <div class="form-group" style="flex: 1; margin-right: 20px;">
                 <label for="category" class="form-label">分类</label>
                 <select name="category" id="category" class="form-control"
@@ -208,7 +208,7 @@ $styles = '<style>
                     style="height: 40px; box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); border-radius: 6px; transition: all 0.3s ease; min-width: 100px;">应用筛选</button>
             </div>
             <div class="form-group">
-                <a href="/admin/posts" class="btn btn-outline-secondary"
+                <a href="<?= base_url('admin/posts') ?>" class="btn btn-outline-secondary"
                     style="height: 40px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 6px; transition: all 0.3s ease; min-width: 100px;">重置</a>
             </div>
         </form>
@@ -240,7 +240,7 @@ $styles = '<style>
                         <th style="width: 100px;">可见性</th>
                         <th style="width: 80px;" class="sortable-header">
                             <a
-                                href="/admin/posts?order_by=views&order_direction=<?= isset($orderDirection) && $orderDirection == 'desc' ? 'asc' : 'desc' ?><?= isset($search) ? '&search=' . urlencode($search) : '' ?><?= isset($status) ? '&status=' . $status : '' ?><?= isset($categoryId) ? '&category=' . $categoryId : '' ?>">
+                                href="<?= base_url('admin/posts?order_by=views&order_direction=' . (isset($orderDirection) && $orderDirection == 'desc' ? 'asc' : 'desc') . (isset($search) ? '&search=' . urlencode($search) : '') . (isset($status) ? '&status=' . $status : '') . (isset($categoryId) ? '&category=' . $categoryId : '')) ?>">
                                 浏览量
                                 <?php if (isset($orderBy) && $orderBy == 'views'): ?>
                                     <span
@@ -250,7 +250,7 @@ $styles = '<style>
                         </th>
                         <th style="width: 80px;" class="sortable-header">
                             <a
-                                href="/admin/posts?order_by=comments_count&order_direction=<?= isset($orderDirection) && $orderDirection == 'desc' ? 'asc' : 'desc' ?><?= isset($search) ? '&search=' . urlencode($search) : '' ?><?= isset($status) ? '&status=' . $status : '' ?><?= isset($categoryId) ? '&category=' . $categoryId : '' ?>">
+                                href="<?= base_url('admin/posts?order_by=comments_count&order_direction=' . (isset($orderDirection) && $orderDirection == 'desc' ? 'asc' : 'desc') . (isset($search) ? '&search=' . urlencode($search) : '') . (isset($status) ? '&status=' . $status : '') . (isset($categoryId) ? '&category=' . $categoryId : '')) ?>">
                                 评论数
                                 <?php if (isset($orderBy) && $orderBy == 'comments_count'): ?>
                                     <span
@@ -260,7 +260,7 @@ $styles = '<style>
                         </th>
                         <th style="width: 150px;" class="sortable-header">
                             <a
-                                href="/admin/posts?order_by=published_at&order_direction=<?= isset($orderDirection) && $orderDirection == 'desc' ? 'asc' : 'desc' ?><?= isset($search) ? '&search=' . urlencode($search) : '' ?><?= isset($status) ? '&status=' . $status : '' ?><?= isset($categoryId) ? '&category=' . $categoryId : '' ?>">
+                                href="<?= base_url('admin/posts?order_by=published_at&order_direction=' . (isset($orderDirection) && $orderDirection == 'desc' ? 'asc' : 'desc') . (isset($search) ? '&search=' . urlencode($search) : '') . (isset($status) ? '&status=' . $status : '') . (isset($categoryId) ? '&category=' . $categoryId : '')) ?>">
                                 发布时间
                                 <?php if (isset($orderBy) && $orderBy == 'published_at'): ?>
                                     <span
@@ -306,8 +306,10 @@ $styles = '<style>
                                 <td class="text-center"><?= $post['comments_count'] ?? 0 ?></td>
                                 <td><?= $post['published_at'] ?? '未发布' ?></td>
                                 <td>
-                                    <a href="/admin/posts/<?= $post['id'] ?>/edit" class="btn btn-sm btn-primary">编辑</a>
-                                    <form action="/admin/posts/<?= $post['id'] ?>" method="post" style="display: inline;">
+                                    <a href="<?= base_url('admin/posts/' . $post['id'] . '/edit') ?>"
+                                        class="btn btn-sm btn-primary">编辑</a>
+                                    <form action="<?= base_url('admin/posts/' . $post['id']) ?>" method="post"
+                                        style="display: inline;">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button type="submit" class="btn btn-sm btn-danger ml-3"
@@ -320,7 +322,7 @@ $styles = '<style>
                         <tr>
                             <td colspan="13" class="text-center py-5">
                                 <p class="text-muted">暂无文章</p>
-                                <a href="/admin/posts/create" class="btn btn-primary mt-3">创建文章</a>
+                                <a href="<?= base_url('admin/posts/create') ?>" class="btn btn-primary mt-3">创建文章</a>
                             </td>
                         </tr>
                     <?php endif; ?>

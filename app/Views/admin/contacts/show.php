@@ -12,7 +12,8 @@ $scripts = '';
 <div class="card mb-4">
     <div class="card-header">
         <h5 class="card-title">联系消息详情</h5>
-        <a href="/admin/contacts" class="btn btn-sm btn-secondary float-end"><i class="fas fa-arrow-left"></i> 返回列表</a>
+        <a href="<?= base_url('admin/contacts') ?>" class="btn btn-sm btn-secondary float-end"><i
+                class="fas fa-arrow-left"></i> 返回列表</a>
     </div>
     <div class="card-body">
         <div class="row">
@@ -55,12 +56,13 @@ $scripts = '';
         </div>
         <div class="mt-4">
             <?php if ($contact['status'] !== 'processed'): ?>
-                <form action="/admin/contacts/process/<?= $contact['id'] ?>" method="POST" style="display:inline;">
+                <form action="<?= base_url('admin/contacts/process/' . $contact['id']) ?>" method="POST"
+                    style="display:inline;">
                     <?= csrf_field() ?>
                     <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> 标记为已处理</button>
                 </form>
             <?php endif; ?>
-            <form action="/admin/contacts/delete/<?= $contact['id'] ?>" method="POST" style="display:inline;">
+            <form action="<?= base_url('admin/contacts/delete/' . $contact['id']) ?>" method="POST" style="display:inline;">
                 <?= csrf_field() ?>
                 <input type="hidden" name="_method" value="DELETE">
                 <button type="submit" class="btn btn-danger" onclick="return confirm('确定要删除这条联系消息吗？')"><i

@@ -74,7 +74,7 @@
             </div>
         <?php endif; ?>
 
-        <form action="/home/resetPassword" method="post">
+        <form action="<?= base_url('home/resetPassword') ?>" method="post">
             <?= csrf_field() ?>
             <input type="hidden" name="token" value="<?= $token ?? '' ?>">
             <div class="form-group">
@@ -90,7 +90,7 @@
         </form>
 
         <div class="login-link">
-            <p>返回登录？<a href="/home/login">立即登录</a></p>
+            <p>返回登录？<a href="<?= base_url('home/login') ?>">立即登录</a></p>
         </div>
     </div>
 

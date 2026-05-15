@@ -13,7 +13,7 @@ $styles = '<style>
 
 <!-- 操作按钮 -->
 <div class="mb-4">
-    <a href="/admin/categories/create" class="btn btn-primary">创建分类</a>
+    <a href="<?= base_url('admin/categories/create') ?>" class="btn btn-primary">创建分类</a>
 </div>
 
 <!-- 分类列表 -->
@@ -58,9 +58,9 @@ $styles = '<style>
                             <td><?= $category['order'] ?></td>
                             <td><?= $category['created_at'] ?></td>
                             <td>
-                                <a href="/admin/categories/<?= $category['id'] ?>/edit"
+                                <a href="<?= base_url('admin/categories/' . $category['id'] . '/edit') ?>"
                                     class="btn btn-sm btn-primary">编辑</a>
-                                <form action="/admin/categories/<?= $category['id'] ?>" method="post"
+                                <form action="<?= base_url('admin/categories/' . $category['id']) ?>" method="post"
                                     style="display: inline;">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="_method" value="DELETE">

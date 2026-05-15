@@ -45,7 +45,7 @@ $styles = '<style>
         创建新用户
     </div>
     <div class="card-body">
-        <form action="/admin/users" method="post">
+        <form action="<?= base_url('admin/users') ?>" method="post">
             <?= csrf_field() ?>
 
             <div class="form-group">
@@ -91,7 +91,7 @@ $styles = '<style>
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">保存</button>
-                <a href="/admin/users" class="btn btn-secondary">取消</a>
+                <a href="<?= base_url('admin/users') ?>" class="btn btn-secondary">取消</a>
             </div>
         </form>
     </div>

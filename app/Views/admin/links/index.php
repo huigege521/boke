@@ -10,7 +10,7 @@ $pageTitle = '友情链接管理';
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="d-flex align-items-center">
-                <a href="/admin/links/create" class="btn btn-primary"
+                <a href="<?= base_url('admin/links/create') ?>" class="btn btn-primary"
                     style="height: 40px; box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); border-radius: 6px; transition: all 0.3s ease;">添加友情链接</a>
             </div>
         </div>
@@ -53,8 +53,10 @@ $pageTitle = '友情链接管理';
                                 </span>
                             </td>
                             <td>
-                                <a href="/admin/links/edit/<?= $link['id'] ?>" class="btn btn-sm btn-primary">编辑</a>
-                                <form action="/admin/links/delete/<?= $link['id'] ?>" method="post" class="d-inline">
+                                <a href="<?= base_url('admin/links/edit/' . $link['id']) ?>"
+                                    class="btn btn-sm btn-primary">编辑</a>
+                                <form action="<?= base_url('admin/links/delete/' . $link['id']) ?>" method="post"
+                                    class="d-inline">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-sm btn-danger"
@@ -69,7 +71,7 @@ $pageTitle = '友情链接管理';
         <?php if (empty($links)): ?>
             <div class="text-center py-5">
                 <p class="text-muted">暂无友情链接</p>
-                <a href="/admin/links/create" class="btn btn-primary mt-3">添加友情链接</a>
+                <a href="<?= base_url('admin/links/create') ?>" class="btn btn-primary mt-3">添加友情链接</a>
             </div>
         <?php endif; ?>
     </div>

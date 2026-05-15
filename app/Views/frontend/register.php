@@ -72,7 +72,7 @@
             </div>
         <?php endif; ?>
 
-        <form action="/home/register" method="post">
+        <form action="<?= base_url('home/register') ?>" method="post">
             <?= csrf_field() ?>
             <div class="form-group">
                 <label for="username">用户名</label>
@@ -98,7 +98,7 @@
         </form>
 
         <div class="login-link">
-            <p>已有账号？<a href="/home/login">立即登录</a></p>
+            <p>已有账号？<a href="<?= base_url('home/login') ?>">立即登录</a></p>
         </div>
     </div>
 

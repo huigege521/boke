@@ -8,40 +8,40 @@
             <h1 class="mb-4"><i class="fas fa-tags mr-2"></i>标签: <?= $tag['name'] ?></h1>
 
             <?php if (empty($posts)): ?>
-                <div class="alert alert-info">
-                    该标签下暂无文章
-                </div>
+                    <div class="alert alert-info">
+                        该标签下暂无文章
+                    </div>
             <?php else: ?>
-                <?php foreach ($posts as $post): ?>
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h2 class="card-title"><a href="/post/<?= $post['slug'] ?>"
-                                    class="hover-primary"><?= $post['title'] ?></a></h2>
-                            <p class="card-text text-muted">
-                                <small>
-                                    <i class="fas fa-calendar mr-1"></i> 发布于: <?= $post['created_at'] ?> |
-                                    <i class="fas fa-folder mr-1"></i> 分类: <a
-                                        href="/category/<?= $post['category_slug'] ?? '' ?>"
-                                        class="hover-primary"><?= $post['category_name'] ?? '未分类' ?></a>
+                    <?php foreach ($posts as $post): ?>
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h2 class="card-title"><a href="<?= base_url('post/' . $post['slug']) ?>"
+                                            class="hover-primary"><?= $post['title'] ?></a></h2>
+                                    <p class="card-text text-muted">
+                                        <small>
+                                            <i class="fas fa-calendar mr-1"></i> 发布于: <?= $post['created_at'] ?> |
+                                            <i class="fas fa-folder mr-1"></i> 分类: <a
+                                                href="<?= base_url('category/' . ($post['category_slug'] ?? '')) ?>"
+                                                class="hover-primary"><?= $post['category_name'] ?? '未分类' ?></a>
 
-                                </small>
-                            </p>
-                            <p class="card-text"><?= mb_substr(strip_tags($post['content']), 0, 200) ?>...</p>
-                            <a href="/post/<?= $post['slug'] ?>" class="btn btn-primary"><i
-                                    class="fas fa-book mr-2"></i>阅读更多</a>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                                        </small>
+                                    </p>
+                                    <p class="card-text"><?= mb_substr(strip_tags($post['content']), 0, 200) ?>...</p>
+                                    <a href="<?= base_url('post/' . $post['slug']) ?>" class="btn btn-primary"><i
+                                            class="fas fa-book mr-2"></i>阅读更多</a>
+                                </div>
+                            </div>
+                    <?php endforeach; ?>
 
-                <!-- 分页导航 -->
-                <?php if (isset($pager) && $totalPosts > $perPage): ?>
-                    <div class="mt-5">
-                        <?php $pagerLinks = $pager->makeLinks($currentPage, $perPage, $totalPosts, 'bootstrap_full'); ?>
-                        <?php if ($pagerLinks): ?>
-                            <?= $pagerLinks ?>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
+                    <!-- 分页导航 -->
+                    <?php if (isset($pager) && $totalPosts > $perPage): ?>
+                            <div class="mt-5">
+                                <?php $pagerLinks = $pager->makeLinks($currentPage, $perPage, $totalPosts, 'bootstrap_full'); ?>
+                                <?php if ($pagerLinks): ?>
+                                        <?= $pagerLinks ?>
+                                <?php endif; ?>
+                            </div>
+                    <?php endif; ?>
             <?php endif; ?>
         </div>
 

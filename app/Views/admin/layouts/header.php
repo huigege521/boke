@@ -329,37 +329,38 @@
             <h3><i class="fas fa-blog"></i> 后台管理</h3>
         </div>
         <div class="sidebar-menu">
-            <a class="nav-link <?= $activePage == 'dashboard' ? 'active' : '' ?>" href="/admin/dashboard">
+            <a class="nav-link <?= $activePage == 'dashboard' ? 'active' : '' ?>"
+                href="<?= base_url('admin/dashboard') ?>">
                 <i class="fas fa-tachometer-alt"></i> 仪表盘
             </a>
-            <a class="nav-link <?= $activePage == 'posts' ? 'active' : '' ?>" href="/admin/posts">
+            <a class="nav-link <?= $activePage == 'posts' ? 'active' : '' ?>" href="<?= base_url('admin/posts') ?>">
                 <i class="fas fa-file-alt"></i> 文章管理
             </a>
-            <a class="nav-link <?= $activePage == 'categories' ? 'active' : '' ?>" href="/admin/categories">
+            <a class="nav-link <?= $activePage == 'categories' ? 'active' : '' ?>" href="<?= base_url('admin/categories') ?>">
                 <i class="fas fa-folder"></i> 分类管理
             </a>
-            <a class="nav-link <?= $activePage == 'tags' ? 'active' : '' ?>" href="/admin/tags">
+            <a class="nav-link <?= $activePage == 'tags' ? 'active' : '' ?>" href="<?= base_url('admin/tags') ?>">
                 <i class="fas fa-tags"></i> 标签管理
             </a>
-            <a class="nav-link <?= $activePage == 'comments' ? 'active' : '' ?>" href="/admin/comments">
+            <a class="nav-link <?= $activePage == 'comments' ? 'active' : '' ?>" href="<?= base_url('admin/comments') ?>">
                 <i class="fas fa-comments"></i> 评论管理
             </a>
-            <a class="nav-link <?= $activePage == 'media' ? 'active' : '' ?>" href="/admin/media">
+            <a class="nav-link <?= $activePage == 'media' ? 'active' : '' ?>" href="<?= base_url('admin/media') ?>">
                 <i class="fas fa-image"></i> 媒体库
             </a>
-            <a class="nav-link <?= $activePage == 'users' ? 'active' : '' ?>" href="/admin/users">
+            <a class="nav-link <?= $activePage == 'users' ? 'active' : '' ?>" href="<?= base_url('admin/users') ?>">
                 <i class="fas fa-users"></i> 用户管理
             </a>
-            <a class="nav-link <?= $activePage == 'links' ? 'active' : '' ?>" href="/admin/links">
+            <a class="nav-link <?= $activePage == 'links' ? 'active' : '' ?>" href="<?= base_url('admin/links') ?>">
                 <i class="fas fa-link"></i> 友情链接
             </a>
-            <a class="nav-link <?= $activePage == 'contacts' ? 'active' : '' ?>" href="/admin/contacts">
+            <a class="nav-link <?= $activePage == 'contacts' ? 'active' : '' ?>" href="<?= base_url('admin/contacts') ?>">
                 <i class="fas fa-envelope"></i> 联系消息
             </a>
-            <a class="nav-link <?= $activePage == 'settings' ? 'active' : '' ?>" href="/admin/settings">
+            <a class="nav-link <?= $activePage == 'settings' ? 'active' : '' ?>" href="<?= base_url('admin/settings') ?>">
                 <i class="fas fa-cog"></i> 配置管理
             </a>
-            <a class="nav-link logout-link" href="/admin/logout">
+            <a class="nav-link logout-link" href="<?= base_url('admin/logout') ?>">
                 <i class="fas fa-sign-out-alt"></i> 退出登录
             </a>
         </div>

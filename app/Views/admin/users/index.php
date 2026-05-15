@@ -30,7 +30,7 @@ $styles = '<style>
 
 <!-- 操作按钮 -->
 <div class="mb-4">
-    <a href="/admin/users/create" class="btn btn-primary">创建用户</a>
+    <a href="<?= base_url('admin/users/create') ?>" class="btn btn-primary">创建用户</a>
 </div>
 
 <!-- 用户列表 -->
@@ -66,8 +66,10 @@ $styles = '<style>
                             <td><?= $user['created_at'] ?></td>
                             <td><?= $user['last_login'] ?? '未登录' ?></td>
                             <td>
-                                <a href="/admin/users/<?= $user['id'] ?>/edit" class="btn btn-sm btn-primary">编辑</a>
-                                <form action="/admin/users/<?= $user['id'] ?>" method="post" style="display: inline;">
+                                <a href="<?= base_url('admin/users/' . $user['id'] . '/edit') ?>"
+                                    class="btn btn-sm btn-primary">编辑</a>
+                                <form action="<?= base_url('admin/users/' . $user['id']) ?>" method="post"
+                                    style="display: inline;">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-sm btn-danger"

@@ -18,7 +18,7 @@ $styles = '<style>
 
 <!-- 操作按钮 -->
 <div class="mb-4">
-    <a href="/admin/tags/create" class="btn btn-primary">创建标签</a>
+    <a href="<?= base_url('admin/tags/create') ?>" class="btn btn-primary">创建标签</a>
 </div>
 
 <!-- 标签列表 -->
@@ -48,8 +48,10 @@ $styles = '<style>
                             <td><?= $tag['posts_count'] ?></td>
                             <td><?= $tag['created_at'] ?></td>
                             <td>
-                                <a href="/admin/tags/<?= $tag['id'] ?>/edit" class="btn btn-sm btn-primary">编辑</a>
-                                <form action="/admin/tags/<?= $tag['id'] ?>" method="post" style="display: inline;">
+                                <a href="<?= base_url('admin/tags/' . $tag['id'] . '/edit') ?>"
+                                    class="btn btn-sm btn-primary">编辑</a>
+                                <form action="<?= base_url('admin/tags/' . $tag['id']) ?>" method="post"
+                                    style="display: inline;">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-sm btn-danger"
