@@ -292,15 +292,14 @@ class MediaModel extends Model
             }
         }
 
-        // 生成正确的 file_url
-        $baseUrl = '/uploads/';
+        // 生成正确的 file_url（使用 base_url 确保在子目录部署时路径正确）
         if ($folderId) {
-            $fileUrl = $baseUrl . $folderId . '/' . $filename;
+            $fileUrl = base_url('uploads/' . $folderId . '/' . $filename);
         } else {
             // 按日期组织的路径
             //$datePath = date('Y') . '/' . date('m') . '/';
             $datePath = date('Ymd') . '/';
-            $fileUrl = $baseUrl . $datePath . $filename;
+            $fileUrl = base_url('uploads/' . $datePath . $filename);
         }
 
         // 保存到数据库
