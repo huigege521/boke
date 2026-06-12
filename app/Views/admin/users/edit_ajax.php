@@ -29,8 +29,26 @@ $styles = '<style>.form-group{margin-bottom:1rem}.form-group label{display:block
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="name">真实姓名</label>
+                        <input type="text" id="name" name="name" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="email">邮箱 <span class="text-danger">*</span></label>
                         <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="role">角色</label>
+                        <select id="role" name="role" class="form-control">
+                            <option value="user">普通用户</option>
+                            <option value="editor">编辑</option>
+                            <option value="admin">管理员</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -47,14 +65,6 @@ $styles = '<style>.form-group{margin-bottom:1rem}.form-group label{display:block
                         <input type="password" id="password_confirm" name="password_confirm">
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="role">角色</label>
-                <select id="role" name="role" class="form-control">
-                    <option value="user">普通用户</option>
-                    <option value="editor">编辑</option>
-                    <option value="admin">管理员</option>
-                </select>
             </div>
             <div class="form-group">
                 <label>用户信息</label>
@@ -88,6 +98,7 @@ $styles = '<style>.form-group{margin-bottom:1rem}.form-group label{display:block
                 if (result.success) {
                     const user = result.data;
                     document.getElementById('username').value = user.username || '';
+                    document.getElementById('name').value = user.name || '';
                     document.getElementById('email').value = user.email || '';
                     document.getElementById('role').value = user.role || 'user';
                     document.getElementById('created_at').textContent = user.created_at || '-';
@@ -101,6 +112,7 @@ $styles = '<style>.form-group{margin-bottom:1rem}.form-group label{display:block
         showLoading();
         const formData = new FormData();
         formData.append('username', document.getElementById('username').value);
+        formData.append('name', document.getElementById('name').value);
         formData.append('_method', 'PUT');
         formData.append('email', document.getElementById('email').value);
         formData.append('role', document.getElementById('role').value);

@@ -157,6 +157,7 @@ class UserController extends BaseApiController
             $rules = [
                 'username' => 'required|min_length[3]|max_length[50]|is_unique[users.username]',
                 'email' => 'required|valid_email|is_unique[users.email]',
+                'name' => 'required|max_length[100]',
                 'password' => 'required|min_length[6]',
                 'password_confirm' => 'required|matches[password]',
             ];
@@ -172,6 +173,7 @@ class UserController extends BaseApiController
             $saveData = [
                 'username' => $data['username'],
                 'email' => $data['email'],
+                'name' => $data['name'] ?? '',
                 'password' => password_hash($data['password'], PASSWORD_DEFAULT),
                 'role' => $data['role'] ?? 'user',
                 'status' => $data['status'] ?? 'active',
@@ -236,6 +238,7 @@ class UserController extends BaseApiController
             $rules = [
                 'username' => 'permit_empty|min_length[3]|max_length[50]|is_unique[users.username,id,' . $id . ']',
                 'email' => 'permit_empty|valid_email|is_unique[users.email,id,' . $id . ']',
+                'name' => 'permit_empty|max_length[100]',
             ];
 
             // 只有管理员可以修改角色
@@ -264,6 +267,10 @@ class UserController extends BaseApiController
 
             if (!empty($data['email'])) {
                 $updateData['email'] = $data['email'];
+            }
+
+            if (isset($data['name'])) {
+                $updateData['name'] = $data['name'];
             }
 
             if (!empty($data['password'])) {

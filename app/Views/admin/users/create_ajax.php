@@ -27,9 +27,28 @@ $styles = '<style>.form-group{margin-bottom:1rem}.form-group label{display:block
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="name">真实姓名 <span class="text-danger">*</span></label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                        <div class="error-message" id="name-error"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="email">邮箱 <span class="text-danger">*</span></label>
                         <input type="email" id="email" name="email" class="form-control" required>
                         <div class="error-message" id="email-error"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="role">角色</label>
+                        <select id="role" name="role" class="form-control">
+                            <option value="user">普通用户</option>
+                            <option value="editor">编辑</option>
+                            <option value="admin">管理员</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -47,14 +66,6 @@ $styles = '<style>.form-group{margin-bottom:1rem}.form-group label{display:block
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="role">角色</label>
-                <select id="role" name="role" class="form-control">
-                    <option value="user">普通用户</option>
-                    <option value="editor">编辑</option>
-                    <option value="admin">管理员</option>
-                </select>
-            </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> 保存</button>
                 <a href="<?= base_url('admin/users') ?>" class="btn btn-outline-secondary">取消</a>
@@ -69,6 +80,7 @@ $styles = '<style>.form-group{margin-bottom:1rem}.form-group label{display:block
         showLoading();
         const formData = new FormData();
         formData.append('username', document.getElementById('username').value);
+        formData.append('name', document.getElementById('name').value);
         formData.append('email', document.getElementById('email').value);
         formData.append('password', document.getElementById('password').value);
         formData.append('password_confirm', document.getElementById('password_confirm').value);

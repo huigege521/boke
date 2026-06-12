@@ -58,11 +58,28 @@ $styles = '<style>
             </div>
 
             <div class="form-group">
+                <label for="name">真实姓名</label>
+                <input type="text" id="name" name="name" value="<?= old('name', $user['name'] ?? '') ?>">
+                <?php if (isset($errors['name'])): ?>
+                    <div class="error-message"><?= $errors['name'] ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group">
                 <label for="email">邮箱</label>
                 <input type="email" id="email" name="email" value="<?= old('email', $user['email']) ?>">
                 <?php if (isset($errors['email'])): ?>
                     <div class="error-message"><?= $errors['email'] ?></div>
                 <?php endif; ?>
+            </div>
+
+            <div class="form-group">
+                <label for="role">角色</label>
+                <select id="role" name="role">
+                    <option value="user" <?= old('role', $user['role']) == 'user' ? 'selected' : '' ?>>用户</option>
+                    <option value="editor" <?= old('role', $user['role']) == 'editor' ? 'selected' : '' ?>>编辑</option>
+                    <option value="admin" <?= old('role', $user['role']) == 'admin' ? 'selected' : '' ?>>管理员</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -79,15 +96,6 @@ $styles = '<style>
                 <?php if (isset($errors['password_confirm'])): ?>
                     <div class="error-message"><?= $errors['password_confirm'] ?></div>
                 <?php endif; ?>
-            </div>
-
-            <div class="form-group">
-                <label for="role">角色</label>
-                <select id="role" name="role">
-                    <option value="user" <?= old('role', $user['role']) == 'user' ? 'selected' : '' ?>>用户</option>
-                    <option value="editor" <?= old('role', $user['role']) == 'editor' ? 'selected' : '' ?>>编辑</option>
-                    <option value="admin" <?= old('role', $user['role']) == 'admin' ? 'selected' : '' ?>>管理员</option>
-                </select>
             </div>
 
             <div class="form-actions">
