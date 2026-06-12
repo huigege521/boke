@@ -31,58 +31,47 @@ class UserController extends Controller
     }
 
     /**
-     * 用户列表
-     * 获取所有用户并显示在列表页面，支持分页
+     * 用户列表（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function index()
     {
-        $userModel = new UserModel();
-
-        // 分页设置
-        $perPage = 10; // 每页显示10条
-        $page = $this->request->getVar('page') ?? 1; // 当前页码
-        $offset = ($page - 1) * $perPage; // 偏移量
-
-        // 获取用户列表
-        $users = $userModel->getAllUsers($perPage, $offset);
-
-        // 获取用户总数
-        $totalUsers = $userModel->countAllResults();
-        $totalPages = ceil($totalUsers / $perPage); // 总页数
-
-        // 准备视图数据
         $data = [
             'title' => '用户管理 - 后台',
-            'users' => $users,
-            'pagination' => [
-                'current_page' => $page,
-                'total_pages' => $totalPages,
-                'total_items' => $totalUsers,
-                'per_page' => $perPage,
-                'base_url' => '/admin/users'
-            ]
         ];
 
-        // 渲染用户列表视图
-        return view('admin/users/index', $data);
+        // 渲染AJAX版用户列表视图
+        return view('admin/users/index_ajax', $data);
     }
 
     /**
-     * 创建用户
-     * 显示创建用户的表单页面
+     * 创建用户（AJAX无感加载版）
+     * 显示创建用户的表单页面，数据通过AJAX异步提交
      *
      * @return string 视图字符串
      */
     public function create()
     {
-        // 准备视图数据
         $data = [
             'title' => '创建用户 - 后台',
         ];
 
-        // 渲染创建用户表单视图
+        return view('admin/users/create_ajax', $data);
+    }
+
+    /**
+     * 创建用户（传统表单版）
+     *
+     * @return string 视图字符串
+     */
+    public function createForm()
+    {
+        $data = [
+            'title' => '创建用户 - 后台',
+        ];
+
         return view('admin/users/create', $data);
     }
 
@@ -134,30 +123,43 @@ class UserController extends Controller
     }
 
     /**
-     * 编辑用户
-     * 根据ID获取用户数据并显示在编辑表单中
+     * 编辑用户（AJAX无感加载版）
+     * 根据ID获取用户数据并显示在编辑表单中，数据通过AJAX异步加载和提交
      *
      * @param int $id 用户ID
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function edit($id)
     {
+        $data = [
+            'title' => '编辑用户 - 后台',
+            'userId' => $id,
+        ];
+
+        return view('admin/users/edit_ajax', $data);
+    }
+
+    /**
+     * 编辑用户（传统表单版）
+     *
+     * @param int $id 用户ID
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function editForm($id)
+    {
         $userModel = new UserModel();
 
-        // 获取用户数据
         $user = $userModel->find($id);
         if (!$user) {
             session()->setFlashdata('error', '用户不存在');
             return redirect()->to('/admin/users');
         }
 
-        // 准备视图数据
         $data = [
             'title' => '编辑用户 - 后台',
             'user' => $user,
         ];
 
-        // 渲染编辑用户表单视图
         return view('admin/users/edit', $data);
     }
 

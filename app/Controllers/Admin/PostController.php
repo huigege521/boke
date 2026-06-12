@@ -42,175 +42,19 @@ class PostController extends Controller
     }
 
     /**
-     * 文章列表
-     * 获取所有文章并显示在列表页面，支持搜索、筛选、排序和分页
+     * 文章列表（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据，批量操作也通过AJAX处理
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function index()
     {
-        $postModel = new PostModel();
-        $categoryModel = new CategoryModel();
-
-        // 处理批量操作
-        if ($this->request->getMethod() === 'post') {
-            $action = $this->request->getVar('action');
-            $selectedIds = $this->request->getVar('selected_ids');
-
-            // 验证是否有选中的文章和操作类型
-            if (empty($selectedIds)) {
-                session()->setFlashdata('error', '请至少选择一篇文章');
-                return redirect()->to('/admin/posts' . $this->getQueryString());
-            }
-
-            if (empty($action)) {
-                session()->setFlashdata('error', '请选择要执行的操作');
-                return redirect()->to('/admin/posts' . $this->getQueryString());
-            }
-
-            // 确保selectedIds是数组格式
-            if (is_string($selectedIds)) {
-                $selectedIds = [$selectedIds];
-            }
-
-            // 验证ID格式
-            $selectedIds = array_filter($selectedIds, function($id) {
-                return is_numeric($id) && $id > 0;
-            });
-
-            if (empty($selectedIds)) {
-                session()->setFlashdata('error', '无效的文章ID');
-                return redirect()->to('/admin/posts' . $this->getQueryString());
-            }
-
-            $successCount = 0;
-            $failCount = 0;
-            $affectedIds = [];
-
-            switch ($action) {
-                case 'publish':
-                    $result = $postModel->whereIn('id', $selectedIds)->update(['status' => 'published']);
-                    if ($result !== false) {
-                        $successCount = count($selectedIds);
-                        session()->setFlashdata('success', "成功发布 {$successCount} 篇文章");
-                    } else {
-                        session()->setFlashdata('error', '批量发布失败');
-                    }
-                    break;
-                case 'draft':
-                    $result = $postModel->whereIn('id', $selectedIds)->update(['status' => 'draft']);
-                    if ($result !== false) {
-                        $successCount = count($selectedIds);
-                        session()->setFlashdata('success', "成功将 {$successCount} 篇文章设为草稿");
-                    } else {
-                        session()->setFlashdata('error', '批量设为草稿失败');
-                    }
-                    break;
-                case 'pending':
-                    $result = $postModel->whereIn('id', $selectedIds)->update(['status' => 'pending']);
-                    if ($result !== false) {
-                        $successCount = count($selectedIds);
-                        session()->setFlashdata('success', "成功将 {$successCount} 篇文章设为待审核");
-                    } else {
-                        session()->setFlashdata('error', '批量设为待审核失败');
-                    }
-                    break;
-                case 'scheduled':
-                    $result = $postModel->whereIn('id', $selectedIds)->update(['status' => 'scheduled']);
-                    if ($result !== false) {
-                        $successCount = count($selectedIds);
-                        session()->setFlashdata('success', "成功将 {$successCount} 篇文章设为定时发布");
-                    } else {
-                        session()->setFlashdata('error', '批量设为定时发布失败');
-                    }
-                    break;
-                case 'delete':
-                    // 删除前获取文章信息，用于更新分类和标签计数
-                    $postsToDelete = $postModel->whereIn('id', $selectedIds)->findAll();
-                    $result = $postModel->whereIn('id', $selectedIds)->delete();
-                    
-                    if ($result !== false) {
-                        $successCount = count($selectedIds);
-                        
-                        // 更新已发布文章的分类和标签计数
-                        foreach ($postsToDelete as $post) {
-                            if ($post['status'] == 'published') {
-                                // 更新分类文章数
-                                if ($post['category_id']) {
-                                    $this->updateCategoryPostsCount($post['category_id'], -1);
-                                }
-                                
-                                // 更新标签文章数
-                                $postTags = $this->getPostTags($post['id']);
-                                foreach ($postTags as $tagId) {
-                                    $this->updateTagPostsCount($tagId, -1);
-                                }
-                            }
-                            
-                            // 删除文章标签关联
-                            $this->deletePostTags($post['id']);
-                        }
-                        
-                        session()->setFlashdata('success', "成功删除 {$successCount} 篇文章");
-                    } else {
-                        session()->setFlashdata('error', '批量删除失败');
-                    }
-                    break;
-                default:
-                    session()->setFlashdata('error', '未知的操作类型');
-                    return redirect()->to('/admin/posts' . $this->getQueryString());
-            }
-
-            return redirect()->to('/admin/posts' . $this->getQueryString());
-        }
-
-        // 获取筛选和排序参数
-        $search = $this->request->getVar('search') ?? '';
-        $status = $this->request->getVar('status') ?? '';
-        $categoryId = $this->request->getVar('category') ?? '';
-        $orderBy = $this->request->getVar('order_by') ?? 'created_at';
-        $orderDirection = $this->request->getVar('order_direction') ?? 'desc';
-
-        // 分页设置
-        $perPage = 10; // 每页显示10条
-        $page = $this->request->getVar('page') ?? 1; // 当前页码
-        $offset = ($page - 1) * $perPage; // 偏移量
-
-        // 获取所有文章（包括草稿、待审核等）
-        $posts = $postModel->getAllPosts($perPage, $offset, $search, $status, $categoryId, $orderBy, $orderDirection);
-
-        // 为每篇文章获取标签
-        if (!empty($posts)) {
-            foreach ($posts as &$post) {
-                $post['tags'] = $postModel->getPostTags($post['id']);
-            }
-        }
-
-        // 获取文章总数
-        $totalPosts = $postModel->getAllPostsCount($search, $status, $categoryId);
-        $totalPages = ceil($totalPosts / $perPage); // 总页数
-
-        // 准备视图数据
         $data = [
             'title' => '文章管理 - 后台',
-            'posts' => $posts,
-            'categories' => $categoryModel->findAll(),
-            'search' => $search,
-            'status' => $status,
-            'categoryId' => $categoryId,
-            'orderBy' => $orderBy,
-            'orderDirection' => $orderDirection,
-            'pagination' => [
-                'current_page' => $page,
-                'total_pages' => $totalPages,
-                'total_items' => $totalPosts,
-                'per_page' => $perPage,
-                'base_url' => '/admin/posts' . $this->getQueryString()
-            ]
         ];
 
-        // 渲染文章列表视图
-        return view('admin/posts/index', $data);
+        // 渲染AJAX版文章列表视图
+        return view('admin/posts/index_ajax', $data);
     }
 
     /**
@@ -248,24 +92,37 @@ class PostController extends Controller
     }
 
     /**
-     * 创建文章
-     * 显示创建文章的表单页面
+     * 创建文章（AJAX无感加载版）
+     * 显示创建文章的表单页面，数据通过AJAX异步加载和提交
      *
      * @return string 视图字符串
      */
     public function create()
     {
+        $data = [
+            'title' => '创建文章 - 后台',
+        ];
+
+        return view('admin/posts/create_ajax', $data);
+    }
+
+    /**
+     * 创建文章（传统表单版）
+     * 保留原有方法以备需要
+     *
+     * @return string 视图字符串
+     */
+    public function createForm()
+    {
         $categoryModel = new CategoryModel();
         $tagModel = new TagModel();
 
-        // 准备视图数据
         $data = [
             'title' => '创建文章 - 后台',
-            'categories' => $categoryModel->findAll(), // 所有分类
-            'tags' => $tagModel->findAll(), // 所有标签
+            'categories' => $categoryModel->findAll(),
+            'tags' => $tagModel->findAll(),
         ];
 
-        // 渲染创建文章表单视图
         return view('admin/posts/create', $data);
     }
 
@@ -369,38 +226,51 @@ class PostController extends Controller
     }
 
     /**
-     * 编辑文章
-     * 根据ID获取文章数据并显示在编辑表单中
+     * 编辑文章（AJAX无感加载版）
+     * 根据ID获取文章数据并显示在编辑表单中，数据通过AJAX异步加载和提交
      *
      * @param int $id 文章ID
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function edit($id)
     {
+        $data = [
+            'title' => '编辑文章 - 后台',
+            'postId' => $id,
+        ];
+
+        return view('admin/posts/edit_ajax', $data);
+    }
+
+    /**
+     * 编辑文章（传统表单版）
+     * 保留原有方法以备需要
+     *
+     * @param int $id 文章ID
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function editForm($id)
+    {
         $postModel = new PostModel();
         $categoryModel = new CategoryModel();
         $tagModel = new TagModel();
 
-        // 获取文章数据
         $post = $postModel->find($id);
         if (!$post) {
             session()->setFlashdata('error', '文章不存在');
             return redirect()->to('/admin/posts');
         }
 
-        // 获取文章的标签
         $postTags = $this->getPostTags($id);
 
-        // 准备视图数据
         $data = [
             'title' => '编辑文章 - 后台',
             'post' => $post,
-            'categories' => $categoryModel->findAll(), // 所有分类
-            'tags' => $tagModel->findAll(), // 所有标签
-            'postTags' => $postTags, // 文章的标签
+            'categories' => $categoryModel->findAll(),
+            'tags' => $tagModel->findAll(),
+            'postTags' => $postTags,
         ];
 
-        // 渲染编辑文章表单视图
         return view('admin/posts/edit', $data);
     }
 
@@ -975,32 +845,20 @@ class PostController extends Controller
     }
 
     /**
-     * 查看文章修订历史
+     * 查看文章修订历史（AJAX无感加载版）
      *
      * @param int $id 文章ID
      * @return string 视图字符串
      */
     public function revisions($id)
     {
-        $postModel = new PostModel();
-
-        // 获取文章数据
-        $post = $postModel->find($id);
-        if (!$post) {
-            session()->setFlashdata('error', '文章不存在');
-            return redirect()->to('/admin/posts');
-        }
-
-        // 获取修订历史
-        $revisions = $this->revisionModel->getRevisions($id, 50);
-
         $data = [
-            'title' => '修订历史 - ' . $post['title'],
-            'post' => $post,
-            'revisions' => $revisions
+            'title' => '修订历史',
+            'postId' => $id,
         ];
 
-        return view('admin/posts/revisions', $data);
+        // 渲染AJAX版修订历史视图
+        return view('admin/posts/revisions_ajax', $data);
     }
 
     /**

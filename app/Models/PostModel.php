@@ -304,6 +304,67 @@ class PostModel extends Model
         return $query->getResultArray();
     }
 
+    // 设置文章的标签
+    public function setPostTags($postId, $tagIds)
+    {
+        // 获取当前文章的旧标签ID
+        $oldTags = $this->db->table('post_tags')
+            ->where('post_id', $postId)
+            ->get()
+            ->getResultArray();
+        $oldTagIds = array_column($oldTags, 'tag_id');
+
+        // 先删除现有标签关联
+        $this->db->table('post_tags')->where('post_id', $postId)->delete();
+
+        // 如果没有标签，直接返回
+        if (!is_array($tagIds) || empty($tagIds)) {
+            // 减少旧标签的文章计数
+            foreach ($oldTagIds as $tagId) {
+                $this->decrementTagPostCount($tagId);
+            }
+            return true;
+        }
+
+        // 添加新的标签关联
+        foreach ($tagIds as $tagId) {
+            $this->db->table('post_tags')->insert([
+                'post_id' => $postId,
+                'tag_id' => (int) $tagId
+            ]);
+            // 增加新标签的文章计数
+            $this->incrementTagPostCount($tagId);
+        }
+
+        // 减少不再关联的旧标签的文章计数
+        foreach ($oldTagIds as $oldTagId) {
+            if (!in_array($oldTagId, $tagIds)) {
+                $this->decrementTagPostCount($oldTagId);
+            }
+        }
+
+        return true;
+    }
+
+    // 增加标签的文章计数
+    private function incrementTagPostCount($tagId)
+    {
+        $this->db->table('tags')
+            ->set('posts_count', 'posts_count + 1', false)
+            ->where('id', $tagId)
+            ->update();
+    }
+
+    // 减少标签的文章计数
+    private function decrementTagPostCount($tagId)
+    {
+        $this->db->table('tags')
+            ->set('posts_count', 'posts_count - 1', false)
+            ->where('id', $tagId)
+            ->where('posts_count >', 0)
+            ->update();
+    }
+
     // 获取所有文章总数（用于后台管理）
     public function getAllPostsCount($search = null, $status = null, $categoryId = null)
     {

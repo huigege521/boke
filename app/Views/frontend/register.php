@@ -64,6 +64,18 @@
             </div>
         <?php endif; ?>
 
+        <!-- 验证错误 -->
+        <?php if (session()->getFlashdata('errors')): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="mb-0">
+                    <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                        <li><?= $error ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
+            </div>
+        <?php endif; ?>
+
         <!-- 成功消息 -->
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -104,6 +116,19 @@
 
     <!-- Bootstrap JS -->
     <script src="<?= base_url('js/bootstrap/bootstrap.bundle.min.js') ?>"></script>
+
+    <script>
+        // 自动关闭警告消息（5秒后）
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function (alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000); // 5秒后自动关闭
+        });
+    </script>
 
 </body>
 

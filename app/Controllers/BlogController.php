@@ -121,12 +121,18 @@ class BlogController extends BaseController
                 ->findAll();
         }
 
+        // 获取分类和标签数据（用于导航和侧边栏）
+        $categoryModel = new CategoryModel();
+        $tagModel = new TagModel();
+
         // 准备视图数据
         $data = [
             'title' => $post['meta_title'] ?? $post['title'],
             'post' => $post,
             'comments' => $comments,
             'relatedPosts' => $relatedPosts,
+            'categories' => $categoryModel->getAllCategories(),
+            'tags' => $tagModel->getAllTags(),
             'metaDescription' => $post['meta_description'] ?? $post['excerpt'] ?? mb_substr(strip_tags($post['content']), 0, 200),
             'metaKeywords' => $post['meta_keywords'] ?? '',
         ];
@@ -146,19 +152,29 @@ class BlogController extends BaseController
     public function submitComment()
     {
         // 检查是否登录
-        if (!session()->get('logged_in')) {
-            return redirect()->to('/home/login')->with('error', '请先登录');
-        }
+        $isLoggedIn = session()->get('logged_in');
 
         // 验证输入
         $rules = [
             'post_id' => 'required|integer',
             'content' => 'required|min_length[5]|max_length[1000]',
+            'captcha' => 'required', // 验证码必填
         ];
 
+        // 如果未登录，需要验证姓名和邮箱
+        if (!$isLoggedIn) {
+            $rules['name'] = 'required|min_length[2]|max_length[50]';
+            $rules['email'] = 'required|valid_email';
+        }
+
         if (!$this->validate($rules)) {
-            $errors = $this->validator ? $this->validator->getErrors() : [];
-            return redirect()->back()->withInput()->with('errors', $errors);
+            return redirect()->back()->withInput()->with('errors', $this->getValidationErrors());
+        }
+
+        // 验证验证码
+        $captcha = new \App\Libraries\Captcha(session());
+        if (!$captcha->verify($this->request->getPost('captcha'))) {
+            return redirect()->back()->withInput()->with('error', '验证码错误');
         }
 
         $commentModel = new CommentModel();
@@ -166,7 +182,9 @@ class BlogController extends BaseController
         // 准备评论数据
         $commentData = [
             'post_id' => $this->request->getPost('post_id'),
-            'user_id' => session()->get('user_id'),
+            'user_id' => $isLoggedIn ? session()->get('user_id') : null,
+            'author_name' => $isLoggedIn ? null : $this->request->getPost('name'),
+            'author_email' => $isLoggedIn ? null : $this->request->getPost('email'),
             'content' => $this->request->getPost('content'),
             'parent_id' => $this->request->getPost('parent_id') ?: null,
             'author_ip' => $this->request->getIPAddress(),
@@ -177,7 +195,9 @@ class BlogController extends BaseController
         if ($commentModel->insert($commentData)) {
             return redirect()->back()->with('success', '评论提交成功，等待审核');
         } else {
-            return redirect()->back()->withInput()->with('error', '评论提交失败');
+            $errors = $commentModel->errors() ?? [];
+            $errorMessage = !empty($errors) ? '保存失败: ' . implode('; ', $errors) : '评论提交失败';
+            return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
 

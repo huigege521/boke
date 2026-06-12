@@ -26,6 +26,7 @@
             <?php foreach ($tags ?? [] as $tag): ?>
                 <a href="<?= base_url('tag/' . $tag['slug']) ?>" class="badge mb-1 hover-primary">
                     <i class="fas fa-tag mr-1"></i><?= $tag['name'] ?>
+                    <span class="badge badge-light text-dark ml-1"><?= $tag['posts_count'] ?? 0 ?></span>
                 </a>
             <?php endforeach; ?>
         </div>

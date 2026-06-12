@@ -1,4 +1,4 @@
-    </div>
+</div>
 </div>
 
 <!-- jQuery -->
@@ -15,8 +15,8 @@
         "debug": false,
         "newestOnTop": true,
         "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": true,
         "onclick": null,
         "showDuration": "300",
         "hideDuration": "1000",

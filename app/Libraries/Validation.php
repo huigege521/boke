@@ -128,9 +128,26 @@ class Validation
      */
     protected function validateWithCI($field, $value, $rule, $param = null)
     {
-        $validation = \Config\Services::validation();
-        $validation->setRules([$field => $rule]);
-        return $validation->run([$field => $value]);
+        // 对于 matches 规则，使用自定义验证方法
+        if ($rule === 'matches' && $param) {
+            return $this->validateMatches($value, $param);
+        }
+
+        // 对于 is_unique 规则，使用 CodeIgniter 验证
+        if ($rule === 'is_unique') {
+            $validation = \Config\Services::validation();
+            $validation->setRules([$field => $rule]);
+            return $validation->run([$field => $value]);
+        }
+
+        // 其他规则使用自定义验证方法
+        $method = 'validate' . ucfirst($rule);
+        if (method_exists($this, $method)) {
+            return $this->$method($value, $param);
+        }
+
+        // 默认返回 true
+        return true;
     }
 
     /**
@@ -148,6 +165,18 @@ class Validation
         if (isset($this->messages[$key])) {
             return $this->messages[$key];
         }
+
+        // 字段名中文映射
+        $fieldNames = [
+            'username' => '用户名',
+            'email' => '邮箱',
+            'password' => '密码',
+            'confirm_password' => '确认密码',
+            'name' => '真实姓名',
+        ];
+
+        $fieldLabel = $fieldNames[$field] ?? $field;
+        $paramLabel = $fieldNames[$param] ?? $param;
 
         $defaultMessages = [
             'required' => '{field} 是必填项',
@@ -168,8 +197,8 @@ class Validation
             'valid_base64' => '{field} 必须是有效的 Base64 字符串',
             'valid_json' => '{field} 必须是有效的 JSON 字符串',
             'valid_date' => '{field} 必须是有效的日期',
-            'matches' => '{field} 与 {param} 不匹配',
-            'is_unique' => '{field} 已存在',
+            'matches' => '{field} 与 {param} 不一致',
+            'is_unique' => '{field} 已被使用',
             'in_list' => '{field} 必须是以下之一: {param}',
             'regex_match' => '{field} 格式不正确',
             'differs' => '{field} 不能与 {param} 相同',
@@ -189,8 +218,8 @@ class Validation
         $message = $defaultMessages[$rule] ?? '{field} 验证失败';
 
         // 替换占位符
-        $message = str_replace('{field}', $field, $message);
-        $message = str_replace('{param}', $param, $message);
+        $message = str_replace('{field}', $fieldLabel, $message);
+        $message = str_replace('{param}', $paramLabel, $message);
 
         return $message;
     }
@@ -295,7 +324,7 @@ class Validation
     {
         // 支持中国大陆手机号格式
         return preg_match('/^1[3-9]\d{9}$/', $value) ||
-               preg_match('/^(\d{3,4}-)?\d{7,8}$/', $value);
+            preg_match('/^(\d{3,4}-)?\d{7,8}$/', $value);
     }
 
     /**
@@ -343,9 +372,9 @@ class Validation
     {
         // 至少8位，包含大小写字母和数字
         return strlen($value) >= 8 &&
-               preg_match('/[A-Z]/', $value) &&
-               preg_match('/[a-z]/', $value) &&
-               preg_match('/[0-9]/', $value);
+            preg_match('/[A-Z]/', $value) &&
+            preg_match('/[a-z]/', $value) &&
+            preg_match('/[0-9]/', $value);
     }
 
     /**
@@ -387,7 +416,11 @@ class Validation
      */
     protected function validateMatches($value, $param)
     {
-        return $value === ($this->data[$param] ?? null);
+        // 对字符串进行 trim 操作，防止空格导致匹配失败
+        $value = is_string($value) ? trim($value) : $value;
+        $paramValue = $this->data[$param] ?? null;
+        $paramValue = is_string($paramValue) ? trim($paramValue) : $paramValue;
+        return $value === $paramValue;
     }
 
     /**

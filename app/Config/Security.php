@@ -12,10 +12,10 @@ class Security extends BaseConfig
 {
     /**
      * CSRF 保护模式
-     * - cookie: 使用 Cookie 存储令牌
+     * - cookie: 使用 Cookie 存储令牌（推荐用于 AJAX 请求）
      * - session: 使用 Session 存储令牌
      */
-    public string $csrfProtection = 'session';
+    public string $csrfProtection = 'cookie';
 
     /**
      * 验证 CSRF 头
@@ -56,7 +56,7 @@ class Security extends BaseConfig
     /**
      * 验证失败时重定向
      */
-    public bool $redirect = false;
+    public bool $redirect = true;
 
     /**
      * 允许的域名（用于 CORS）

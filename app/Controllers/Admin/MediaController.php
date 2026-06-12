@@ -26,26 +26,36 @@ class MediaController extends BaseController
     }
 
     /**
-     * 媒体库首页
+     * 媒体库首页（AJAX无感加载版）
      *
      * @return string
      */
     public function index()
     {
+        $data = [
+            'title' => '媒体库 - 后台',
+        ];
+
+        return view('admin/media/index_ajax', $data);
+    }
+
+    /**
+     * 媒体库首页（传统版）
+     *
+     * @return string
+     */
+    public function indexForm()
+    {
         $type = $this->getGet('type');
         $search = $this->getGet('search');
         $folderId = $this->getGet('folder');
 
-        // 分页设置
         $perPage = 24;
         $page = (int) ($this->getGet('page') ?? 1);
         $offset = ($page - 1) * $perPage;
 
-        // 获取媒体文件
         $media = $this->mediaModel->getAllMedia($perPage, $offset, $type, $search, $folderId);
         $total = $this->mediaModel->getMediaCount($type, $search, $folderId);
-
-        // 获取统计信息
         $stats = $this->mediaModel->getStatsByType();
 
         $data = [

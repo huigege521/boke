@@ -31,61 +31,51 @@ class CategoryController extends Controller
     }
 
     /**
-     * 分类列表
-     * 获取所有分类并显示在列表页面，支持分页
+     * 分类列表（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function index()
     {
-        $categoryModel = new CategoryModel();
-
-        // 分页设置
-        $perPage = 10; // 每页显示10条
-        $page = $this->request->getVar('page') ?? 1; // 当前页码
-        $offset = ($page - 1) * $perPage; // 偏移量
-
-        // 获取分类列表
-        $categories = $categoryModel->getAllCategories($perPage, $offset);
-
-        // 获取分类总数
-        $totalCategories = $categoryModel->getAllCategoriesCount();
-        $totalPages = ceil($totalCategories / $perPage); // 总页数
-
-        // 准备视图数据
         $data = [
             'title' => '分类管理 - 后台',
-            'categories' => $categories,
-            'pagination' => [
-                'current_page' => $page,
-                'total_pages' => $totalPages,
-                'total_items' => $totalCategories,
-                'per_page' => $perPage,
-                'base_url' => '/admin/categories'
-            ]
         ];
 
-        // 渲染分类列表视图
-        return view('admin/categories/index', $data);
+        // 渲染AJAX版分类列表视图
+        return view('admin/categories/index_ajax', $data);
     }
 
     /**
-     * 创建分类
-     * 显示创建分类的表单页面
+     * 创建分类（AJAX无感加载版）
+     * 显示创建分类的表单页面，数据通过AJAX异步加载和提交
      *
      * @return string 视图字符串
      */
     public function create()
     {
-        $categoryModel = new CategoryModel();
-
-        // 准备视图数据
         $data = [
             'title' => '创建分类 - 后台',
-            'parentCategories' => $categoryModel->getAllCategories(), // 所有父分类
         ];
 
-        // 渲染创建分类表单视图
+        return view('admin/categories/create_ajax', $data);
+    }
+
+    /**
+     * 创建分类（传统表单版）
+     * 保留原有方法以备需要
+     *
+     * @return string 视图字符串
+     */
+    public function createForm()
+    {
+        $categoryModel = new CategoryModel();
+
+        $data = [
+            'title' => '创建分类 - 后台',
+            'parentCategories' => $categoryModel->getAllCategories(),
+        ];
+
         return view('admin/categories/create', $data);
     }
 
@@ -136,31 +126,45 @@ class CategoryController extends Controller
     }
 
     /**
-     * 编辑分类
-     * 根据ID获取分类数据并显示在编辑表单中
+     * 编辑分类（AJAX无感加载版）
+     * 根据ID获取分类数据并显示在编辑表单中，数据通过AJAX异步加载和提交
      *
      * @param int $id 分类ID
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function edit($id)
     {
+        $data = [
+            'title' => '编辑分类 - 后台',
+            'categoryId' => $id,
+        ];
+
+        return view('admin/categories/edit_ajax', $data);
+    }
+
+    /**
+     * 编辑分类（传统表单版）
+     * 保留原有方法以备需要
+     *
+     * @param int $id 分类ID
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function editForm($id)
+    {
         $categoryModel = new CategoryModel();
 
-        // 获取分类数据
         $category = $categoryModel->find($id);
         if (!$category) {
             session()->setFlashdata('error', '分类不存在');
             return redirect()->to('/admin/categories');
         }
 
-        // 准备视图数据
         $data = [
             'title' => '编辑分类 - 后台',
             'category' => $category,
-            'parentCategories' => $categoryModel->where('id !=', $id)->findAll(), // 所有父分类（排除当前分类）
+            'parentCategories' => $categoryModel->where('id !=', $id)->findAll(),
         ];
 
-        // 渲染编辑分类表单视图
         return view('admin/categories/edit', $data);
     }
 

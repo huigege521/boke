@@ -22,6 +22,16 @@ class Exceptions extends BaseConfig
 
     public string $deprecationLogLevel = LogLevel::WARNING;
 
+    /**
+     * 是否显示详细错误信息（生产环境应设置为false）
+     */
+    public bool $showDebug = false;
+
+    /**
+     * 是否记录错误日志
+     */
+    public bool $logErrors = true;
+
     public function handler(int $statusCode, Throwable $exception): ExceptionHandlerInterface
     {
         return new ExceptionHandler($this);

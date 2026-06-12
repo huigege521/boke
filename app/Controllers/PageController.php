@@ -96,8 +96,7 @@ class PageController extends BaseController
             'email' => $this->request->getPost('email'),
             'subject' => $this->request->getPost('subject'),
             'message' => $this->request->getPost('message'),
-            'ip_address' => $this->request->getIPAddress(),
-            'status' => 'unread',
+            'status' => 'pending', // 使用数据库允许的值：pending 或 processed
         ];
 
         // 插入联系记录
@@ -107,7 +106,11 @@ class PageController extends BaseController
 
             return redirect()->back()->with('success', '消息发送成功，我们会尽快回复您');
         } else {
-            return redirect()->back()->withInput()->with('error', '消息发送失败，请稍后重试');
+            // 获取插入失败的错误信息
+            $errors = $contactModel->errors() ?? [];
+            $errorMessage = !empty($errors) ? '保存失败: ' . implode('; ', $errors) : '消息发送失败，请稍后重试';
+            log_message('error', '[PageController.submitContact] Insert failed: ' . print_r($errors, true));
+            return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
 

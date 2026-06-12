@@ -306,9 +306,9 @@ class SecurityFilter implements FilterInterface
             '/SCRIPT\s*>/i'
         ];
 
-        $getParams = $request->getGet() ?? [];
-        $postParams = $request->getPost() ?? [];
-        $requestParams = $request->getVar() ?? [];
+        $getParams = (array) ($request->getGet() ?? []);
+        $postParams = (array) ($request->getPost() ?? []);
+        $requestParams = (array) ($request->getVar() ?? []);
 
         // 排除富文本编辑器字段和 CSRF 令牌
         foreach ($this->excludedFields as $field) {
@@ -364,9 +364,9 @@ class SecurityFilter implements FilterInterface
             '/expression\s*\(/i'
         ];
 
-        $getParams = $request->getGet() ?? [];
-        $postParams = $request->getPost() ?? [];
-        $requestParams = $request->getVar() ?? [];
+        $getParams = (array) ($request->getGet() ?? []);
+        $postParams = (array) ($request->getPost() ?? []);
+        $requestParams = (array) ($request->getVar() ?? []);
 
         // 排除富文本编辑器字段和 CSRF 令牌
         foreach ($this->excludedFields as $field) {

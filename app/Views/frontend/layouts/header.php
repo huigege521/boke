@@ -176,6 +176,9 @@
         /* 搜索框样式 */
         .search-form {
             position: relative;
+            display: flex;
+            align-items: center;
+            width: 250px;
         }
 
         .search-form .form-control {
@@ -568,7 +571,8 @@
                 <!-- 搜索框 -->
                 <form class="search-form my-2 my-lg-0 me-4" action="<?= base_url('search') ?>" method="post">
                     <input type="hidden" name="csrf_token" value="<?= csrf_hash() ?>">
-                    <input class="form-control" type="search" placeholder="搜索文章..." name="keyword">
+                    <input class="form-control" type="search" placeholder="搜索文章..." name="keyword"
+                        value="<?= htmlspecialchars($keyword ?? '') ?>">
                     <button class="btn" type="submit">
                         <i class="fas fa-search"></i>
                     </button>

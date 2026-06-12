@@ -6,10 +6,23 @@ use CodeIgniter\Controller;
 
 /**
  * API 基础控制器
- * 所有 API 控制器的父类，提供通用的 API 响应方法
+ * 所有 API 控制器的父类，提供通用的 API 响应方法和登录验证
  */
 class BaseApiController extends Controller
 {
+    /**
+     * 检查用户是否已登录
+     * 
+     * @return bool|\CodeIgniter\HTTP\ResponseInterface 如果已登录返回true，否则返回错误响应
+     */
+    protected function checkLogin()
+    {
+        if (!session()->get('logged_in')) {
+            return $this->unauthorized('未登录');
+        }
+        return true;
+    }
+
     /**
      * 成功响应
      *

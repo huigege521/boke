@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $title ?>
-    </title>
+    <title><?= $title ?></title>
     <!-- Bootstrap CSS -->
     <link href="<?= base_url('css/bootstrap/bootstrap.min.css') ?>" rel="stylesheet">
     <style>
@@ -24,7 +22,7 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
         }
 
         .reset-container h2 {
@@ -59,54 +57,43 @@
         <h2>重置密码</h2>
 
         <!-- 错误消息 -->
-        <?php if (session()->getFlashdata('error')): ?>
+        <?php if (!empty($error)): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?= session()->getFlashdata('error') ?>
+                <?= $error ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
             </div>
         <?php endif; ?>
 
-        <!-- 成功消息 -->
-        <?php if (session()->getFlashdata('success')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= session()->getFlashdata('success') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
+        <!-- 如果令牌有效，显示重置表单 -->
+        <?php if (!empty($token)): ?>
+            <form action="<?= base_url('home/resetPassword?token=' . $token) ?>" method="post">
+                <?= csrf_field() ?>
+                <div class="form-group">
+                    <label for="password">新密码</label>
+                    <input type="password" class="form-control" id="password" name="password" required placeholder="请输入新密码">
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">确认密码</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="请再次输入密码">
+                </div>
+                <button type="submit" class="btn btn-primary">重置密码</button>
+            </form>
+        <?php else: ?>
+            <!-- 如果令牌无效，显示提示信息 -->
+            <div class="text-center">
+                <p>无法完成密码重置</p>
+                <a href="<?= base_url('home/forgotPassword') ?>" class="btn btn-link">重新获取重置链接</a>
             </div>
         <?php endif; ?>
-
-        <form action="<?= base_url('home/resetPassword') ?>" method="post">
-            <?= csrf_field() ?>
-            <input type="hidden" name="token" value="<?= $token ?? '' ?>">
-            <div class="form-group">
-                <label for="password">新密码</label>
-                <input type="password" class="form-control" id="password" name="password" required minlength="6">
-            </div>
-            <div class="form-group">
-                <label for="confirm_password">确认新密码</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required
-                    minlength="6">
-            </div>
-            <button type="submit" class="btn btn-primary">重置密码</button>
-        </form>
 
         <div class="login-link">
-            <p>返回登录？<a href="<?= base_url('home/login') ?>">立即登录</a></p>
+            <p>记住密码了？<a href="<?= base_url('home/login') ?>">立即登录</a></p>
         </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="<?= base_url('js/bootstrap/bootstrap.bundle.min.js') ?>"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-                document.querySelectorAll('.alert').forEach(function (alert) {
-                    var bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
-                });
-            }, 3000);
-        });
-    </script>
 </body>
 
 </html>

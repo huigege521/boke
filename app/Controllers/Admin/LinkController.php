@@ -40,37 +40,47 @@ class LinkController extends Controller
     }
 
     /**
-     * 友情链接列表页面
-     * 获取所有友情链接并显示在列表页面
+     * 友情链接列表页面（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function index()
     {
-        // 准备视图数据
         $data = [
             'title' => '友情链接管理',
-            'links' => $this->linkModel->findAll(), // 获取所有友情链接数据
         ];
 
-        // 渲染友情链接列表视图
-        return view('admin/links/index', $data);
+        // 渲染AJAX版友情链接列表视图
+        return view('admin/links/index_ajax', $data);
     }
 
     /**
-     * 添加友情链接页面
-     * 显示添加友情链接的表单页面
+     * 添加友情链接页面（AJAX无感加载版）
+     * 显示添加友情链接的表单页面，数据通过AJAX异步提交
      *
      * @return string 视图字符串
      */
     public function create()
     {
-        // 准备视图数据
         $data = [
             'title' => '添加友情链接',
         ];
 
-        // 渲染添加友情链接表单视图
+        return view('admin/links/create_ajax', $data);
+    }
+
+    /**
+     * 添加友情链接页面（传统表单版）
+     *
+     * @return string 视图字符串
+     */
+    public function createForm()
+    {
+        $data = [
+            'title' => '添加友情链接',
+        ];
+
         return view('admin/links/create', $data);
     }
 
@@ -111,21 +121,35 @@ class LinkController extends Controller
     }
 
     /**
-     * 编辑友情链接页面
-     * 根据ID获取友情链接数据并显示在编辑表单中
+     * 编辑友情链接（AJAX无感加载版）
+     * 根据ID获取友情链接数据并显示在编辑表单中，数据通过AJAX异步加载和提交
      *
      * @param int $id 友情链接ID
      * @return string 视图字符串
      */
     public function edit($id)
     {
-        // 准备视图数据
         $data = [
             'title' => '编辑友情链接',
-            'link' => $this->linkModel->find($id), // 根据ID获取友情链接数据
+            'linkId' => $id,
         ];
 
-        // 渲染编辑友情链接表单视图
+        return view('admin/links/edit_ajax', $data);
+    }
+
+    /**
+     * 编辑友情链接（传统表单版）
+     *
+     * @param int $id 友情链接ID
+     * @return string 视图字符串
+     */
+    public function editForm($id)
+    {
+        $data = [
+            'title' => '编辑友情链接',
+            'link' => $this->linkModel->find($id),
+        ];
+
         return view('admin/links/edit', $data);
     }
 

@@ -43,7 +43,7 @@ class AuthController extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->getValidationErrors());
         }
 
         $email = $this->request->getPost('email');
@@ -109,7 +109,7 @@ class AuthController extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->getValidationErrors());
         }
 
         // 准备注册数据
@@ -129,6 +129,235 @@ class AuthController extends BaseController
         } else {
             return redirect()->back()->withInput()->with('error', $result['message']);
         }
+    }
+
+    /**
+     * 忘记密码页面
+     *
+     * @return string 视图字符串
+     */
+    public function forgotPassword()
+    {
+        // 如果已登录，重定向到首页
+        if (session()->get('logged_in')) {
+            return redirect()->to('/');
+        }
+
+        // 如果是 POST 请求，处理密码重置请求
+        if (strtolower($this->request->getMethod()) === 'post') {
+            $email = $this->request->getPost('email');
+
+            if (empty($email)) {
+                return redirect()->back()->withInput()->with('error', '请输入邮箱地址');
+            }
+
+            // 检查邮箱是否存在
+            $userModel = new UserModel();
+            $user = $userModel->where('email', $email)->first();
+
+            if (!$user) {
+                return redirect()->back()->withInput()->with('error', '该邮箱未注册');
+            }
+
+            // 生成重置令牌
+            $token = bin2hex(random_bytes(32));
+            $expiresAt = date('Y-m-d H:i:s', time() + 3600); // 1小时过期
+
+            // 保存令牌到用户表
+            $userModel->update($user['id'], [
+                'reset_token' => $token,
+                'reset_token_expires' => $expiresAt
+            ]);
+
+            // 构建重置链接
+            $resetLink = base_url('home/resetPassword?token=' . $token);
+
+            // 发送邮件
+            $emailSent = $this->sendResetEmail($email, $user['name'], $resetLink);
+
+            if ($emailSent) {
+                session()->setFlashdata('success', '重置链接已发送到您的邮箱，请在1小时内点击链接重置密码');
+            } else {
+                session()->setFlashdata('error', '邮件发送失败，请稍后重试');
+            }
+
+            return redirect()->to('/home/forgotPassword');
+        }
+
+        $data = [
+            'title' => '忘记密码 - 博客系统',
+        ];
+
+        return view('frontend/forgot_password', $data);
+    }
+
+    /**
+     * 发送密码重置邮件
+     *
+     * @param string $email 收件人邮箱
+     * @param string $name 收件人姓名
+     * @param string $resetLink 重置链接
+     * @return bool 是否发送成功
+     */
+    protected function sendResetEmail($email, $name, $resetLink)
+    {
+        try {
+            // 获取邮件配置
+            $config = config('Email');
+
+            // 配置邮件服务
+            $emailService = \Config\Services::email();
+            $emailService->initialize([
+                'protocol' => $config->protocol ?? 'smtp',
+                'SMTPHost' => $config->SMTPHost ?? 'smtp.example.com',
+                'SMTPUser' => $config->SMTPUser ?? '',
+                'SMTPPass' => $config->SMTPPass ?? '',
+                'SMTPPort' => $config->SMTPPort ?? 587,
+                'SMTPTimeout' => $config->SMTPTimeout ?? 5,
+                'SMTPKeepAlive' => false,
+                'SMTPAutoTLS' => true,
+                'SMTPAuth' => true,
+                'mailType' => 'html',
+                'charset' => 'utf-8',
+                'wordWrap' => true,
+            ]);
+
+            // 设置邮件内容
+            $emailService->setFrom($config->fromEmail ?? 'noreply@example.com', $config->fromName ?? '博客系统');
+            $emailService->setTo($email, $name);
+            $emailService->setSubject('密码重置请求');
+
+            // 邮件正文
+            $message = <<<HTML
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>密码重置</title>
+</head>
+<body style="font-family: 'Microsoft YaHei', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h2 style="color: #333; text-align: center;">密码重置</h2>
+        <p style="color: #666; line-height: 1.6;">尊敬的 {$name}，</p>
+        <p style="color: #666; line-height: 1.6;">我们收到了您的密码重置请求。请点击下面的链接重置您的密码：</p>
+        <div style="text-align: center; margin: 20px 0;">
+            <a href="{$resetLink}" style="display: inline-block; padding: 12px 24px; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">重置密码</a>
+        </div>
+        <p style="color: #666; line-height: 1.6; font-size: 14px;">此链接将在1小时后过期。如果您没有发起此请求，请忽略此邮件。</p>
+        <p style="color: #999; font-size: 12px; text-align: center; margin-top: 20px;">© 2026 博客系统</p>
+    </div>
+</body>
+</html>
+HTML;
+
+            $emailService->setMessage($message);
+
+            // 发送邮件
+            if ($emailService->send()) {
+                log_message('info', '[AuthController.sendResetEmail] 邮件发送成功: ' . $email);
+                return true;
+            } else {
+                log_message('error', '[AuthController.sendResetEmail] 邮件发送失败: ' . $emailService->printDebugger());
+                return false;
+            }
+        } catch (\Exception $e) {
+            log_message('error', '[AuthController.sendResetEmail] 异常: ' . $e->getMessage());
+            // 如果邮件发送失败，记录日志但不抛出异常，让用户继续使用系统
+            return false;
+        }
+    }
+
+    /**
+     * 重置密码页面
+     *
+     * @return string|RedirectResponse 视图字符串或重定向响应
+     */
+    public function resetPassword()
+    {
+        // 如果已登录，重定向到首页
+        if (session()->get('logged_in')) {
+            return redirect()->to('/');
+        }
+
+        // 获取重置令牌
+        $token = $this->request->getGet('token');
+
+        // 如果没有令牌，显示错误
+        if (empty($token)) {
+            return view('frontend/reset_password', [
+                'title' => '重置密码 - 博客系统',
+                'error' => '无效的重置链接',
+                'token' => null
+            ]);
+        }
+
+        // 检查令牌是否有效
+        $userModel = new UserModel();
+        $user = $userModel->where('reset_token', $token)->first();
+
+        if (!$user) {
+            return view('frontend/reset_password', [
+                'title' => '重置密码 - 博客系统',
+                'error' => '无效的重置链接',
+                'token' => null
+            ]);
+        }
+
+        // 检查令牌是否过期
+        if (strtotime($user['reset_token_expires']) < time()) {
+            return view('frontend/reset_password', [
+                'title' => '重置密码 - 博客系统',
+                'error' => '重置链接已过期，请重新申请',
+                'token' => null
+            ]);
+        }
+
+        // 如果是 POST 请求，处理密码重置
+        if (strtolower($this->request->getMethod()) === 'post') {
+            $password = $this->request->getPost('password');
+            $confirmPassword = $this->request->getPost('confirm_password');
+
+            // 验证输入
+            if (empty($password)) {
+                return view('frontend/reset_password', [
+                    'title' => '重置密码 - 博客系统',
+                    'error' => '请输入新密码',
+                    'token' => $token
+                ]);
+            }
+
+            if (strlen($password) < 6) {
+                return view('frontend/reset_password', [
+                    'title' => '重置密码 - 博客系统',
+                    'error' => '密码至少需要6个字符',
+                    'token' => $token
+                ]);
+            }
+
+            if ($password !== $confirmPassword) {
+                return view('frontend/reset_password', [
+                    'title' => '重置密码 - 博客系统',
+                    'error' => '两次输入的密码不一致',
+                    'token' => $token
+                ]);
+            }
+
+            // 更新密码
+            $userModel->update($user['id'], [
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'reset_token' => null,
+                'reset_token_expires' => null
+            ]);
+
+            // 重定向到登录页面
+            return redirect()->to('/home/login')->with('success', '密码重置成功，请登录');
+        }
+
+        // 显示重置密码表单
+        return view('frontend/reset_password', [
+            'title' => '重置密码 - 博客系统',
+            'token' => $token
+        ]);
     }
 
     /**

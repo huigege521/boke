@@ -31,205 +31,110 @@ class CommentController extends Controller
     }
 
     /**
-     * 评论列表
-     * 获取所有评论并显示在列表页面，支持搜索和分页
+     * 评论列表（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function index()
     {
-        $commentModel = new CommentModel();
-
-        // 获取搜索参数
-        $search = $this->request->getVar('search') ?? '';
-
-        // 分页设置
-        $perPage = 10; // 每页显示10条
-        $page = $this->request->getVar('page') ?? 1; // 当前页码
-        $offset = ($page - 1) * $perPage; // 偏移量
-
-        // 获取评论列表
-        $comments = $commentModel->getAllComments($perPage, $offset, $search);
-
-        // 获取评论总数
-        $totalComments = $commentModel->getAllCommentsCount($search);
-        $totalPages = ceil($totalComments / $perPage); // 总页数
-
-        // 准备视图数据
         $data = [
             'title' => '评论管理 - 后台',
-            'comments' => $comments,
-            'search' => $search,
-            'pagination' => [
-                'current_page' => $page,
-                'total_pages' => $totalPages,
-                'total_items' => $totalComments,
-                'per_page' => $perPage,
-                'base_url' => '/admin/comments' . (!empty($search) ? '?search=' . urlencode($search) : '')
-            ]
         ];
 
-        // 渲染评论列表视图
-        return view('admin/comments/index', $data);
+        // 渲染AJAX版评论列表视图
+        return view('admin/comments/index_ajax', $data);
     }
 
     /**
-     * 待审核评论
-     * 获取待审核状态的评论列表，支持搜索和分页
+     * 待审核评论（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     * @return string 视图字符串
      */
     public function pending()
     {
-        $commentModel = new CommentModel();
-
-        // 获取搜索参数
-        $search = $this->request->getVar('search') ?? '';
-
-        // 分页设置
-        $perPage = 10; // 每页显示10条
-        $page = $this->request->getVar('page') ?? 1; // 当前页码
-        $offset = ($page - 1) * $perPage; // 偏移量
-
-        // 获取待审核评论列表
-        $comments = $commentModel->getCommentsByStatus('pending', $perPage, $offset, $search);
-
-        // 获取待审核评论总数
-        $totalComments = $commentModel->getCommentsCountByStatus('pending', $search);
-        $totalPages = ceil($totalComments / $perPage); // 总页数
-
-        // 准备视图数据
         $data = [
             'title' => '待审核评论 - 后台',
-            'comments' => $comments,
             'status' => 'pending',
-            'search' => $search,
-            'pagination' => [
-                'current_page' => $page,
-                'total_pages' => $totalPages,
-                'total_items' => $totalComments,
-                'per_page' => $perPage,
-                'base_url' => '/admin/comments/pending' . (!empty($search) ? '?search=' . urlencode($search) : '')
-            ]
         ];
 
-        // 渲染评论列表视图
-        return view('admin/comments/index', $data);
+        // 渲染AJAX版评论列表视图
+        return view('admin/comments/index_ajax', $data);
     }
 
     /**
-     * 已通过评论
-     * 获取已通过状态的评论列表，支持搜索和分页
+     * 已通过评论（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     * @return string 视图字符串
      */
     public function approved()
     {
-        $commentModel = new CommentModel();
-
-        // 获取搜索参数
-        $search = $this->request->getVar('search') ?? '';
-
-        // 分页设置
-        $perPage = 10; // 每页显示10条
-        $page = $this->request->getVar('page') ?? 1; // 当前页码
-        $offset = ($page - 1) * $perPage; // 偏移量
-
-        // 获取已通过评论列表
-        $comments = $commentModel->getCommentsByStatus('approved', $perPage, $offset, $search);
-
-        // 获取已通过评论总数
-        $totalComments = $commentModel->getCommentsCountByStatus('approved', $search);
-        $totalPages = ceil($totalComments / $perPage); // 总页数
-
-        // 准备视图数据
         $data = [
             'title' => '已通过评论 - 后台',
-            'comments' => $comments,
             'status' => 'approved',
-            'search' => $search,
-            'pagination' => [
-                'current_page' => $page,
-                'total_pages' => $totalPages,
-                'total_items' => $totalComments,
-                'per_page' => $perPage,
-                'base_url' => '/admin/comments/approved' . (!empty($search) ? '?search=' . urlencode($search) : '')
-            ]
         ];
 
-        // 渲染评论列表视图
-        return view('admin/comments/index', $data);
+        // 渲染AJAX版评论列表视图
+        return view('admin/comments/index_ajax', $data);
     }
 
     /**
-     * 垃圾评论
-     * 获取垃圾状态的评论列表，支持搜索和分页
+     * 垃圾评论（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     * @return string 视图字符串
      */
     public function spam()
     {
-        $commentModel = new CommentModel();
-
-        // 获取搜索参数
-        $search = $this->request->getVar('search') ?? '';
-
-        // 分页设置
-        $perPage = 10; // 每页显示10条
-        $page = $this->request->getVar('page') ?? 1; // 当前页码
-        $offset = ($page - 1) * $perPage; // 偏移量
-
-        // 获取垃圾评论列表
-        $comments = $commentModel->getCommentsByStatus('spam', $perPage, $offset, $search);
-
-        // 获取垃圾评论总数
-        $totalComments = $commentModel->getCommentsCountByStatus('spam', $search);
-        $totalPages = ceil($totalComments / $perPage); // 总页数
-
-        // 准备视图数据
         $data = [
             'title' => '垃圾评论 - 后台',
-            'comments' => $comments,
             'status' => 'spam',
-            'search' => $search,
-            'pagination' => [
-                'current_page' => $page,
-                'total_pages' => $totalPages,
-                'total_items' => $totalComments,
-                'per_page' => $perPage,
-                'base_url' => '/admin/comments/spam' . (!empty($search) ? '?search=' . urlencode($search) : '')
-            ]
         ];
 
-        // 渲染评论列表视图
-        return view('admin/comments/index', $data);
+        // 渲染AJAX版评论列表视图
+        return view('admin/comments/index_ajax', $data);
     }
 
     /**
-     * 编辑评论
-     * 根据ID获取评论数据并显示在编辑表单中
+     * 编辑评论（AJAX无感加载版）
+     * 根据ID获取评论数据并显示在编辑表单中，数据通过AJAX异步加载和提交
      *
      * @param int $id 评论ID
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function edit($id)
     {
+        $data = [
+            'title' => '编辑评论 - 后台',
+            'commentId' => $id,
+        ];
+
+        return view('admin/comments/edit_ajax', $data);
+    }
+
+    /**
+     * 编辑评论（传统表单版）
+     *
+     * @param int $id 评论ID
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function editForm($id)
+    {
         $commentModel = new CommentModel();
 
-        // 根据ID获取评论数据
         $comment = $commentModel->getCommentById($id);
         if (!$comment) {
             session()->setFlashdata('error', '评论不存在');
             return redirect()->to('/admin/comments');
         }
 
-        // 准备视图数据
         $data = [
             'title' => '编辑评论 - 后台',
             'comment' => $comment,
         ];
 
-        // 渲染编辑评论表单视图
         return view('admin/comments/edit', $data);
     }
 

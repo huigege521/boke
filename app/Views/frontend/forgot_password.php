@@ -22,7 +22,7 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
         }
 
         .forgot-container h2 {
@@ -54,7 +54,7 @@
 
 <body>
     <div class="forgot-container">
-        <h2>找回密码</h2>
+        <h2>忘记密码</h2>
 
         <!-- 错误消息 -->
         <?php if (session()->getFlashdata('error')): ?>
@@ -76,18 +76,32 @@
             <?= csrf_field() ?>
             <div class="form-group">
                 <label for="email">邮箱</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input type="email" class="form-control" id="email" name="email" value="<?= old('email') ?>" required
+                    placeholder="请输入注册时的邮箱">
             </div>
             <button type="submit" class="btn btn-primary">发送重置链接</button>
         </form>
 
         <div class="login-link">
-            <p>记得密码了？<a href="<?= base_url('home/login') ?>">立即登录</a></p>
+            <p>记住密码了？<a href="<?= base_url('home/login') ?>">立即登录</a></p>
         </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="<?= base_url('js/bootstrap/bootstrap.bundle.min.js') ?>"></script>
+
+    <script>
+        // 自动关闭警告消息（5秒后）
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function (alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000); // 5秒后自动关闭
+        });
+    </script>
 
 </body>
 

@@ -31,58 +31,47 @@ class TagController extends Controller
     }
 
     /**
-     * 标签列表
-     * 获取所有标签并显示在列表页面，支持分页
+     * 标签列表（AJAX无感加载版）
+     * 页面结构通过AJAX异步加载数据
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function index()
     {
-        $tagModel = new TagModel();
-
-        // 分页设置
-        $perPage = 10; // 每页显示10条
-        $page = $this->request->getVar('page') ?? 1; // 当前页码
-        $offset = ($page - 1) * $perPage; // 偏移量
-
-        // 获取标签列表
-        $tags = $tagModel->getAllTags($perPage, $offset);
-
-        // 获取标签总数
-        $totalTags = $tagModel->getAllTagsCount();
-        $totalPages = ceil($totalTags / $perPage); // 总页数
-
-        // 准备视图数据
         $data = [
             'title' => '标签管理 - 后台',
-            'tags' => $tags,
-            'pagination' => [
-                'current_page' => $page,
-                'total_pages' => $totalPages,
-                'total_items' => $totalTags,
-                'per_page' => $perPage,
-                'base_url' => '/admin/tags'
-            ]
         ];
 
-        // 渲染标签列表视图
-        return view('admin/tags/index', $data);
+        // 渲染AJAX版标签列表视图
+        return view('admin/tags/index_ajax', $data);
     }
 
     /**
-     * 创建标签
-     * 显示创建标签的表单页面
+     * 创建标签（AJAX无感加载版）
+     * 显示创建标签的表单页面，数据通过AJAX异步提交
      *
      * @return string 视图字符串
      */
     public function create()
     {
-        // 准备视图数据
         $data = [
             'title' => '创建标签 - 后台',
         ];
 
-        // 渲染创建标签表单视图
+        return view('admin/tags/create_ajax', $data);
+    }
+
+    /**
+     * 创建标签（传统表单版）
+     *
+     * @return string 视图字符串
+     */
+    public function createForm()
+    {
+        $data = [
+            'title' => '创建标签 - 后台',
+        ];
+
         return view('admin/tags/create', $data);
     }
 
@@ -128,30 +117,43 @@ class TagController extends Controller
     }
 
     /**
-     * 编辑标签
-     * 根据ID获取标签数据并显示在编辑表单中
+     * 编辑标签（AJAX无感加载版）
+     * 根据ID获取标签数据并显示在编辑表单中，数据通过AJAX异步加载和提交
      *
      * @param int $id 标签ID
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function edit($id)
     {
+        $data = [
+            'title' => '编辑标签 - 后台',
+            'tagId' => $id,
+        ];
+
+        return view('admin/tags/edit_ajax', $data);
+    }
+
+    /**
+     * 编辑标签（传统表单版）
+     *
+     * @param int $id 标签ID
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function editForm($id)
+    {
         $tagModel = new TagModel();
 
-        // 获取标签数据
         $tag = $tagModel->find($id);
         if (!$tag) {
             session()->setFlashdata('error', '标签不存在');
             return redirect()->to('/admin/tags');
         }
 
-        // 准备视图数据
         $data = [
             'title' => '编辑标签 - 后台',
             'tag' => $tag,
         ];
 
-        // 渲染编辑标签表单视图
         return view('admin/tags/edit', $data);
     }
 

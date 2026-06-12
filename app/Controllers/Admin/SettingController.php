@@ -11,30 +11,47 @@ use CodeIgniter\Controller;
 class SettingController extends Controller
 {
     /**
-     * 显示配置列表
+     * 显示配置列表（AJAX无感加载版）
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function index()
     {
-        // 检查登录状态
         if (!session()->get('logged_in')) {
             return redirect()->to('/admin/login');
         }
 
-        // 检查管理员角色
-        $userRole = session()->get('role');
-        if ($userRole !== 'admin') {
+        if (session()->get('role') !== 'admin') {
             return redirect()->to('/admin/dashboard');
         }
 
-        // 初始化模型
-        $settingModel = new SettingModel();
+        $data = [
+            'title' => '配置管理 - 后台管理',
+            'pageTitle' => '配置管理',
+            'activePage' => 'settings',
+        ];
 
-        // 获取所有配置
+        return view('admin/settings/index_ajax', $data);
+    }
+
+    /**
+     * 显示配置列表（传统版）
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function indexForm()
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/admin/login');
+        }
+
+        if (session()->get('role') !== 'admin') {
+            return redirect()->to('/admin/dashboard');
+        }
+
+        $settingModel = new SettingModel();
         $settings = $settingModel->findAll();
 
-        // 准备视图数据
         $data = [
             'title' => '配置管理 - 后台管理',
             'pageTitle' => '配置管理',
@@ -42,33 +59,52 @@ class SettingController extends Controller
             'settings' => $settings,
         ];
 
-        // 渲染配置列表视图
         return view('admin/settings/index', $data);
     }
 
     /**
-     * 编辑配置
+     * 编辑配置（AJAX无感加载版）
      *
      * @param int $id 配置ID
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function edit($id)
     {
-        // 检查登录状态
         if (!session()->get('logged_in')) {
             return redirect()->to('/admin/login');
         }
 
-        // 检查管理员角色
-        $userRole = session()->get('role');
-        if ($userRole !== 'admin') {
+        if (session()->get('role') !== 'admin') {
             return redirect()->to('/admin/dashboard');
         }
 
-        // 初始化模型
-        $settingModel = new SettingModel();
+        $data = [
+            'title' => '编辑配置 - 后台管理',
+            'pageTitle' => '编辑配置',
+            'activePage' => 'settings',
+            'settingId' => $id,
+        ];
 
-        // 获取配置详情
+        return view('admin/settings/edit_ajax', $data);
+    }
+
+    /**
+     * 编辑配置（传统版）
+     *
+     * @param int $id 配置ID
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function editForm($id)
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/admin/login');
+        }
+
+        if (session()->get('role') !== 'admin') {
+            return redirect()->to('/admin/dashboard');
+        }
+
+        $settingModel = new SettingModel();
         $setting = $settingModel->find($id);
 
         if (!$setting) {
@@ -76,7 +112,6 @@ class SettingController extends Controller
             return redirect()->to('/admin/settings');
         }
 
-        // 准备视图数据
         $data = [
             'title' => '编辑配置 - 后台管理',
             'pageTitle' => '编辑配置',
@@ -84,7 +119,6 @@ class SettingController extends Controller
             'setting' => $setting,
         ];
 
-        // 渲染编辑配置视图
         return view('admin/settings/edit', $data);
     }
 

@@ -16,12 +16,33 @@ use CodeIgniter\Controller;
 class DashboardController extends Controller
 {
     /**
-     * 显示仪表盘
-     * 检查登录状态并获取各种统计数据，包括文章、分类、标签、用户和评论的数量
+     * 显示仪表盘（AJAX无感加载版）
+     * 检查登录状态，数据通过AJAX异步加载
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function index()
+    {
+        // 检查登录状态
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/admin/login');
+        }
+
+        $data = [
+            'title' => '后台管理 - 仪表盘',
+        ];
+
+        // 渲染AJAX版仪表盘视图
+        return view('admin/dashboard_ajax', $data);
+    }
+
+    /**
+     * 显示仪表盘（传统版）
+     * 检查登录状态并获取各种统计数据，包括文章、分类、标签、用户和评论的数量
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function indexForm()
     {
         // 检查登录状态
         if (!session()->get('logged_in')) {

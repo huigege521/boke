@@ -105,6 +105,25 @@ class CategoryModel extends Model
 
         return $this->update($categoryId, ['posts_count' => $count]);
     }
+    
+    // 增加分类文章计数
+    public function incrementPostCount($categoryId)
+    {
+        $this->db->table('categories')
+            ->set('posts_count', 'posts_count + 1', false)
+            ->where('id', $categoryId)
+            ->update();
+    }
+    
+    // 减少分类文章计数
+    public function decrementPostCount($categoryId)
+    {
+        $this->db->table('categories')
+            ->set('posts_count', 'posts_count - 1', false)
+            ->where('id', $categoryId)
+            ->where('posts_count >', 0)
+            ->update();
+    }
 
     // 批量更新分类文章数量
     public function updateAllPostsCount()

@@ -11,7 +11,7 @@ use CodeIgniter\Controller;
 class ContactController extends Controller
 {
     /**
-     * 显示联系消息列表
+     * 显示联系消息列表（AJAX无感加载版）
      *
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
@@ -22,48 +22,48 @@ class ContactController extends Controller
             return redirect()->to('/admin/login');
         }
 
-        // 初始化模型
-        $contactModel = new ContactModel();
-
-        // 获取筛选状态
-        $status = $this->request->getGet('status');
-
-        // 根据状态筛选
-        if ($status && in_array($status, ['pending', 'processed'])) {
-            $contacts = $contactModel->where('status', $status)->orderBy('created_at', 'desc')->findAll();
-        } else {
-            $contacts = $contactModel->orderBy('created_at', 'desc')->findAll();
-            $status = 'all';
-        }
-
-        // 准备视图数据
+        // 准备视图数据（数据通过AJAX加载）
         $data = [
             'title' => '联系消息管理 - 后台管理',
-            'contacts' => $contacts,
-            'filter_status' => $status,
         ];
 
-        // 渲染联系消息列表视图
-        return view('admin/contacts/index', $data);
+        // 渲染AJAX版联系消息列表视图
+        return view('admin/contacts/index_ajax', $data);
     }
 
     /**
-     * 显示联系消息详情
+     * 显示联系消息详情（AJAX无感加载版）
      *
      * @param int $id 联系消息ID
      * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
      */
     public function show($id)
     {
-        // 检查登录状态
         if (!session()->get('logged_in')) {
             return redirect()->to('/admin/login');
         }
 
-        // 初始化模型
-        $contactModel = new ContactModel();
+        $data = [
+            'title' => '联系消息详情 - 后台管理',
+            'contactId' => $id,
+        ];
 
-        // 获取联系消息详情
+        return view('admin/contacts/show_ajax', $data);
+    }
+
+    /**
+     * 显示联系消息详情（传统版）
+     *
+     * @param int $id 联系消息ID
+     * @return \CodeIgniter\HTTP\RedirectResponse|string 重定向响应或视图字符串
+     */
+    public function showForm($id)
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/admin/login');
+        }
+
+        $contactModel = new ContactModel();
         $contact = $contactModel->find($id);
 
         if (!$contact) {
@@ -71,13 +71,11 @@ class ContactController extends Controller
             return redirect()->to('/admin/contacts');
         }
 
-        // 准备视图数据
         $data = [
             'title' => '联系消息详情 - 后台管理',
             'contact' => $contact,
         ];
 
-        // 渲染联系消息详情视图
         return view('admin/contacts/show', $data);
     }
 

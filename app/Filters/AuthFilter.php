@@ -12,14 +12,16 @@ class AuthFilter implements FilterInterface
     {
         // 检查用户是否登录
         if (!session()->get('logged_in')) {
-            // 检查是否是API请求（如文件上传）
             $uri = $request->getUri();
-            if (strpos($uri->getPath(), '/admin/posts/upload') !== false) {
-                // 对于上传请求，返回JSON错误响应
+            $path = $uri->getPath();
+            
+            // 判断是否是 API 请求
+            if (strpos($path, '/api/') !== false) {
+                // API 请求返回 JSON 错误响应
                 return service('response')->setJSON([
-                    'error' => [
-                        'message' => '用户未登录'
-                    ]
+                    'success' => false,
+                    'message' => '未登录',
+                    'data' => null
                 ])->setStatusCode(401);
             }
             
@@ -28,12 +30,6 @@ class AuthFilter implements FilterInterface
             
             // 重定向到登录页面
             return redirect()->to('/home/login')->with('error', '请先登录');
-        }
-
-        // 对于上传请求，跳过CSRF验证
-        $uri = $request->getUri();
-        if (strpos($uri->getPath(), '/admin/posts/upload') !== false) {
-            return null;
         }
 
         // 如果指定了角色参数，检查用户是否有足够的权限
@@ -47,6 +43,19 @@ class AuthFilter implements FilterInterface
             $requiredRoleLevel = $roles[$requiredRole] ?? 0;
 
             if ($userRoleLevel < $requiredRoleLevel) {
+                $uri = $request->getUri();
+                $path = $uri->getPath();
+                
+                // 判断是否是 API 请求
+                if (strpos($path, '/api/') !== false) {
+                    // API 请求返回 JSON 错误响应
+                    return service('response')->setJSON([
+                        'success' => false,
+                        'message' => '权限不足',
+                        'data' => null
+                    ])->setStatusCode(403);
+                }
+                
                 return redirect()->to('/')->with('error', '权限不足');
             }
         }
