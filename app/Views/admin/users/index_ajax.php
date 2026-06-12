@@ -157,8 +157,8 @@ function renderUsers(users) {
             <td>${escapeHtml(user.email)}</td>
             <td>${escapeHtml(user.name) || '-'}</td>
             <td>
-                <span class="badge bg-${user.role === 'admin' ? 'danger' : 'primary'}">
-                    ${user.role === 'admin' ? '管理员' : '普通用户'}
+                <span class="badge bg-${getRoleBadgeColor(user.role)}">
+                    ${escapeHtml(user.role_text || '普通用户')}
                 </span>
             </td>
             <td>
@@ -173,6 +173,17 @@ function renderUsers(users) {
             </td>
         </tr>
     `).join('');
+}
+
+function getRoleBadgeColor(role) {
+    switch (role) {
+        case 'admin':
+            return 'danger'; // 红色
+        case 'editor':
+            return 'warning'; // 黄色/橙色
+        default:
+            return 'primary'; // 蓝色
+    }
 }
 
 function renderPagination(pagination) {

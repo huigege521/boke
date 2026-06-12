@@ -70,7 +70,16 @@ class UserController extends BaseApiController
             // 处理返回数据
             foreach ($users as &$user) {
                 // 角色文本
-                $user['role_text'] = $user['role'] == 'admin' ? '管理员' : '普通用户';
+                switch ($user['role']) {
+                    case 'admin':
+                        $user['role_text'] = '管理员';
+                        break;
+                    case 'editor':
+                        $user['role_text'] = '编辑';
+                        break;
+                    default:
+                        $user['role_text'] = '普通用户';
+                }
                 // 编辑链接
                 $user['edit_url'] = base_url('admin/users/' . $user['id'] . '/edit');
                 // 移除敏感信息
