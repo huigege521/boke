@@ -32,6 +32,10 @@ class MediaController extends BaseApiController
 
         // 格式化媒体数据，匹配前端期望的字段名
         $formattedMedia = array_map(function ($item) {
+            // 统计该图片被多少篇文章使用
+            $postModel = new \App\Models\PostModel();
+            $usedByPosts = $postModel->where('featured_image_id', $item['id'])->countAllResults();
+            
             return [
                 'id' => $item['id'],
                 'filename' => $item['filename'],
@@ -46,7 +50,8 @@ class MediaController extends BaseApiController
                 'title' => $item['title'] ?? '',
                 'alt_text' => $item['alt_text'] ?? '',
                 'description' => $item['description'] ?? '',
-                'created_at' => $item['created_at']
+                'created_at' => $item['created_at'],
+                'used_by_posts' => $usedByPosts  // 新增: 被文章使用的次数
             ];
         }, $media);
 
@@ -212,11 +217,27 @@ class MediaController extends BaseApiController
             return $this->error('文件不存在', 404);
         }
 
-        if ($mediaModel->deleteMedia($id)) {
-            return $this->success(null, '删除成功');
+        // 检查是否有文章正在使用此图片
+        $postModel = new \App\Models\PostModel();
+        $usedByPosts = $postModel->where('featured_image_id', $id)->countAllResults();
+        
+        if ($usedByPosts > 0) {
+            return $this->error("该图片正被 {$usedByPosts} 篇文章使用，无法删除。请先更换这些文章的封面图。", 403);
         }
 
-        return $this->error('删除失败');
+        try {
+            $result = $mediaModel->deleteMedia($id);
+            
+            if ($result) {
+                return $this->success(null, '删除成功');
+            } else {
+                log_message('error', "删除媒体文件失败 ID: {$id}");
+                return $this->error('删除失败，请稍后重试');
+            }
+        } catch (\Exception $e) {
+            log_message('error', "删除媒体文件异常 ID: {$id}, Error: " . $e->getMessage());
+            return $this->error('删除失败：' . $e->getMessage(), 500);
+        }
     }
 
     /**
@@ -234,22 +255,46 @@ class MediaController extends BaseApiController
         }
 
         $mediaModel = new MediaModel();
+        $postModel = new \App\Models\PostModel();
+        
         $deletedCount = 0;
+        $failedCount = 0;
+        $errors = [];
 
         foreach ($ids as $id) {
+            // 检查是否有文章正在使用此图片
+            $usedByPosts = $postModel->where('featured_image_id', $id)->countAllResults();
+            
+            if ($usedByPosts > 0) {
+                $failedCount++;
+                $errors[] = "ID {$id}: 被 {$usedByPosts} 篇文章使用";
+                continue;
+            }
+            
             $media = $mediaModel->getMediaById($id);
             if ($media && $mediaModel->deleteMedia($id)) {
                 $deletedCount++;
+            } else {
+                $failedCount++;
             }
         }
 
         if ($deletedCount > 0) {
+            $message = "成功删除 {$deletedCount} 个文件";
+            if ($failedCount > 0) {
+                $message .= "，{$failedCount} 个文件删除失败";
+                if (!empty($errors)) {
+                    $message .= ': ' . implode('; ', array_slice($errors, 0, 3));
+                }
+            }
             return $this->success([
                 'deleted' => $deletedCount,
-                'total' => count($ids)
-            ], "成功删除 {$deletedCount} 个文件");
+                'failed' => $failedCount,
+                'total' => count($ids),
+                'errors' => $errors
+            ], $message);
         }
 
-        return $this->error('删除失败');
+        return $this->error('所有文件删除失败: ' . implode('; ', array_slice($errors, 0, 5)), 400);
     }
 }

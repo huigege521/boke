@@ -617,6 +617,11 @@ $styles = '';
                                 <span class="mx-1">·</span>
                                 <span>${formatDate(m.created_at)}</span>
                             </small>
+                            ${m.used_by_posts > 0 ? `
+                                <small class="text-info d-block mt-1">
+                                    <i class="fas fa-link"></i> 被 ${m.used_by_posts} 篇文章使用
+                                </small>
+                            ` : ''}
                         </div>
                         <div class="card-overlay">
                             <div class="overlay-actions">

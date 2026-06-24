@@ -346,33 +346,49 @@ class MediaModel extends Model
     /**
      * 删除媒体文件
      *
-     * @param int $id
-     * @return bool
+     * @param int $id 媒体ID
+     * @return bool 是否删除成功
      */
     public function deleteMedia($id)
     {
         $media = $this->getMediaById($id);
         if (!$media) {
+            log_message('error', "Media not found for deletion: ID={$id}");
             return false;
         }
 
         // 删除物理文件
         if (file_exists($media['file_path'])) {
-            unlink($media['file_path']);
+            try {
+                unlink($media['file_path']);
+            } catch (\Exception $e) {
+                log_message('warning', "Failed to delete file: {$media['file_path']}, Error: " . $e->getMessage());
+                // 即使文件删除失败，也继续删除数据库记录
+            }
         }
 
         // 删除缩略图
         if ($media['thumbnails']) {
             $thumbnails = json_decode($media['thumbnails'], true);
             foreach ($thumbnails as $thumbnail) {
-                if (file_exists($thumbnail['path'])) {
-                    unlink($thumbnail['path']);
+                if (isset($thumbnail['path']) && file_exists($thumbnail['path'])) {
+                    try {
+                        unlink($thumbnail['path']);
+                    } catch (\Exception $e) {
+                        log_message('warning', "Failed to delete thumbnail: {$thumbnail['path']}, Error: " . $e->getMessage());
+                    }
                 }
             }
         }
 
         // 软删除数据库记录
-        return $this->delete($id);
+        $result = $this->delete($id);
+        
+        if (!$result) {
+            log_message('error', "Failed to delete media record from database: ID={$id}");
+        }
+        
+        return $result;
     }
 
     /**

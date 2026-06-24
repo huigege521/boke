@@ -207,6 +207,60 @@ class PostController extends BaseApiController
                 $slug = url_title($data['title'], '-', true);
             }
 
+            // 处理特色图片
+            $featuredImageName = null;
+            $featuredImageId = null;
+            
+            // 1. 先检查是否上传了新文件
+            $imageFile = $this->request->getFile('featured_image');
+            if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
+                // 生成与媒体库一致的文件名和路径
+                $extension = $imageFile->getClientExtension();
+                $datePath = date('Ymd');
+                $fileName = $datePath . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
+
+                // 确保目录存在
+                $uploadPath = FCPATH . 'uploads/' . $datePath;
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                $imageFile->move($uploadPath, $fileName);
+                $featuredImageName = $datePath . '/' . $fileName;
+                
+                // 同时保存到媒体库
+                $mediaModel = new \App\Models\MediaModel();
+                $mediaData = [
+                    'filename' => $fileName,
+                    'original_name' => $imageFile->getClientName(),
+                    'file_path' => $uploadPath . '/' . $fileName,
+                    'file_url' => base_url('uploads/' . $datePath . '/' . $fileName),
+                    'file_type' => $this->getFileType($imageFile->getClientMimeType()),
+                    'file_size' => $imageFile->getSize(),
+                    'mime_type' => $imageFile->getClientMimeType(),
+                    'extension' => $extension,
+                    'user_id' => session()->get('user_id') ?: 1,
+                    'is_image' => 1,
+                ];
+                
+                $mediaId = $mediaModel->insert($mediaData);
+                if ($mediaId) {
+                    $featuredImageId = $mediaId;
+                }
+            }
+            
+            // 2. 如果没有上传新文件，检查是否从媒体库选择了图片
+            if (!$featuredImageId && !empty($data['featured_image_from_media_id'])) {
+                $featuredImageId = (int)$data['featured_image_from_media_id'];
+                
+                // 获取媒体库中的图片URL
+                $mediaModel = new \App\Models\MediaModel();
+                $media = $mediaModel->find($featuredImageId);
+                if ($media) {
+                    $featuredImageName = str_replace(base_url('uploads/'), '', $media['file_url']);
+                }
+            }
+
             // 准备保存数据
             $saveData = [
                 'title' => $data['title'],
@@ -217,25 +271,15 @@ class PostController extends BaseApiController
                 'status' => $data['status'] ?? 'draft',
                 'visibility' => $data['visibility'] ?? 'public',
                 'published_at' => $data['published_at'] ?? null,
-                'user_id' => session()->get('user_id'),
+                'user_id' => session()->get('user_id') ?: 1,
+                // 特色图片
+                'featured_image' => $featuredImageName,
+                'featured_image_id' => $featuredImageId,
+                // SEO元数据
+                'meta_title' => $data['meta_title'] ?? null,
+                'meta_description' => $data['meta_description'] ?? null,
+                'meta_keywords' => $data['meta_keywords'] ?? null,
             ];
-
-            // 处理特色图片上传
-            if ($this->request->getFile('featured_image')) {
-                $imageFile = $this->request->getFile('featured_image');
-                if ($imageFile->isValid() && !$imageFile->hasMoved()) {
-                    // 生成文件名
-                    $newName = $imageFile->getRandomName();
-                    // 移动到 public/uploads 目录
-                    $uploadPath = FCPATH . 'uploads';
-                    if (!is_dir($uploadPath)) {
-                        mkdir($uploadPath, 0755, true);
-                    }
-                    $imageFile->move($uploadPath, $newName);
-                    // 更新特色图片字段
-                    $saveData['featured_image'] = $newName;
-                }
-            }
 
             // 插入数据库
             $id = $this->postModel->insert($saveData);
@@ -309,6 +353,63 @@ class PostController extends BaseApiController
                 $slug = url_title($postData['title'], '-', true);
             }
 
+            // 处理特色图片
+            $featuredImageName = $post['featured_image'] ?? null;
+            $featuredImageId = $post['featured_image_id'] ?? null;
+            
+            // 1. 先检查是否上传了新文件
+            $imageFile = $this->request->getFile('featured_image');
+            if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
+                // 生成与媒体库一致的文件名和路径
+                $extension = $imageFile->getClientExtension();
+                $datePath = date('Ymd');
+                $fileName = $datePath . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
+
+                // 确保目录存在
+                $uploadPath = FCPATH . 'uploads/' . $datePath;
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                $imageFile->move($uploadPath, $fileName);
+                $featuredImageName = $datePath . '/' . $fileName;
+                
+                // 同时保存到媒体库
+                $mediaModel = new \App\Models\MediaModel();
+                $mediaData = [
+                    'filename' => $fileName,
+                    'original_name' => $imageFile->getClientName(),
+                    'file_path' => $uploadPath . '/' . $fileName,
+                    'file_url' => base_url('uploads/' . $datePath . '/' . $fileName),
+                    'file_type' => $this->getFileType($imageFile->getClientMimeType()),
+                    'file_size' => $imageFile->getSize(),
+                    'mime_type' => $imageFile->getClientMimeType(),
+                    'extension' => $extension,
+                    'user_id' => session()->get('user_id') ?: 1,
+                    'is_image' => 1,
+                ];
+                
+                $mediaId = $mediaModel->insert($mediaData);
+                if ($mediaId) {
+                    $featuredImageId = $mediaId;
+                }
+            }
+            
+            // 2. 如果没有上传新文件，检查是否从媒体库选择了图片
+            if (!$featuredImageId && !empty($postData['featured_image_from_media_id'])) {
+                $featuredImageId = (int)$postData['featured_image_from_media_id'];
+                
+                // 获取媒体库中的图片URL
+                $mediaModel = new \App\Models\MediaModel();
+                $media = $mediaModel->find($featuredImageId);
+                if ($media) {
+                    $featuredImageName = str_replace(base_url('uploads/'), '', $media['file_url']);
+                }
+            }
+            
+            // 如果明确传入了空值或特定标识，可能意味着要移除图片（视具体业务逻辑而定，这里暂保持原有或新设置的值）
+            // 如果需要支持删除图片，可以在此处添加逻辑，例如检查 $postData['remove_featured_image']
+
             // 准备更新数据
             $updateData = [
                 'title' => $postData['title'],
@@ -319,24 +420,14 @@ class PostController extends BaseApiController
                 'status' => $postData['status'] ?? 'draft',
                 'visibility' => $postData['visibility'] ?? 'public',
                 'published_at' => $postData['published_at'] ?? null,
+                // 特色图片
+                'featured_image' => $featuredImageName,
+                'featured_image_id' => $featuredImageId,
+                // SEO元数据
+                'meta_title' => $postData['meta_title'] ?? null,
+                'meta_description' => $postData['meta_description'] ?? null,
+                'meta_keywords' => $postData['meta_keywords'] ?? null,
             ];
-
-            // 处理特色图片上传
-            if ($this->request->getFile('featured_image')) {
-                $imageFile = $this->request->getFile('featured_image');
-                if ($imageFile->isValid() && !$imageFile->hasMoved()) {
-                    // 生成文件名
-                    $newName = $imageFile->getRandomName();
-                    // 移动到 public/uploads 目录
-                    $uploadPath = FCPATH . 'uploads';
-                    if (!is_dir($uploadPath)) {
-                        mkdir($uploadPath, 0755, true);
-                    }
-                    $imageFile->move($uploadPath, $newName);
-                    // 更新特色图片字段
-                    $updateData['featured_image'] = $newName;
-                }
-            }
 
             // 更新数据库
             if (!$this->postModel->update($id, $updateData)) {
@@ -484,6 +575,27 @@ class PostController extends BaseApiController
         } catch (\Exception $e) {
             log_message('error', '[Api\PostController.batch] ' . $e->getMessage());
             return $this->error('操作失败，请稍后重试', 500);
+        }
+    }
+
+    /**
+     * 获取文件类型
+     * 
+     * @param string $mimeType MIME类型
+     * @return string 文件类型
+     */
+    private function getFileType(string $mimeType): string
+    {
+        if (strpos($mimeType, 'image/') === 0) {
+            return 'image';
+        } elseif (strpos($mimeType, 'video/') === 0) {
+            return 'video';
+        } elseif (strpos($mimeType, 'audio/') === 0) {
+            return 'audio';
+        } elseif ($mimeType === 'application/pdf') {
+            return 'document';
+        } else {
+            return 'other';
         }
     }
 }

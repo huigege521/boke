@@ -21,6 +21,11 @@ $styles = '<style>
     .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999; display: none; justify-content: center; align-items: center; }
     .loading-overlay .spinner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
     .current-image { max-width: 200px; border: 1px solid #ddd; border-radius: 4px; padding: 5px; }
+    
+    /* 媒体选择卡片样式 */
+    .media-select-card { cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent; }
+    .media-select-card:hover { border-color: #007bff; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); transform: translateY(-2px); }
+    .media-select-card img { object-fit: cover; }
 </style>';
 ?>
 
@@ -92,8 +97,14 @@ $styles = '<style>
                     <div class="form-group">
                         <label for="featured_image">特色图片</label>
                         <div id="current_image" class="mb-2"></div>
-                        <input type="file" id="featured_image" name="featured_image" class="form-control">
-                        <input type="hidden" id="featured_image_from_media" name="featured_image_from_media">
+                        <div class="input-group">
+                            <input type="file" id="featured_image" name="featured_image" class="form-control">
+                            <button type="button" class="btn btn-outline-primary" id="selectFromMediaBtn">
+                                <i class="fas fa-images"></i> 从媒体库选择
+                            </button>
+                        </div>
+                        <div id="featured_image_preview" class="mt-2"></div>
+                        <input type="hidden" id="featured_image_from_media_id" name="featured_image_from_media_id">
                     </div>
 
                     <div class="form-group">
@@ -189,11 +200,12 @@ function initEditor() {
         // 编辑器初始化完成后再加载数据
         loadPostData();
         initStatusToggle();
+        initMediaLibraryButton(); // 初始化媒体库按钮
     }).catch(error => {
         console.error(error);
         // 编辑器初始化失败也尝试加载数据
         loadPostData();
-        initStatusToggle();
+        initMediaLibraryButton(); // 初始化媒体库按钮
     });
 }
 
@@ -319,6 +331,12 @@ function submitPost() {
     const selectedTags = Array.from(document.getElementById('tags').selectedOptions).map(opt => opt.value);
     formData.append('tags', JSON.stringify(selectedTags));
     
+    // 添加媒体库选择的图片ID
+    const featuredImageFromMediaIdElement = document.getElementById('featured_image_from_media_id');
+    if (featuredImageFromMediaIdElement && featuredImageFromMediaIdElement.value) {
+        formData.append('featured_image_from_media_id', featuredImageFromMediaIdElement.value);
+    }
+    
     const imageFile = document.getElementById('featured_image').files[0];
     if (imageFile) {
         formData.append('featured_image', imageFile);
@@ -414,6 +432,116 @@ function showLoadingOverlay(text) {
 function hideLoadingOverlay() {
     document.getElementById('loadingOverlay').style.display = 'none';
 }
+
+// 初始化媒体库选择按钮
+function initMediaLibraryButton() {
+    const btn = document.getElementById('selectFromMediaBtn');
+    if (btn) {
+        btn.addEventListener('click', openMediaLibrary);
+    }
+}
+
+// 打开媒体库选择模态框
+function openMediaLibrary() {
+    // 创建或显示媒体库选择模态框
+    if (!document.getElementById('mediaSelectModal')) {
+        const modalHtml = `
+            <div class="modal fade" id="mediaSelectModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">从媒体库选择图片</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" id="mediaGrid"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+    
+    // 加载媒体库数据
+    loadMediaForSelection();
+    
+    // 显示模态框
+    const modal = new bootstrap.Modal(document.getElementById('mediaSelectModal'));
+    modal.show();
+}
+
+// 加载媒体库图片供选择
+function loadMediaForSelection(page = 1) {
+    const grid = document.getElementById('mediaGrid');
+    grid.innerHTML = '<div class="col-12 text-center"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>';
+    
+    fetch(`<?= base_url('api/media') ?>?page=${page}&type=image`)
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) {
+                renderMediaSelectionGrid(result.data.list);
+            } else {
+                grid.innerHTML = '<div class="col-12 text-center text-danger">加载失败</div>';
+            }
+        })
+        .catch(() => {
+            grid.innerHTML = '<div class="col-12 text-center text-danger">网络错误</div>';
+        });
+}
+
+// 渲染媒体选择网格
+function renderMediaSelectionGrid(mediaList) {
+    const grid = document.getElementById('mediaGrid');
+    
+    if (mediaList.length === 0) {
+        grid.innerHTML = '<div class="col-12 text-center">暂无图片，请先上传</div>';
+        return;
+    }
+    
+    grid.innerHTML = mediaList.map(m => `
+        <div class="col-md-3 col-sm-4 col-6 mb-3">
+            <div class="card media-select-card" onclick="selectMedia(${m.id}, '${m.url}', '${m.original_name}')">
+                <img src="${m.url}" class="card-img-top" alt="${m.original_name}" style="height: 150px; object-fit: cover;">
+                <div class="card-body p-2">
+                    <small class="text-truncate d-block" title="${m.original_name}">${m.original_name}</small>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 选择媒体图片
+function selectMedia(id, url, name) {
+    // 更新隐藏字段
+    document.getElementById('featured_image_from_media_id').value = id;
+    
+    // 显示预览
+    const preview = document.getElementById('featured_image_preview');
+    preview.innerHTML = `
+        <div class="alert alert-success">
+            <img src="${url}" style="max-width: 200px; max-height: 150px;" class="img-thumbnail"><br>
+            <small>已选择: ${name}</small>
+            <button type="button" class="btn btn-sm btn-danger float-right" onclick="clearSelectedMedia()">清除</button>
+        </div>
+    `;
+    
+    // 关闭模态框
+    const modal = bootstrap.Modal.getInstance(document.getElementById('mediaSelectModal'));
+    modal.hide();
+    
+    toastr.success('已选择特色图片');
+}
+
+// 清除选择的媒体
+function clearSelectedMedia() {
+    document.getElementById('featured_image_from_media_id').value = '';
+    document.getElementById('featured_image_preview').innerHTML = '';
+}
+
 </script>
 
 <?= view('admin/layouts/footer') ?>

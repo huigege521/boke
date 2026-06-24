@@ -17,6 +17,7 @@ class PostModel extends Model
         'content',
         'excerpt',
         'featured_image',
+        'featured_image_id',  // 新增: 关联媒体库的图片ID
         'user_id',
         'category_id',
         'status',

@@ -158,6 +158,8 @@ class PostController extends Controller
         // 处理文件上传
         $featuredImage = $this->request->getFile('featured_image');
         $featuredImageName = null;
+        $featuredImageId = null;
+        
         if ($featuredImage && $featuredImage->isValid() && !$featuredImage->hasMoved()) {
             // 生成与媒体库一致的文件名和路径
             $extension = $featuredImage->getClientExtension();
@@ -172,12 +174,39 @@ class PostController extends Controller
 
             $featuredImage->move($uploadPath, $fileName);
             $featuredImageName = $datePath . '/' . $fileName;
+            
+            // 同时保存到媒体库
+            $mediaModel = new \App\Models\MediaModel();
+            $mediaData = [
+                'filename' => $fileName,
+                'original_name' => $featuredImage->getClientName(),
+                'file_path' => $uploadPath . '/' . $fileName,
+                'file_url' => base_url('uploads/' . $datePath . '/' . $fileName),
+                'file_type' => $this->getFileType($featuredImage->getClientMimeType()),
+                'file_size' => $featuredImage->getSize(),
+                'mime_type' => $featuredImage->getClientMimeType(),
+                'extension' => $extension,
+                'user_id' => session()->get('user_id') ?: 1,
+                'is_image' => 1,
+            ];
+            
+            $mediaId = $mediaModel->insert($mediaData);
+            if ($mediaId) {
+                $featuredImageId = $mediaId;
+            }
         }
 
         // 处理从媒体库选择的图片
-        $featuredImageFromMedia = $this->request->getVar('featured_image_from_media');
-        if ($featuredImageFromMedia && !$featuredImageName) {
-            $featuredImageName = $featuredImageFromMedia;
+        $featuredImageFromMediaId = $this->request->getVar('featured_image_from_media_id');
+        if ($featuredImageFromMediaId && !$featuredImageId) {
+            $featuredImageId = (int)$featuredImageFromMediaId;
+            
+            // 获取媒体库中的图片URL
+            $mediaModel = new \App\Models\MediaModel();
+            $media = $mediaModel->find($featuredImageId);
+            if ($media) {
+                $featuredImageName = str_replace(base_url('uploads/'), '', $media['file_url']);
+            }
         }
 
         // 准备文章数据
@@ -190,6 +219,9 @@ class PostController extends Controller
             'user_id' => session()->get('user_id') ?: 1, // 当前登录用户ID，如果没有则默认为1
             'status' => $this->request->getVar('status'), // 状态
             'visibility' => $this->request->getVar('visibility'), // 可见性
+            // 特色图片
+            'featured_image' => $featuredImageName,
+            'featured_image_id' => $featuredImageId,
             // SEO元数据
             'meta_title' => $this->request->getVar('meta_title') ?: null,
             'meta_description' => $this->request->getVar('meta_description') ?: null,
@@ -314,6 +346,8 @@ class PostController extends Controller
         // 处理文件上传
         $featuredImage = $this->request->getFile('featured_image');
         $featuredImageName = null;
+        $featuredImageId = null;
+        
         if ($featuredImage && $featuredImage->isValid() && !$featuredImage->hasMoved()) {
             // 生成与媒体库一致的文件名和路径
             $extension = $featuredImage->getClientExtension();
@@ -328,12 +362,39 @@ class PostController extends Controller
 
             $featuredImage->move($uploadPath, $fileName);
             $featuredImageName = $datePath . '/' . $fileName;
+            
+            // 同时保存到媒体库
+            $mediaModel = new \App\Models\MediaModel();
+            $mediaData = [
+                'filename' => $fileName,
+                'original_name' => $featuredImage->getClientName(),
+                'file_path' => $uploadPath . '/' . $fileName,
+                'file_url' => base_url('uploads/' . $datePath . '/' . $fileName),
+                'file_type' => $this->getFileType($featuredImage->getClientMimeType()),
+                'file_size' => $featuredImage->getSize(),
+                'mime_type' => $featuredImage->getClientMimeType(),
+                'extension' => $extension,
+                'user_id' => session()->get('user_id') ?: 1,
+                'is_image' => 1,
+            ];
+            
+            $mediaId = $mediaModel->insert($mediaData);
+            if ($mediaId) {
+                $featuredImageId = $mediaId;
+            }
         }
 
         // 处理从媒体库选择的图片
-        $featuredImageFromMedia = $this->request->getVar('featured_image_from_media');
-        if ($featuredImageFromMedia && !$featuredImageName) {
-            $featuredImageName = $featuredImageFromMedia;
+        $featuredImageFromMediaId = $this->request->getVar('featured_image_from_media_id');
+        if ($featuredImageFromMediaId && !$featuredImageId) {
+            $featuredImageId = (int)$featuredImageFromMediaId;
+            
+            // 获取媒体库中的图片URL
+            $mediaModel = new \App\Models\MediaModel();
+            $media = $mediaModel->find($featuredImageId);
+            if ($media) {
+                $featuredImageName = str_replace(base_url('uploads/'), '', $media['file_url']);
+            }
         }
 
         // 准备文章数据
@@ -351,9 +412,13 @@ class PostController extends Controller
             'meta_keywords' => $this->request->getVar('meta_keywords') ?: null,
         ];
 
-        // 只有当上传了新文件或从媒体库选择了图片时才更新featured_image
+        // 只有当上传了新文件或从媒体库选择了图片时才更新featured_image和featured_image_id
         if ($featuredImageName) {
             $postData['featured_image'] = $featuredImageName;
+        }
+        
+        if ($featuredImageId) {
+            $postData['featured_image_id'] = $featuredImageId;
         }
 
         // 处理发布时间和定时发布时间
@@ -931,5 +996,22 @@ class PostController extends Controller
 
         session()->setFlashdata('success', '定时发布任务执行完成，共发布 ' . $updatedCount . ' 篇文章');
         return redirect()->back();
+    }
+
+    /**
+     * 获取文件类型
+     *
+     * @param string $mimeType MIME类型
+     * @return string 文件类型 (image/document/video)
+     */
+    private function getFileType(string $mimeType): string
+    {
+        if (strpos($mimeType, 'image/') === 0) {
+            return 'image';
+        } elseif (strpos($mimeType, 'video/') === 0) {
+            return 'video';
+        } else {
+            return 'document';
+        }
     }
 }
