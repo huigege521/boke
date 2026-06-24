@@ -854,7 +854,7 @@ $scripts = '';
             const csrfValue = $('input[name="csrf_token"]').val();
 
             $.ajax({
-                url: '/admin/media/batch-delete',
+                url: "<?= base_url('admin/media/batch-delete') ?>",
                 type: 'POST',
                 data: { 
                     ids: selectedIds,
@@ -907,7 +907,7 @@ $scripts = '';
             e.stopPropagation();
             const id = $(this).data('id');
 
-            $.get('/admin/media/detail/' + id, function (response) {
+            $.get('<?= base_url('/admin/media/detail/') ?>' + id, function (response) {
                 if (response.success) {
                     const media = response.data;
 
@@ -951,7 +951,7 @@ $scripts = '';
             e.stopPropagation();
             const id = $(this).data('id');
 
-            $.get('/admin/media/detail/' + id, function (response) {
+            $.get('<?= base_url('/admin/media/detail/') ?>' + id, function (response) {
                 if (response.success) {
                     const media = response.data;
                     $('#editId').val(media.id);
@@ -969,7 +969,7 @@ $scripts = '';
             const id = $('#editId').val();
 
             $.ajax({
-                url: '/admin/media/edit/' + id,
+                url: '<?= base_url('/admin/media/edit/') ?>' + id,
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
@@ -1017,7 +1017,7 @@ $scripts = '';
             if (!confirm('确定要删除这个文件吗？')) return;
 
             $.ajax({
-                url: '/admin/media/delete/' + id,
+                url: '<?= base_url('/admin/media/delete/') ?>' + id,
                 type: 'POST',
                 data: { csrf_token: $('input[name="csrf_token"]').val() },
                 success: function (response) {
